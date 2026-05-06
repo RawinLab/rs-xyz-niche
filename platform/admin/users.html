@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Users — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .role-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .role-chip--learner { background: rgba(74,92,51,0.1); color: var(--color-accent-secondary-shade); }
+    .role-chip--instructor { background: rgba(37,32,38,0.08); color: var(--color-surface-ink); }
+    .role-chip--admin { background: rgba(254,29,37,0.1); color: var(--color-accent-brand); }
+  </style>
+</head>
+<body class="app-shell">
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="app-sidebar sidebar">
+    <a href="dashboard.html" class="sidebar__brand">
+      <div class="sidebar__brand-mark">N</div>
+      <div>
+        <div class="sidebar__brand-name">NICHE</div>
+        <div class="sidebar__brand-suffix">Admin Portal</div>
+      </div>
+    </a>
+    <nav style="display:flex;flex-direction:column;gap:var(--space-8);flex:1;">
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="1" width="7" height="7" rx="1.5"/><rect x="10" y="1" width="7" height="7" rx="1.5"/><rect x="1" y="10" width="7" height="7" rx="1.5"/><rect x="10" y="10" width="7" height="7" rx="1.5"/></svg><span class="sidebar__label">Dashboard</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="programs.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 3h14M2 9h14M2 15h8"/></svg><span class="sidebar__label">Programs</span></a>
+        <a href="cohorts.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">Cohorts</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12v12H3z"/></svg><span class="sidebar__label">Courses</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1.5"/><path d="M5 1v4M13 1v4M2 8h14"/></svg><span class="sidebar__label">Schedule</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="users.html?role=learner" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg><span class="sidebar__label">Learners</span></a>
+        <a href="users.html?role=instructor" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="7" cy="6" r="3"/><path d="M1 16c0-3.314 2.686-6 6-6"/></svg><span class="sidebar__label">Instructors</span></a>
+        <a href="users.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5"/></svg><span class="sidebar__label">All Users</span></a>
+        <a href="enrollments.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M14 9a5 5 0 1 1-5-5"/><path d="M14 2v5h-5"/></svg><span class="sidebar__label">Enrollments</span><span class="sidebar__item-badge">12</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4z"/><path d="M2 4l7 6 7-6"/></svg><span class="sidebar__label">Announcements</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="1.5"/></svg><span class="sidebar__label">Payments</span></a>
+      </div>
+      <div class="sidebar__group" style="border-top:1px solid var(--color-shell-border);padding-top:var(--space-16);margin-top:var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H7L2 7v4l5 5h4l5-5V7l-5-5z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 1 0 16A8 8 0 0 1 9 1z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 9h12M9 3l6 6-6 6"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+    </nav>
+    <footer class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="avatar" style="background:var(--color-accent-brand);color:white;font-weight:800;">P</div>
+        <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Praew Nilsuwan</div><div style="font-size:11px;color:var(--color-shell-text-mute);">praew@niche.ac</div></div>
+        <span class="badge badge--ink" style="font-size:10px;white-space:nowrap;flex-shrink:0;">Admin</span>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="app-topbar topbar">
+    <nav style="display:flex;align-items:center;gap:var(--space-8);font-size:13px;color:var(--color-shell-text-mute);">
+      <a href="dashboard.html" style="color:var(--color-shell-text-mute);text-decoration:none;">Dashboard</a>
+      <span>/</span>
+      <span style="color:var(--color-shell-text);font-weight:600;">All Users</span>
+    </nav>
+    <div class="topbar__actions">
+      <button class="topbar__icon-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 0 1 5 5v3l1.5 2H2.5L4 10V7a5 5 0 0 1 5-5z"/><path d="M7 15a2 2 0 0 0 4 0"/></svg></button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="app-main main">
+
+    <div class="page-header">
+      <div class="page-header__title">
+        <div class="page-header__eyebrow">People</div>
+        <h1 class="page-header__heading">All Users <span style="font-size:24px;font-weight:400;color:rgba(37,32,38,0.4);">(87)</span></h1>
+        <p class="page-header__sub">Learners, instructors, and admins</p>
+      </div>
+      <div class="page-header__actions">
+        <button class="btn btn--ghost btn--sm">Import CSV</button>
+        <button class="btn btn--primary btn--sm">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>
+          Invite User
+        </button>
+      </div>
+    </div>
+
+    <!-- BULK TOOLBAR (shown when rows selected) -->
+    <div style="display:flex;align-items:center;gap:var(--space-12);padding:var(--space-12) var(--space-16);background:var(--color-surface-ink);color:var(--color-surface-base);border-radius:6px;margin-bottom:var(--space-16);font-size:13px;">
+      <span style="font-weight:600;">4 selected</span>
+      <button class="btn btn--ghost-on-dark btn--sm">Send announcement</button>
+      <button class="btn btn--ghost-on-dark btn--sm">Export selected</button>
+      <button class="btn btn--ghost-on-dark btn--sm">Assign role</button>
+      <button class="btn btn--ghost-on-dark btn--sm">Deactivate</button>
+      <button style="margin-left:auto;background:none;border:none;color:var(--color-shell-text);cursor:pointer;opacity:0.6;font-size:16px;">✕</button>
+    </div>
+
+    <div class="data-table">
+      <div class="data-table__toolbar">
+        <input type="search" class="data-table__search" placeholder="Search users by name, email…" style="max-width:280px;">
+        <select class="select btn--sm" style="width:auto;padding:7px 10px;font-size:12px;">
+          <option>All Roles</option>
+          <option>Learner</option>
+          <option>Instructor</option>
+          <option>Admin</option>
+        </select>
+        <select class="select btn--sm" style="width:auto;padding:7px 10px;font-size:12px;">
+          <option>All Status</option>
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>Invited</option>
+        </select>
+        <div style="margin-left:auto;display:flex;gap:var(--space-8);align-items:center;">
+          <span style="font-size:12px;color:rgba(37,32,38,0.5);">Density:</span>
+          <div style="display:flex;border:1px solid var(--color-divider);border-radius:4px;overflow:hidden;">
+            <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;padding:4px 8px;font-size:11px;">Compact</button>
+            <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;border-left:1px solid var(--color-divider);border-right:1px solid var(--color-divider);padding:4px 8px;font-size:11px;background:rgba(37,32,38,0.05);">Default</button>
+            <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;padding:4px 8px;font-size:11px;">Spacious</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:900px;">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;"><input type="checkbox"> Name</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Email</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Role(s)</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Cohort(s)</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Status</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Last Active</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:right;font-weight:700;text-transform:uppercase;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;" checked>
+                  <div class="avatar" style="background:#fee2e2;color:#c0392b;">AS</div>
+                  <div>
+                    <div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Aira Sukcharoen</a></div>
+                  </div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">aira@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="role-chip role-chip--learner">Learner</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Creative ID&amp;ST · C1</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:var(--color-accent-brand);">9d ago</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 2 -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;" checked>
+                  <div class="avatar" style="background:#fef3c7;color:#92400e;">KM</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Krit Mehra</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">krit@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="role-chip role-chip--learner">Learner</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Food Business · C1</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:var(--color-accent-brand);">12d ago</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 3 - Instructor -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;" checked>
+                  <div class="avatar" style="background:rgba(37,32,38,0.08);color:var(--color-surface-ink);">AW</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Achara Wongchai</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">achara@niche.ac</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="role-chip role-chip--instructor">Instructor</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Creative ID&amp;ST · C1</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Today</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 4 - Multiple roles -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;" checked>
+                  <div class="avatar" style="background:#e0f2fe;color:#0369a1;">SI</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Sasha Ivanov</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">sasha@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="role-chip role-chip--learner" style="margin-right:4px;">Learner</span>
+                <span class="role-chip role-chip--instructor">Instructor</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">AI×Content · C1<br><span style="color:rgba(37,32,38,0.5);">+ 1 more</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:var(--color-accent-brand);">7d ago</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 5 -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;">
+                  <div class="avatar" style="background:#fce7f3;color:#be185d;">PS</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Patcharee Suk</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">pat@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="role-chip role-chip--learner">Learner</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Food Business · C1</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:var(--color-accent-brand);">14d ago</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 6 -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;">
+                  <div class="avatar" style="background:#dcfce7;color:#166534;">CC</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Carlos Cruz</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">carlos@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="role-chip role-chip--learner">Learner</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">AI×Content · C1</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">Yesterday</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 7 -->
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;">
+                  <div class="avatar" style="background:#fef3c7;color:#92400e;">MJ</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Min-Ji Park</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.7);">minji@example.com</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="role-chip role-chip--learner">Learner</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.5);">Applied — pending</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);"><span class="status-chip status-chip--needs-revision" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Invited</span></td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;color:rgba(37,32,38,0.4);">Never</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+            <!-- Row 8 - Admin -->
+            <tr>
+              <td style="padding:12px 16px;">
+                <div class="cell-user">
+                  <input type="checkbox" style="margin-right:4px;">
+                  <div class="avatar" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);font-weight:800;">P</div>
+                  <div><div style="font-weight:600;"><a href="user-detail.html" style="color:inherit;text-decoration:none;">Praew Nilsuwan</a></div></div>
+                </div>
+              </td>
+              <td style="padding:12px 16px;font-size:12px;color:rgba(37,32,38,0.7);">praew@niche.ac</td>
+              <td style="padding:12px 16px;"><span class="role-chip role-chip--admin">Admin</span></td>
+              <td style="padding:12px 16px;font-size:12px;color:rgba(37,32,38,0.5);">Platform-wide</td>
+              <td style="padding:12px 16px;"><span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;"><span class="status-chip__dot"></span>Active</span></td>
+              <td style="padding:12px 16px;font-size:12px;">Just now</td>
+              <td style="padding:12px 16px;text-align:right;"><a href="user-detail.html" class="btn btn--ghost btn--sm">View</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-16);border-top:1px solid var(--color-divider);">
+        <div style="display:flex;align-items:center;gap:var(--space-12);">
+          <span style="font-size:13px;color:rgba(37,32,38,0.55);">Showing 1–25 of 87</span>
+          <select class="select" style="width:auto;padding:4px 8px;font-size:12px;">
+            <option>25 per page</option>
+            <option>50 per page</option>
+            <option>100 per page</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:var(--space-8);">
+          <button class="btn btn--ghost btn--sm" disabled style="opacity:0.3;">← Prev</button>
+          <button class="btn btn--ghost btn--sm" style="background:rgba(37,32,38,0.06);">1</button>
+          <button class="btn btn--ghost btn--sm">2</button>
+          <button class="btn btn--ghost btn--sm">3</button>
+          <span style="padding:6px 4px;font-size:13px;color:rgba(37,32,38,0.4);">…</span>
+          <button class="btn btn--ghost btn--sm">4</button>
+          <button class="btn btn--ghost btn--sm">Next →</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin</div>
+
+</body>
+</html>

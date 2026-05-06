@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invite Links — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .generated-link-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-24);
+      margin-bottom: var(--space-32);
+    }
+    .generated-link-card__label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(37,32,38,0.45);
+      margin-bottom: var(--space-12);
+    }
+    .link-copy-row {
+      display: flex; gap: var(--space-12); align-items: center;
+      margin-bottom: var(--space-24);
+    }
+    .link-copy-row input {
+      flex: 1; background: var(--color-surface-base);
+      border: 1px solid var(--color-divider); border-radius: 4px;
+      padding: var(--space-12) var(--space-16);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px; color: var(--color-surface-ink);
+    }
+    .link-meta-row {
+      display: flex; gap: var(--space-24); flex-wrap: wrap;
+    }
+    .link-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .link-meta-item__key { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(37,32,38,0.45); }
+    .link-meta-item__val { font-size: 14px; font-weight: 600; }
+
+    .qr-area {
+      display: flex; flex-direction: column; align-items: center;
+      gap: var(--space-8); padding: var(--space-16);
+      background: var(--color-surface-base);
+      border: 1px solid var(--color-divider); border-radius: 4px;
+      width: 140px;
+    }
+    .qr-area__caption { font-size: 11px; color: rgba(37,32,38,0.45); }
+
+    .generator-form {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-24);
+      margin-bottom: var(--space-32);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); }
+    @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-footer { margin-top: var(--space-24); display: flex; justify-content: flex-end; }
+
+    .action-menu-btn {
+      background: none; border: none; cursor: pointer;
+      padding: var(--space-4) var(--space-8);
+      font-size: 18px; color: rgba(37,32,38,0.4);
+      border-radius: 4px;
+    }
+    .action-menu-btn:hover { background: rgba(37,32,38,0.06); }
+  </style>
+</head>
+<body class="app-shell">
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <nav class="sidebar">
+      <a href="#" class="sidebar__brand">
+        <div class="sidebar__brand-mark">N</div>
+        <div>
+          <div class="sidebar__brand-name">NICHE</div>
+          <div class="sidebar__brand-suffix">Admin Portal</div>
+        </div>
+      </a>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+          <span class="sidebar__label">Dashboard</span>
+        </a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 9h14M2 14h8"/></svg>
+          <span class="sidebar__label">Programs</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+          <span class="sidebar__label">Cohorts</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14"/></svg>
+          <span class="sidebar__label">Courses</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14"/></svg>
+          <span class="sidebar__label">Schedule</span>
+        </a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+          <span class="sidebar__label">Learners</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+          <span class="sidebar__label">Instructors</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.8 2.2-5 5-5h6c2.8 0 5 2.2 5 5"/></svg>
+          <span class="sidebar__label">All Users</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 5h14v10a1 1 0 01-1 1H3a1 1 0 01-1-1V5zM6 5V3h6v2"/></svg>
+          <span class="sidebar__label">Enrollments</span>
+        </a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12a1 1 0 011 1v8a1 1 0 01-1 1H6l-4 3V4a1 1 0 011-1z"/></svg>
+          <span class="sidebar__label">Announcements</span>
+        </a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="2"/><path d="M1 8h16M5 12h3"/></svg>
+          <span class="sidebar__label">Payments</span>
+        </a>
+      </div>
+
+      <div class="sidebar__group" style="border-top: 1px solid var(--color-shell-border); padding-top: var(--space-16); margin-top: var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="role-assignment.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.2 3.2l1.4 1.4M13.4 13.4l1.4 1.4M3.2 14.8l1.4-1.4M13.4 4.6l1.4-1.4"/></svg>
+          <span class="sidebar__label">Roles &amp; Permissions</span>
+        </a>
+        <a href="invite-link.html" class="sidebar__item is-active">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 8l-6 6M7.5 3.5l7 7-3 3-7-7 3-3z"/><path d="M14.5 3.5l-3 3"/></svg>
+          <span class="sidebar__label">Invite Links</span>
+        </a>
+        <a href="pdpa.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg>
+          <span class="sidebar__label">PDPA &amp; Consent</span>
+        </a>
+        <a href="audit-log.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 8h10M2 12h6"/><circle cx="14" cy="13" r="3"/><path d="M14 12v1.5l1 1"/></svg>
+          <span class="sidebar__label">Audit Log</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 6l3-3 3 3M6 3v10M15 12l-3 3-3-3M12 15V5"/></svg>
+          <span class="sidebar__label">Integrations</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9h6M9 6v6"/></svg>
+          <span class="sidebar__label">Workspace</span>
+        </a>
+      </div>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="avatar" style="background: var(--color-accent-brand); color: var(--color-surface-base);">A</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px; font-weight:600; color:var(--color-shell-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">admin@niche.ac</div>
+            <div style="font-size:11px; color:var(--color-shell-text-mute);">Admin (NICHE)</div>
+          </div>
+          <span class="badge badge--ink" style="font-size:9px; flex-shrink:0;">Admin</span>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="app-topbar">
+    <div class="topbar">
+      <div class="topbar__search">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <input type="search" placeholder="Search…">
+      </div>
+      <div class="topbar__actions">
+        <button class="topbar__icon-btn" aria-label="Notifications">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 14.5a2 2 0 004 0"/></svg>
+          <span class="topbar__icon-btn-badge"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="app-main">
+    <div class="main">
+      <div class="page-header">
+        <div class="page-header__title">
+          <div class="page-header__eyebrow">Settings</div>
+          <h1 class="page-header__heading">Invite Links</h1>
+          <div class="page-header__sub">Generate shareable enrollment links for cohorts</div>
+        </div>
+      </div>
+
+      <!-- Generator form -->
+      <div class="generator-form">
+        <div class="card__title mb-16">Generate New Invite Link</div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label">Cohort</label>
+            <select class="select">
+              <option>Cohort 1 — Creative ID&amp;ST · Nov 2026</option>
+              <option>Cohort 1 — Food Business · Nov 2026</option>
+              <option>Cohort 1 — AI×Content · Nov 2026</option>
+              <option>Cohort 0 — Pilot</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label">Role</label>
+            <select class="select">
+              <option selected>Learner</option>
+              <option>Instructor</option>
+              <option>Observer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label">Expiry</label>
+            <select class="select">
+              <option selected>7 days</option>
+              <option>30 days</option>
+              <option>No expiry</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label">Usage Limit</label>
+            <select class="select">
+              <option>Single-use (1 person)</option>
+              <option selected>10 uses</option>
+              <option>25 uses</option>
+              <option>Unlimited</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-footer">
+          <button class="btn btn--primary">
+            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 8l-6 6M7.5 3.5l7 7-3 3-7-7 3-3z"/></svg>
+            Generate Link
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated link card -->
+      <div class="generated-link-card">
+        <div class="generated-link-card__label">Generated Link — Cohort 1 Creative ID&amp;ST · Learner · Expires Dec 13 2026</div>
+        <div style="display: flex; gap: var(--space-24); align-items: flex-start; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 280px;">
+            <div class="link-copy-row">
+              <input type="text" readonly value="https://niche.ac/join/cIDST-xB7q2mP4" aria-label="Invite link">
+              <button class="btn btn--secondary btn--sm" onclick="navigator.clipboard.writeText('https://niche.ac/join/cIDST-xB7q2mP4')">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="6" width="10" height="10" rx="2"/><path d="M4 12H3a1 1 0 01-1-1V3a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <div class="link-meta-row">
+              <div class="link-meta-item">
+                <span class="link-meta-item__key">Created</span>
+                <span class="link-meta-item__val">Dec 06, 2026</span>
+              </div>
+              <div class="link-meta-item">
+                <span class="link-meta-item__key">Expires</span>
+                <span class="link-meta-item__val">Dec 13, 2026</span>
+              </div>
+              <div class="link-meta-item">
+                <span class="link-meta-item__key">Uses</span>
+                <span class="link-meta-item__val">3 / 10</span>
+              </div>
+              <div class="link-meta-item">
+                <span class="link-meta-item__key">Status</span>
+                <span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Active</span>
+              </div>
+            </div>
+          </div>
+          <!-- QR placeholder -->
+          <div class="qr-area">
+            <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="QR code placeholder">
+              <!-- Finder pattern TL -->
+              <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
+              <rect x="12" y="12" width="16" height="16" rx="1" fill="#252026"/>
+              <!-- Finder pattern TR -->
+              <rect x="65" y="5" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
+              <rect x="72" y="12" width="16" height="16" rx="1" fill="#252026"/>
+              <!-- Finder pattern BL -->
+              <rect x="5" y="65" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
+              <rect x="12" y="72" width="16" height="16" rx="1" fill="#252026"/>
+              <!-- Data cells -->
+              <rect x="42" y="5" width="5" height="5" fill="#252026"/><rect x="52" y="5" width="5" height="5" fill="#252026"/>
+              <rect x="42" y="15" width="5" height="5" fill="#252026"/><rect x="57" y="15" width="5" height="5" fill="#252026"/>
+              <rect x="47" y="25" width="5" height="5" fill="#252026"/>
+              <rect x="42" y="42" width="5" height="5" fill="#252026"/><rect x="52" y="42" width="5" height="5" fill="#252026"/><rect x="62" y="42" width="5" height="5" fill="#252026"/>
+              <rect x="47" y="52" width="5" height="5" fill="#252026"/><rect x="57" y="52" width="5" height="5" fill="#252026"/>
+              <rect x="42" y="62" width="5" height="5" fill="#252026"/>
+              <rect x="52" y="62" width="5" height="5" fill="#252026"/><rect x="62" y="62" width="5" height="5" fill="#252026"/>
+              <rect x="42" y="72" width="5" height="5" fill="#252026"/><rect x="57" y="72" width="5" height="5" fill="#252026"/>
+              <rect x="52" y="82" width="5" height="5" fill="#252026"/><rect x="62" y="82" width="5" height="5" fill="#252026"/>
+              <rect x="72" y="42" width="5" height="5" fill="#252026"/><rect x="82" y="42" width="5" height="5" fill="#252026"/>
+              <rect x="77" y="52" width="5" height="5" fill="#252026"/><rect x="82" y="62" width="5" height="5" fill="#252026"/>
+              <rect x="72" y="72" width="5" height="5" fill="#252026"/>
+            </svg>
+            <span class="qr-area__caption">QR Code</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics table -->
+      <div class="card__title mb-16">Link History</div>
+      <div class="data-table">
+        <div class="data-table__toolbar">
+          <input type="search" class="data-table__search" placeholder="Search links…">
+          <select class="select" style="width:auto; min-width:160px; padding: var(--space-8) var(--space-12); font-size:13px;">
+            <option>All Cohorts</option>
+            <option>Creative ID&amp;ST</option>
+            <option>Food Business</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Link</th>
+              <th>Cohort</th>
+              <th>Role</th>
+              <th>Created</th>
+              <th>Expires</th>
+              <th>Uses</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code style="font-size:12px;">/join/cIDST-xB7q2mP4</code></td>
+              <td>Creative ID&amp;ST · C1</td>
+              <td>Learner</td>
+              <td>Dec 06, 2026</td>
+              <td>Dec 13, 2026</td>
+              <td>3 / 10</td>
+              <td><span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Active</span></td>
+              <td><button class="btn btn--ghost btn--sm">Deactivate</button></td>
+            </tr>
+            <tr>
+              <td><code style="font-size:12px;">/join/food-Kp9wXzQ1</code></td>
+              <td>Food Business · C1</td>
+              <td>Learner</td>
+              <td>Nov 28, 2026</td>
+              <td>Dec 28, 2026</td>
+              <td>12 / 25</td>
+              <td><span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Active</span></td>
+              <td><button class="btn btn--ghost btn--sm">Deactivate</button></td>
+            </tr>
+            <tr>
+              <td><code style="font-size:12px;">/join/ai-cnt-Rt4nVm2</code></td>
+              <td>AI×Content · C1</td>
+              <td>Learner</td>
+              <td>Nov 20, 2026</td>
+              <td>Dec 20, 2026</td>
+              <td>8 / 10</td>
+              <td><span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Active</span></td>
+              <td><button class="btn btn--ghost btn--sm">Deactivate</button></td>
+            </tr>
+            <tr>
+              <td><code style="font-size:12px;">/join/pilot-singleUse</code></td>
+              <td>Cohort 0 Pilot</td>
+              <td>Learner</td>
+              <td>Oct 01, 2026</td>
+              <td>Oct 08, 2026</td>
+              <td>1 / 1</td>
+              <td><span class="status-chip status-chip--locked">Expired</span></td>
+              <td><button class="btn btn--ghost btn--sm" disabled>Deactivate</button></td>
+            </tr>
+            <tr>
+              <td><code style="font-size:12px;">/join/cIDST-instruct</code></td>
+              <td>Creative ID&amp;ST · C1</td>
+              <td>Instructor</td>
+              <td>Sep 15, 2026</td>
+              <td style="color: var(--color-accent-brand);">Sep 22, 2026</td>
+              <td>1 / 3</td>
+              <td><span class="status-chip status-chip--locked">Expired</span></td>
+              <td><button class="btn btn--ghost btn--sm" disabled>Deactivate</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin Ops</div>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Authoring — NICHE Instructor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* Override main padding for full-bleed split pane */
+    .app-main .main {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--topbar-height));
+      overflow: hidden;
+    }
+
+    /* Authoring topbar */
+    .authoring-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-12) var(--space-24);
+      background: white;
+      border-bottom: 1px solid var(--color-divider);
+      flex-shrink: 0;
+    }
+    .authoring-bar__breadcrumb {
+      font-size: 13px;
+      color: rgba(37,32,38,0.5);
+    }
+    .authoring-bar__breadcrumb strong { color: var(--color-surface-ink); }
+    .authoring-bar__spacer { flex: 1; }
+
+    /* Split pane */
+    .authoring-split {
+      display: grid;
+      grid-template-columns: 280px 1fr 260px;
+      flex: 1;
+      overflow: hidden;
+    }
+    @media (max-width: 1200px) { .authoring-split { grid-template-columns: 240px 1fr; } }
+    @media (max-width: 900px) { .authoring-split { grid-template-columns: 1fr; } }
+
+    /* Left: Module tree */
+    .module-tree {
+      border-right: 1px solid var(--color-divider);
+      background: rgba(37,32,38,0.02);
+      overflow-y: auto;
+      padding: var(--space-16) 0;
+    }
+    .tree-section-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.4);
+      padding: var(--space-8) var(--space-20);
+    }
+    .tree-module {
+      margin-bottom: 2px;
+    }
+    .tree-module__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-8) var(--space-16);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: background var(--motion-micro) var(--ease-standard);
+    }
+    .tree-module__header:hover { background: rgba(37,32,38,0.04); }
+    .tree-module__chevron {
+      width: 12px; height: 12px;
+      stroke: rgba(37,32,38,0.4);
+      fill: none;
+      stroke-width: 2;
+      transition: transform var(--motion-quick) var(--ease-standard);
+      flex-shrink: 0;
+    }
+    .tree-module.is-open .tree-module__chevron { transform: rotate(90deg); }
+    .tree-module__status {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0; margin-left: auto;
+    }
+    .tree-module__status--published { background: var(--color-accent-secondary-shade); }
+    .tree-module__status--draft { background: rgba(37,32,38,0.25); }
+
+    .tree-session {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-6, 6px) var(--space-16) var(--space-6, 6px) var(--space-32);
+      font-size: 12px;
+      color: rgba(37,32,38,0.65);
+      cursor: pointer;
+      transition: background var(--motion-micro) var(--ease-standard), color var(--motion-micro) var(--ease-standard);
+      text-decoration: none;
+    }
+    .tree-session:hover { background: rgba(37,32,38,0.04); color: var(--color-surface-ink); }
+    .tree-session.is-active {
+      background: rgba(254,29,37,0.08);
+      color: var(--color-accent-brand);
+      font-weight: 700;
+    }
+    .tree-session__icon {
+      width: 14px; height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+    .tree-session__status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor;
+      margin-left: auto;
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+    .tree-session.is-active .tree-session__status-dot { opacity: 1; }
+
+    /* Center: Editor */
+    .editor-pane {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* WYSIWYG toolbar */
+    .wysiwyg-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: var(--space-8) var(--space-16);
+      border-bottom: 1px solid var(--color-divider);
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      flex-wrap: wrap;
+    }
+    .wysiwyg-btn {
+      width: 30px; height: 30px;
+      display: grid; place-items: center;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-radius: 4px;
+      color: rgba(37,32,38,0.65);
+      font-size: 13px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      transition: background var(--motion-micro) var(--ease-standard), color var(--motion-micro) var(--ease-standard);
+    }
+    .wysiwyg-btn:hover { background: rgba(37,32,38,0.06); color: var(--color-surface-ink); }
+    .wysiwyg-btn.is-active { background: var(--color-surface-ink); color: var(--color-surface-base); }
+    .wysiwyg-sep {
+      width: 1px; height: 20px;
+      background: var(--color-divider);
+      margin: 0 var(--space-4);
+      flex-shrink: 0;
+    }
+
+    /* Editor content area */
+    .editor-content {
+      flex: 1;
+      padding: var(--space-48) var(--space-64);
+      background: white;
+    }
+    @media (max-width: 900px) { .editor-content { padding: var(--space-32) var(--space-24); } }
+
+    .editor-content__title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      border: none;
+      outline: none;
+      width: 100%;
+      margin-bottom: var(--space-8);
+      color: var(--color-surface-ink);
+      background: transparent;
+    }
+    .editor-content__subtitle-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      margin-bottom: var(--space-32);
+      padding-bottom: var(--space-24);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .editor-content__body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(37,32,38,0.85);
+      min-height: 300px;
+      outline: none;
+    }
+    .editor-content__body h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin: var(--space-32) 0 var(--space-16);
+      color: var(--color-surface-ink);
+    }
+    .editor-content__body p { margin-bottom: var(--space-16); max-width: none; font-size: 15px; }
+    .editor-content__body ul { padding-left: var(--space-24); margin-bottom: var(--space-16); }
+    .editor-content__body ul li { margin-bottom: var(--space-8); }
+
+    /* Video embed block */
+    .content-block-video {
+      border: 1px dashed var(--color-divider);
+      border-radius: 6px;
+      padding: var(--space-20) var(--space-24);
+      margin: var(--space-24) 0;
+      background: rgba(37,32,38,0.02);
+    }
+    .content-block-video__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.4);
+      margin-bottom: var(--space-8);
+    }
+    .content-block-video input {
+      width: 100%;
+      border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      padding: var(--space-8) var(--space-12);
+      font-size: 13px;
+      font-family: var(--font-body);
+      background: white;
+    }
+    .content-block-video input:focus { outline: none; border-color: var(--color-surface-ink); }
+
+    /* File upload block */
+    .content-block-upload {
+      border: 1px dashed var(--color-accent-secondary);
+      border-radius: 6px;
+      padding: var(--space-16) var(--space-24);
+      margin: var(--space-16) 0;
+      background: rgba(74,92,51,0.04);
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+    }
+    .content-block-upload__icon { color: var(--color-accent-secondary-shade); flex-shrink: 0; }
+    .content-block-upload__info { flex: 1; }
+    .content-block-upload__filename { font-size: 13px; font-weight: 700; color: var(--color-accent-secondary-shade); }
+    .content-block-upload__meta { font-size: 11px; color: rgba(37,32,38,0.5); }
+
+    /* Right: Meta panel */
+    .meta-panel {
+      border-left: 1px solid var(--color-divider);
+      background: rgba(37,32,38,0.02);
+      overflow-y: auto;
+      padding: var(--space-20);
+    }
+    .meta-section {
+      margin-bottom: var(--space-24);
+      padding-bottom: var(--space-24);
+      border-bottom: 1px solid rgba(37,32,38,0.06);
+    }
+    .meta-section:last-child { border-bottom: none; }
+    .meta-section__title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.4);
+      margin-bottom: var(--space-12);
+    }
+    .meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-8);
+      margin-bottom: var(--space-8);
+      font-size: 12px;
+    }
+    .meta-row__label { color: rgba(37,32,38,0.5); width: 80px; flex-shrink: 0; }
+    .meta-row__value { font-weight: 600; flex: 1; }
+
+    /* Publish section */
+    .visibility-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      background: rgba(74,92,51,0.1);
+      color: var(--color-accent-secondary-shade);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .visibility-chip__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-accent-secondary-shade);
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Platform</div>
+          </div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="cohort-detail.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span class="sidebar__label">My Cohorts</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Teaching</div>
+          <a href="content-authoring.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span class="sidebar__label">Content</span>
+          </a>
+          <a href="grading-queue.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="sidebar__label">Grading</span>
+            <span class="sidebar__item-badge">7</span>
+          </a>
+          <a href="announcement-composer.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="sidebar__label">Announcements</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Calendar</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="sidebar__label">Profile</span>
+          </a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;">AW</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:var(--color-shell-text);">Achara Wongchai</div>
+              <div style="font-size:11px;color:var(--color-shell-text-mute);">Instructor</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Teaching: Cohort 1 — Creative ID&amp;ST
+        </div>
+        <div class="topbar__search" style="display:none;"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
+            <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
+            <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+        <!-- Authoring topbar -->
+        <div class="authoring-bar">
+          <div class="authoring-bar__breadcrumb">
+            Content /
+            <span> Module 5 — Visual Identity Systems</span> /
+            <strong> Session 5.2 — Typography as Identity</strong>
+          </div>
+          <span class="status-chip status-chip--draft">Draft</span>
+          <div class="authoring-bar__spacer"></div>
+          <button class="btn btn--ghost btn--sm">Preview</button>
+          <button class="btn btn--secondary btn--sm">Save Draft</button>
+          <button class="btn btn--primary btn--sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Publish to Cohort
+          </button>
+        </div>
+
+        <!-- Split pane -->
+        <div class="authoring-split">
+
+          <!-- Left: Module tree -->
+          <div class="module-tree" role="navigation" aria-label="Course structure">
+            <div class="tree-section-label">Creative ID &amp; ST</div>
+
+            <div class="tree-module is-open">
+              <div class="tree-module__header">
+                <svg class="tree-module__chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                M1 — Foundation
+                <div class="tree-module__status tree-module__status--published" title="Published"></div>
+              </div>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                1.1 Intro &amp; Orientation
+                <div class="tree-session__status-dot"></div>
+              </a>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                1.2 What is Creative Identity?
+                <div class="tree-session__status-dot"></div>
+              </a>
+            </div>
+
+            <div class="tree-module is-open">
+              <div class="tree-module__header">
+                <svg class="tree-module__chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                M2 — Research Methods
+                <div class="tree-module__status tree-module__status--published"></div>
+              </div>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                2.1 Mood &amp; Reference Boards
+                <div class="tree-session__status-dot"></div>
+              </a>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                2.2 Competitive Audit
+                <div class="tree-session__status-dot"></div>
+              </a>
+            </div>
+
+            <div class="tree-module is-open">
+              <div class="tree-module__header">
+                <svg class="tree-module__chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                M5 — Visual Identity
+                <div class="tree-module__status tree-module__status--draft"></div>
+              </div>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                5.1 Color Theory Fundamentals
+                <div class="tree-session__status-dot"></div>
+              </a>
+              <a href="#" class="tree-session is-active">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                5.2 Typography as Identity
+              </a>
+              <a href="#" class="tree-session">
+                <svg class="tree-session__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                5.3 Logo Construction ⟶
+                <div class="tree-session__status-dot" style="background:rgba(37,32,38,0.15);opacity:1;"></div>
+              </a>
+            </div>
+
+            <div class="tree-module">
+              <div class="tree-module__header">
+                <svg class="tree-module__chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                M6 — Storytelling
+                <div class="tree-module__status tree-module__status--draft"></div>
+              </div>
+            </div>
+
+            <div style="padding:var(--space-12) var(--space-16);margin-top:auto;">
+              <button class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Module
+              </button>
+            </div>
+          </div>
+
+          <!-- Center: Editor -->
+          <div class="editor-pane">
+            <!-- WYSIWYG toolbar -->
+            <div class="wysiwyg-toolbar" role="toolbar" aria-label="Text formatting">
+              <select style="border:1px solid var(--color-divider);border-radius:4px;padding:4px 6px;font-size:12px;font-family:var(--font-body);background:white;cursor:pointer;" aria-label="Text style">
+                <option>Paragraph</option>
+                <option>Heading 1</option>
+                <option>Heading 2</option>
+                <option>Heading 3</option>
+              </select>
+              <div class="wysiwyg-sep"></div>
+              <button class="wysiwyg-btn is-active" aria-label="Bold" aria-pressed="true"><strong>B</strong></button>
+              <button class="wysiwyg-btn" aria-label="Italic" aria-pressed="false"><em>I</em></button>
+              <button class="wysiwyg-btn" aria-label="Underline"><u>U</u></button>
+              <div class="wysiwyg-sep"></div>
+              <button class="wysiwyg-btn" aria-label="Bullet list">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Numbered list">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Blockquote">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+              </button>
+              <div class="wysiwyg-sep"></div>
+              <button class="wysiwyg-btn" aria-label="Insert link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Insert image">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Insert video">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Code block">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </button>
+              <div class="wysiwyg-sep"></div>
+              <button class="wysiwyg-btn" aria-label="Undo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+              </button>
+              <button class="wysiwyg-btn" aria-label="Redo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+              </button>
+            </div>
+
+            <!-- Editor content -->
+            <div class="editor-content">
+              <input
+                type="text"
+                class="editor-content__title"
+                value="5.2 — Typography as Identity"
+                aria-label="Session title"
+              >
+              <div class="editor-content__subtitle-row">
+                <span class="badge badge--neutral">Module 5</span>
+                <span class="badge badge--warning">Draft</span>
+                <span style="font-size:12px;color:rgba(37,32,38,0.45);">Last edited: Nov 19, 2026 · 10:42 AM</span>
+              </div>
+
+              <div class="editor-content__body" contenteditable="true" aria-label="Session content" role="textbox" aria-multiline="true">
+                <h2>Learning Objectives</h2>
+                <ul>
+                  <li>Understand how typeface selection communicates personality and cultural context</li>
+                  <li>Apply type pairing principles to a personal identity system</li>
+                  <li>Analyse 3 brand case studies through the lens of typographic identity</li>
+                </ul>
+
+                <h2>Session Overview</h2>
+                <p>Typography is not decoration — it is the voice of a brand made visible. In this session we move beyond readability into the territory of character: how a typeface family encodes history, emotion, and aspiration into every letterform.</p>
+                <p>We will examine how three Bangkok-based brands made deliberate typographic choices that reflect their founders' worldview, and then apply those learnings to your own ongoing identity project.</p>
+
+                <div class="content-block-video">
+                  <div class="content-block-video__label">Video Embed — URL</div>
+                  <input type="url" value="https://vimeo.com/123456789" placeholder="Paste Vimeo or YouTube URL…" aria-label="Video URL">
+                  <div style="margin-top:var(--space-8);font-size:12px;color:rgba(37,32,38,0.45);">
+                    Preview: "Typography &amp; Brand Identity — 18 min walkthrough"
+                  </div>
+                </div>
+
+                <h2>Reading Materials</h2>
+                <div class="content-block-upload">
+                  <svg class="content-block-upload__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <div class="content-block-upload__info">
+                    <div class="content-block-upload__filename">typography-identity-reading.pdf</div>
+                    <div class="content-block-upload__meta">PDF · 1.8 MB · Uploaded Nov 16</div>
+                  </div>
+                  <button class="btn btn--ghost btn--sm">Replace</button>
+                </div>
+                <button class="btn btn--ghost btn--sm" style="margin-top:var(--space-8);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Resource File
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Meta panel -->
+          <div class="meta-panel">
+            <div class="meta-section">
+              <div class="meta-section__title">Visibility</div>
+              <div class="visibility-chip">
+                <div class="visibility-chip__dot"></div>
+                Cohort 1 — 18 learners
+              </div>
+              <div style="margin-top:var(--space-8);font-size:11px;color:rgba(37,32,38,0.45);">Will be published to enrolled learners only</div>
+            </div>
+
+            <div class="meta-section">
+              <div class="meta-section__title">Session Details</div>
+              <div class="meta-row">
+                <div class="meta-row__label">Module</div>
+                <div class="meta-row__value">M5 — Visual Identity</div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-row__label">Session</div>
+                <div class="meta-row__value">5.2</div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-row__label">Type</div>
+                <div class="meta-row__value">Onsite + Async</div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-row__label">Duration</div>
+                <div class="meta-row__value">90 min</div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-row__label">Status</div>
+                <div class="meta-row__value"><span class="status-chip status-chip--draft">Draft</span></div>
+              </div>
+            </div>
+
+            <div class="meta-section">
+              <div class="meta-section__title">Assignment</div>
+              <div style="font-size:12px;color:rgba(37,32,38,0.65);margin-bottom:var(--space-8);">Module 5 Reflection attached</div>
+              <button class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">Edit Assignment Brief</button>
+            </div>
+
+            <div class="meta-section">
+              <div class="meta-section__title">Last Edited</div>
+              <div style="font-size:12px;color:rgba(37,32,38,0.65);">
+                Nov 19, 2026 · 10:42 AM<br>
+                by Achara Wongchai
+              </div>
+            </div>
+
+            <div class="meta-section">
+              <div class="meta-section__title">Publish Actions</div>
+              <div style="display:flex;flex-direction:column;gap:var(--space-8);">
+                <button class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Save Draft</button>
+                <button class="btn btn--primary btn--sm" style="width:100%;justify-content:center;">
+                  Publish to Cohort
+                </button>
+                <button class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;font-size:11px;color:rgba(37,32,38,0.45);">Schedule Publish…</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Instructor</div>
+</body>
+</html>

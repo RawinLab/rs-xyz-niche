@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Detail — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .user-hero {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-radius: 8px;
+      padding: var(--space-32);
+      margin-bottom: var(--space-24);
+      display: flex;
+      align-items: center;
+      gap: var(--space-24);
+    }
+    .role-chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .role-chip--learner { background: rgba(74,92,51,0.15); color: #b4c49a; }
+    .role-chip--instructor { background: rgba(242,241,240,0.15); color: var(--color-surface-base); }
+    .role-chip--admin { background: rgba(254,29,37,0.2); color: #ff8080; }
+    .role-chip--light-learner { background: rgba(74,92,51,0.1); color: var(--color-accent-secondary-shade); }
+    .role-chip--light-instructor { background: rgba(37,32,38,0.08); color: var(--color-surface-ink); }
+
+    /* PDPA Timeline */
+    .pdpa-timeline { list-style: none; padding: 0; margin: 0; }
+    .pdpa-timeline__item {
+      position: relative;
+      padding: var(--space-16) 0 var(--space-16) var(--space-32);
+      border-left: 2px solid var(--color-divider);
+      margin-left: var(--space-8);
+    }
+    .pdpa-timeline__item:last-child { border-left-color: transparent; }
+    .pdpa-timeline__dot {
+      position: absolute;
+      left: -7px;
+      top: 20px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--color-divider);
+    }
+    .pdpa-timeline__dot--granted { border-color: var(--color-accent-secondary-shade); background: rgba(74,92,51,0.12); }
+    .pdpa-timeline__dot--revoked { border-color: var(--color-accent-brand); background: rgba(254,29,37,0.1); }
+    .pdpa-timeline__date { font-size: 11px; color: rgba(37,32,38,0.5); margin-bottom: 4px; }
+    .pdpa-timeline__event { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .pdpa-timeline__detail { font-size: 12px; color: rgba(37,32,38,0.6); }
+  </style>
+</head>
+<body class="app-shell">
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="app-sidebar sidebar">
+    <a href="dashboard.html" class="sidebar__brand">
+      <div class="sidebar__brand-mark">N</div>
+      <div>
+        <div class="sidebar__brand-name">NICHE</div>
+        <div class="sidebar__brand-suffix">Admin Portal</div>
+      </div>
+    </a>
+    <nav style="display:flex;flex-direction:column;gap:var(--space-8);flex:1;">
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="1" width="7" height="7" rx="1.5"/><rect x="10" y="1" width="7" height="7" rx="1.5"/><rect x="1" y="10" width="7" height="7" rx="1.5"/><rect x="10" y="10" width="7" height="7" rx="1.5"/></svg><span class="sidebar__label">Dashboard</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="programs.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 3h14M2 9h14M2 15h8"/></svg><span class="sidebar__label">Programs</span></a>
+        <a href="cohorts.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">Cohorts</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12v12H3z"/></svg><span class="sidebar__label">Courses</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1.5"/><path d="M5 1v4M13 1v4M2 8h14"/></svg><span class="sidebar__label">Schedule</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="users.html?role=learner" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg><span class="sidebar__label">Learners</span></a>
+        <a href="users.html?role=instructor" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="7" cy="6" r="3"/><path d="M1 16c0-3.314 2.686-6 6-6"/></svg><span class="sidebar__label">Instructors</span></a>
+        <a href="users.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5"/></svg><span class="sidebar__label">All Users</span></a>
+        <a href="enrollments.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M14 9a5 5 0 1 1-5-5"/><path d="M14 2v5h-5"/></svg><span class="sidebar__label">Enrollments</span><span class="sidebar__item-badge">12</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4z"/><path d="M2 4l7 6 7-6"/></svg><span class="sidebar__label">Announcements</span></a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="1.5"/></svg><span class="sidebar__label">Payments</span></a>
+      </div>
+      <div class="sidebar__group" style="border-top:1px solid var(--color-shell-border);padding-top:var(--space-16);margin-top:var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H7L2 7v4l5 5h4l5-5V7l-5-5z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 1 0 16A8 8 0 0 1 9 1z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 9h12M9 3l6 6-6 6"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+    </nav>
+    <footer class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="avatar" style="background:var(--color-accent-brand);color:white;font-weight:800;">P</div>
+        <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Praew Nilsuwan</div><div style="font-size:11px;color:var(--color-shell-text-mute);">praew@niche.ac</div></div>
+        <span class="badge badge--ink" style="font-size:10px;white-space:nowrap;flex-shrink:0;">Admin</span>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="app-topbar topbar">
+    <nav style="display:flex;align-items:center;gap:var(--space-8);font-size:13px;color:var(--color-shell-text-mute);">
+      <a href="dashboard.html" style="color:var(--color-shell-text-mute);text-decoration:none;">Dashboard</a>
+      <span>/</span>
+      <a href="users.html" style="color:var(--color-shell-text-mute);text-decoration:none;">All Users</a>
+      <span>/</span>
+      <span style="color:var(--color-shell-text);font-weight:600;">Sasha Ivanov</span>
+    </nav>
+    <div class="topbar__actions">
+      <button class="topbar__icon-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 0 1 5 5v3l1.5 2H2.5L4 10V7a5 5 0 0 1 5-5z"/><path d="M7 15a2 2 0 0 0 4 0"/></svg></button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="app-main main">
+
+    <!-- USER HERO -->
+    <div class="user-hero">
+      <div class="avatar avatar--lg" style="background:rgba(37,32,38,0.3);color:var(--color-surface-base);font-size:24px;font-weight:800;flex-shrink:0;">SI</div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);flex-wrap:wrap;">
+          <h1 style="font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-0.01em;">Sasha Ivanov</h1>
+          <span class="role-chip role-chip--learner">Learner</span>
+          <span class="role-chip role-chip--instructor">Instructor</span>
+        </div>
+        <div style="font-size:13px;color:rgba(242,241,240,0.6);margin-bottom:var(--space-16);">sasha@example.com · Asia/Bangkok · Member since Oct 2026</div>
+        <div style="display:flex;gap:var(--space-8);">
+          <button class="btn btn--ghost-on-dark btn--sm">Edit Profile</button>
+          <button class="btn btn--ghost-on-dark btn--sm">Send Message</button>
+          <button class="btn btn--ghost-on-dark btn--sm">Impersonate</button>
+          <button class="btn btn--ghost-on-dark btn--sm" style="margin-left:auto;opacity:0.6;">Deactivate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS — Active: Roles & Access -->
+    <div class="tabs">
+      <button class="tabs__item">Profile</button>
+      <button class="tabs__item is-active">Roles &amp; Access</button>
+      <button class="tabs__item">Enrollments <span class="tabs__count">2</span></button>
+      <button class="tabs__item">Activity</button>
+      <button class="tabs__item">PDPA</button>
+    </div>
+
+    <!-- ROLES & ACCESS TAB -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-16);">
+        <div>
+          <h2 style="font-size:16px;font-weight:700;margin-bottom:4px;">Role × Scope Memberships</h2>
+          <p style="font-size:13px;color:rgba(37,32,38,0.55);">Sasha holds multiple roles across different scopes — Instructor of one cohort, Learner of another.</p>
+        </div>
+        <button class="btn btn--primary btn--sm">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 1v10M1 6h10"/></svg>
+          Grant Role
+        </button>
+      </div>
+
+      <div class="data-table">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Scope Type</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Resource</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Role</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted by</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted at</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:center;font-weight:700;text-transform:uppercase;">Revoke</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Cohort</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div style="font-weight:600;">AI×Content · Cohort 1</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">cohort:ai-content-c1</div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="role-chip role-chip--light-instructor">Instructor</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">
+                <div style="font-weight:600;">praew@niche.ac</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Admin</div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">2026-09-15</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:center;">
+                <button class="btn btn--destructive btn--sm" style="padding:4px 8px;" title="Revoke this role">✕</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Cohort</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <div style="font-weight:600;">Creative ID&amp;ST · Cohort 1</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">cohort:creative-idst-c1</div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+                <span class="role-chip role-chip--light-learner">Learner</span>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">
+                <div style="font-weight:600;">system</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Auto (enrollment)</div>
+              </td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">2026-11-01</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:center;">
+                <button class="btn btn--destructive btn--sm" style="padding:4px 8px;" title="Revoke this role">✕</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;">
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(74,92,51,0.1);color:var(--color-accent-secondary-shade);">Course</span>
+              </td>
+              <td style="padding:12px 16px;">
+                <div style="font-weight:600;">Intro to AI Copywriting</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">course:intro-ai-copy-01</div>
+              </td>
+              <td style="padding:12px 16px;">
+                <span class="role-chip role-chip--light-learner">Learner</span>
+              </td>
+              <td style="padding:12px 16px;font-size:12px;">
+                <div style="font-weight:600;">system</div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Auto (cohort member)</div>
+              </td>
+              <td style="padding:12px 16px;font-size:12px;">2026-11-05</td>
+              <td style="padding:12px 16px;text-align:center;">
+                <button class="btn btn--destructive btn--sm" style="padding:4px 8px;" title="Revoke this role">✕</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- HIDDEN TABS PREVIEW — Profile, Enrollments, Activity, PDPA shown below as collapsed notes -->
+      <div style="margin-top:var(--space-32);padding:var(--space-20);background:rgba(37,32,38,0.03);border-radius:8px;border:1px dashed var(--color-divider);">
+        <p style="font-size:12px;color:rgba(37,32,38,0.4);font-style:italic;text-align:center;">Other tab panels (Profile, Enrollments, Activity) load on tab click — see PDPA tab below for static preview</p>
+      </div>
+
+      <!-- PDPA TAB PREVIEW (inline for static demo) -->
+      <div style="margin-top:var(--space-32);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-16);">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-brand);margin-bottom:var(--space-4);">PDPA Tab Preview</div>
+            <h2 style="font-size:16px;font-weight:700;">Consent Log</h2>
+          </div>
+          <div style="display:flex;gap:var(--space-8);">
+            <button class="btn btn--ghost btn--sm">Export Personal Data</button>
+            <button class="btn btn--sm" style="background:rgba(254,29,37,0.08);color:var(--color-accent-brand);border:1px solid rgba(254,29,37,0.2);">Anonymize Account…</button>
+          </div>
+        </div>
+
+        <ol class="pdpa-timeline">
+          <li class="pdpa-timeline__item">
+            <div class="pdpa-timeline__dot pdpa-timeline__dot--granted"></div>
+            <div class="pdpa-timeline__date">2026-10-01 · 14:22 ICT</div>
+            <div class="pdpa-timeline__event">Course Data Processing — <span style="color:var(--color-accent-secondary-shade);">Granted</span></div>
+            <div class="pdpa-timeline__detail">Channel: web-signup · IP: 49.xxx.xxx.22 · Consent v2.1</div>
+          </li>
+          <li class="pdpa-timeline__item">
+            <div class="pdpa-timeline__dot pdpa-timeline__dot--granted"></div>
+            <div class="pdpa-timeline__date">2026-10-01 · 14:22 ICT</div>
+            <div class="pdpa-timeline__event">Marketing Emails — <span style="color:var(--color-accent-secondary-shade);">Granted</span></div>
+            <div class="pdpa-timeline__detail">Channel: web-signup · IP: 49.xxx.xxx.22 · Consent v2.1</div>
+          </li>
+          <li class="pdpa-timeline__item">
+            <div class="pdpa-timeline__dot pdpa-timeline__dot--revoked"></div>
+            <div class="pdpa-timeline__date">2026-11-14 · 09:07 ICT</div>
+            <div class="pdpa-timeline__event">Marketing Emails — <span style="color:var(--color-accent-brand);">Revoked</span></div>
+            <div class="pdpa-timeline__detail">Channel: account-settings · IP: 119.xxx.xxx.5 · User self-service</div>
+          </li>
+          <li class="pdpa-timeline__item">
+            <div class="pdpa-timeline__dot pdpa-timeline__dot--granted"></div>
+            <div class="pdpa-timeline__date">2027-01-05 · 11:45 ICT</div>
+            <div class="pdpa-timeline__event">Marketing Emails — <span style="color:var(--color-accent-secondary-shade);">Granted</span></div>
+            <div class="pdpa-timeline__detail">Channel: email-preferences-link · IP: 49.xxx.xxx.8 · Re-subscribed</div>
+          </li>
+          <li class="pdpa-timeline__item" style="border-left-color:transparent;">
+            <div class="pdpa-timeline__dot" style="border-color:rgba(37,32,38,0.2);"></div>
+            <div class="pdpa-timeline__date">2027-02-20 · 16:00 ICT</div>
+            <div class="pdpa-timeline__event" style="color:rgba(37,32,38,0.5);">Data Export Requested</div>
+            <div class="pdpa-timeline__detail">Actor: praew@niche.ac (admin) · Delivered via email</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- GRANT ROLE MODAL (static overlay, hidden by default) -->
+<div class="modal-overlay" id="grantRoleModal" style="display:none;">
+  <div class="modal">
+    <div class="modal__header">
+      <h2 style="font-size:18px;font-weight:700;">Grant Role</h2>
+      <p style="font-size:13px;color:rgba(37,32,38,0.55);margin-top:4px;">Assign a role scoped to a specific resource for Sasha Ivanov</p>
+    </div>
+    <div class="modal__body">
+      <div style="display:flex;gap:var(--space-8);margin-bottom:var(--space-24);">
+        <div style="flex:1;padding:var(--space-12);background:var(--color-surface-ink);color:var(--color-surface-base);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;">1. Role</div>
+        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(37,32,38,0.4);">2. Scope</div>
+        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(37,32,38,0.4);">3. Confirm</div>
+      </div>
+      <div class="field">
+        <label class="field__label">Role</label>
+        <div style="display:flex;flex-direction:column;gap:var(--space-8);">
+          <label class="checkbox-row" style="align-items:center;">
+            <input type="radio" name="role" value="learner">
+            <div>
+              <div style="font-weight:600;">Learner</div>
+              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Access to course content and assignments</div>
+            </div>
+          </label>
+          <label class="checkbox-row" style="align-items:center;background:rgba(37,32,38,0.02);border-color:var(--color-surface-ink);">
+            <input type="radio" name="role" value="instructor" checked>
+            <div>
+              <div style="font-weight:600;">Instructor</div>
+              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Manage roster, grades, and communications for a cohort</div>
+            </div>
+          </label>
+          <label class="checkbox-row" style="align-items:center;">
+            <input type="radio" name="role" value="admin">
+            <div>
+              <div style="font-weight:600;">Admin</div>
+              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Full platform access — use sparingly</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--ghost" onclick="document.getElementById('grantRoleModal').style.display='none'">Cancel</button>
+      <button class="btn btn--primary">Next: Set Scope →</button>
+    </div>
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin</div>
+
+</body>
+</html>

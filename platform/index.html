@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NICHE Platform — Demo Index</title>
+  <meta name="description" content="Code-first design demo for the NICHE platform — Learning System + Student Portal + Career System.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="shared/tokens.css">
+  <link rel="stylesheet" href="shared/base.css">
+  <link rel="stylesheet" href="shared/platform.css">
+
+  <style>
+    :root {
+      --color-page-bg: var(--color-surface-ink);
+      --color-page-text: var(--color-surface-base);
+    }
+    body {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+
+    .demo-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-64) var(--space-32);
+    }
+
+    .demo-hero {
+      padding-bottom: var(--space-64);
+      border-bottom: 1px solid rgba(242, 241, 240, 0.08);
+      margin-bottom: var(--space-64);
+    }
+
+    .demo-hero__eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      margin-bottom: var(--space-24);
+    }
+
+    .demo-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-32);
+    }
+
+    .demo-hero__title em {
+      font-style: italic;
+      color: rgba(242, 241, 240, 0.55);
+      font-weight: 400;
+    }
+
+    .demo-hero__lead {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(242, 241, 240, 0.7);
+      max-width: 720px;
+      margin-bottom: var(--space-32);
+    }
+
+    .demo-hero__lead strong { color: var(--color-surface-base); font-weight: 600; }
+
+    .demo-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-32);
+      font-size: 12px;
+      color: rgba(242, 241, 240, 0.55);
+    }
+
+    .demo-meta__item {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+
+    .demo-meta__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(242, 241, 240, 0.4);
+    }
+
+    .demo-meta__value {
+      color: var(--color-surface-base);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .demo-section {
+      margin-bottom: var(--space-80);
+    }
+
+    .demo-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-24);
+      margin-bottom: var(--space-32);
+      padding-bottom: var(--space-16);
+      border-bottom: 1px solid rgba(242, 241, 240, 0.12);
+    }
+
+    .demo-section-num {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--color-accent-brand);
+    }
+
+    .demo-section-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .demo-section-sub {
+      font-size: 13px;
+      color: rgba(242, 241, 240, 0.55);
+      margin-left: auto;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-2);
+    }
+
+    .demo-card {
+      background: rgba(242, 241, 240, 0.04);
+      border: 1px solid rgba(242, 241, 240, 0.08);
+      padding: var(--space-24);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      min-height: 160px;
+      position: relative;
+      transition: background var(--motion-quick) var(--ease-standard),
+                  border-color var(--motion-quick) var(--ease-standard);
+    }
+
+    .demo-card:hover {
+      background: rgba(242, 241, 240, 0.08);
+      border-color: rgba(242, 241, 240, 0.2);
+      opacity: 1;
+    }
+
+    .demo-card__num {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: rgba(242, 241, 240, 0.4);
+    }
+
+    .demo-card__title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--color-surface-base);
+    }
+
+    .demo-card__desc {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(242, 241, 240, 0.55);
+      margin-top: auto;
+    }
+
+    .demo-card__path {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 10px;
+      color: rgba(242, 241, 240, 0.35);
+      margin-top: var(--space-8);
+    }
+
+    .demo-section--track-public { border-top: 2px solid var(--color-accent-brand); padding-top: var(--space-32); }
+    .demo-section--track-auth { border-top: 2px solid #cccecd; padding-top: var(--space-32); }
+    .demo-section--track-learner { border-top: 2px solid var(--color-accent-secondary); padding-top: var(--space-32); }
+    .demo-section--track-instructor { border-top: 2px solid var(--color-accent-secondary-shade); padding-top: var(--space-32); }
+    .demo-section--track-admin { border-top: 2px solid var(--color-accent-brand); padding-top: var(--space-32); }
+
+    .demo-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-16);
+      margin-bottom: var(--space-64);
+    }
+
+    .demo-stat {
+      background: rgba(242, 241, 240, 0.04);
+      border: 1px solid rgba(242, 241, 240, 0.08);
+      padding: var(--space-20);
+    }
+
+    .demo-stat__num {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--color-surface-base);
+      margin-bottom: var(--space-8);
+    }
+
+    .demo-stat__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(242, 241, 240, 0.55);
+    }
+
+    .demo-footer {
+      margin-top: var(--space-96);
+      padding-top: var(--space-32);
+      border-top: 1px solid rgba(242, 241, 240, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-24);
+      font-size: 12px;
+      color: rgba(242, 241, 240, 0.4);
+    }
+
+    .demo-footer a {
+      color: var(--color-surface-base);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(242, 241, 240, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .demo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="demo-shell">
+
+    <header class="demo-hero">
+      <div class="demo-hero__eyebrow">NICHE Platform · Demo Index · 2026-05-06</div>
+      <h1 class="demo-hero__title">Find your niche.<br><em>The whole platform, in HTML.</em></h1>
+      <p class="demo-hero__lead">
+        <strong>38 screens. 6 tracks. One design system.</strong> This is the code-first design proof — the entire NICHE Platform (Learning System + Student Portal + Career System) mocked in static HTML+CSS, using the same brand tokens that will drive the production Next.js + shadcn/ui build. No Figma source-of-truth file. No design-to-code translation step.
+      </p>
+
+      <div class="demo-meta">
+        <div class="demo-meta__item">
+          <span class="demo-meta__label">Status</span>
+          <span class="demo-meta__value">v1.0 mockup</span>
+        </div>
+        <div class="demo-meta__item">
+          <span class="demo-meta__label">Soft Launch</span>
+          <span class="demo-meta__value">September 2026</span>
+        </div>
+        <div class="demo-meta__item">
+          <span class="demo-meta__label">Cohort 1</span>
+          <span class="demo-meta__value">11–30 November 2026</span>
+        </div>
+        <div class="demo-meta__item">
+          <span class="demo-meta__label">Stack target</span>
+          <span class="demo-meta__value">Next.js 15 + shadcn/ui</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="demo-stats">
+      <div class="demo-stat">
+        <div class="demo-stat__num">38</div>
+        <div class="demo-stat__label">Screens</div>
+      </div>
+      <div class="demo-stat">
+        <div class="demo-stat__num">6</div>
+        <div class="demo-stat__label">Tracks</div>
+      </div>
+      <div class="demo-stat">
+        <div class="demo-stat__num">3</div>
+        <div class="demo-stat__label">Roles · Learner / Instructor / Admin</div>
+      </div>
+      <div class="demo-stat">
+        <div class="demo-stat__num">3</div>
+        <div class="demo-stat__label">Pillars × 12 Programs</div>
+      </div>
+    </section>
+
+    <!-- Track 1: Public -->
+    <section class="demo-section demo-section--track-public">
+      <div class="demo-section-header">
+        <span class="demo-section-num">Track 01</span>
+        <h2 class="demo-section-title">Public marketing site</h2>
+        <span class="demo-section-sub">Anonymous visitors · 7 screens</span>
+      </div>
+
+      <div class="demo-grid">
+        <a href="public/index.html" class="demo-card">
+          <span class="demo-card__num">01</span>
+          <span class="demo-card__title">Landing</span>
+          <span class="demo-card__desc">Hero "Find your niche" + 3-pillar grid + 12 programs + voice quotes + closing CTA.</span>
+          <span class="demo-card__path">public/index.html</span>
+        </a>
+        <a href="public/programs.html" class="demo-card">
+          <span class="demo-card__num">02</span>
+          <span class="demo-card__title">Programs catalog</span>
+          <span class="demo-card__desc">Sticky filter bar with live pillar + level filtering across the 12 programs.</span>
+          <span class="demo-card__path">public/programs.html</span>
+        </a>
+        <a href="public/program-detail.html" class="demo-card">
+          <span class="demo-card__num">03</span>
+          <span class="demo-card__title">Program detail</span>
+          <span class="demo-card__desc">Split hero + sticky apply sidebar (scarcity + fee) + numbered curriculum + mentor pair.</span>
+          <span class="demo-card__path">public/program-detail.html</span>
+        </a>
+        <a href="public/about.html" class="demo-card">
+          <span class="demo-card__num">04</span>
+          <span class="demo-card__title">About</span>
+          <span class="demo-card__desc">Brutal manifesto + 3-pillar definitions + origin story.</span>
+          <span class="demo-card__path">public/about.html</span>
+        </a>
+        <a href="public/faculty.html" class="demo-card">
+          <span class="demo-card__num">05</span>
+          <span class="demo-card__title">Faculty</span>
+          <span class="demo-card__desc">12 mentor cards mixing Thai + international names with years-in-field stat.</span>
+          <span class="demo-card__path">public/faculty.html</span>
+        </a>
+        <a href="public/faq.html" class="demo-card">
+          <span class="demo-card__num">06</span>
+          <span class="demo-card__title">FAQ</span>
+          <span class="demo-card__desc">12 provocative Qs in grouped accordion. "Why November only?" "Why is NICHE more expensive?"</span>
+          <span class="demo-card__path">public/faq.html</span>
+        </a>
+        <a href="public/apply.html" class="demo-card">
+          <span class="demo-card__num">07</span>
+          <span class="demo-card__title">Apply</span>
+          <span class="demo-card__desc">5-step stepper · Step 2 (personal info) active. Pick program → essay → review → payment.</span>
+          <span class="demo-card__path">public/apply.html</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Track 2: Auth -->
+    <section class="demo-section demo-section--track-auth">
+      <div class="demo-section-header">
+        <span class="demo-section-num">Track 02</span>
+        <h2 class="demo-section-title">Authentication + PDPA consent</h2>
+        <span class="demo-section-sub">Account creation · 4 screens</span>
+      </div>
+
+      <div class="demo-grid">
+        <a href="auth/login.html" class="demo-card">
+          <span class="demo-card__num">01</span>
+          <span class="demo-card__title">Login</span>
+          <span class="demo-card__desc">Email/password + Google SSO + password reveal toggle. "Apply for next cohort" footer (admissions-gated).</span>
+          <span class="demo-card__path">auth/login.html</span>
+        </a>
+        <a href="auth/signup.html" class="demo-card">
+          <span class="demo-card__num">02</span>
+          <span class="demo-card__title">Signup</span>
+          <span class="demo-card__desc">Email + name + password with strength meter + step indicator dots.</span>
+          <span class="demo-card__path">auth/signup.html</span>
+        </a>
+        <a href="auth/verify-email.html" class="demo-card">
+          <span class="demo-card__num">03</span>
+          <span class="demo-card__title">Verify email</span>
+          <span class="demo-card__desc">Centered card. 60s resend countdown. "Wrong email? Change it" link back.</span>
+          <span class="demo-card__path">auth/verify-email.html</span>
+        </a>
+        <a href="auth/consent.html" class="demo-card">
+          <span class="demo-card__num">04</span>
+          <span class="demo-card__title">PDPA consent</span>
+          <span class="demo-card__desc">4 toggle rows · Thai + English · Disco cross-border disclosure · Continue disabled until required toggles set.</span>
+          <span class="demo-card__path">auth/consent.html</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Track 3: Learner -->
+    <section class="demo-section demo-section--track-learner">
+      <div class="demo-section-header">
+        <span class="demo-section-num">Track 03</span>
+        <h2 class="demo-section-title">Learner portal</h2>
+        <span class="demo-section-sub">Learning System + Career stub · 8 screens</span>
+      </div>
+
+      <div class="demo-grid">
+        <a href="learner/dashboard.html" class="demo-card">
+          <span class="demo-card__num">01</span>
+          <span class="demo-card__title">Dashboard</span>
+          <span class="demo-card__desc">3-column shell · continue-card hero · KPI strip · cohort progress · today's schedule rail.</span>
+          <span class="demo-card__path">learner/dashboard.html</span>
+        </a>
+        <a href="learner/curriculum.html" class="demo-card">
+          <span class="demo-card__num">02</span>
+          <span class="demo-card__title">Curriculum</span>
+          <span class="demo-card__desc">Program → Phase → Module → Session tree with all 6 NICHE status chips (locked / current / complete / needs-revision / live-now / onsite-only).</span>
+          <span class="demo-card__path">learner/curriculum.html</span>
+        </a>
+        <a href="learner/session.html" class="demo-card">
+          <span class="demo-card__num">03</span>
+          <span class="demo-card__title">Session</span>
+          <span class="demo-card__desc">Video embed + materials + live-info card + attendance check-in + cohort feed + prev/next nav.</span>
+          <span class="demo-card__path">learner/session.html</span>
+        </a>
+        <a href="learner/assignment-submit.html" class="demo-card">
+          <span class="demo-card__num">04</span>
+          <span class="demo-card__title">Assignment submit</span>
+          <span class="demo-card__desc">Brief + weighted rubric table + drop-zone + text submission + submission history with feedback inline.</span>
+          <span class="demo-card__path">learner/assignment-submit.html</span>
+        </a>
+        <a href="learner/schedule.html" class="demo-card">
+          <span class="demo-card__num">05</span>
+          <span class="demo-card__title">Schedule</span>
+          <span class="demo-card__desc">Week / Agenda / Month toggle. Onsite + online + async chips per event with attendance overlay.</span>
+          <span class="demo-card__path">learner/schedule.html</span>
+        </a>
+        <a href="learner/portfolio.html" class="demo-card">
+          <span class="demo-card__num">06</span>
+          <span class="demo-card__title">Portfolio</span>
+          <span class="demo-card__desc">Auto-aggregated work · per-item visibility (private/employer/public) · featured slot toggle · public profile URL.</span>
+          <span class="demo-card__path">learner/portfolio.html</span>
+        </a>
+        <a href="learner/resume.html" class="demo-card">
+          <span class="demo-card__num">07</span>
+          <span class="demo-card__title">Resume builder</span>
+          <span class="demo-card__desc">Clean / Creative templates · JSON Resume schema cards · auto-pre-populate · live PDF preview.</span>
+          <span class="demo-card__path">learner/resume.html</span>
+        </a>
+        <a href="learner/profile.html" class="demo-card">
+          <span class="demo-card__num">08</span>
+          <span class="demo-card__title">Profile + Settings</span>
+          <span class="demo-card__desc">7 settings sections · PDPA toggles · payment history · certificate download · account danger zone.</span>
+          <span class="demo-card__path">learner/profile.html</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Track 4: Instructor -->
+    <section class="demo-section demo-section--track-instructor">
+      <div class="demo-section-header">
+        <span class="demo-section-num">Track 04</span>
+        <h2 class="demo-section-title">Instructor portal</h2>
+        <span class="demo-section-sub">Cohort + grading · 5 screens</span>
+      </div>
+
+      <div class="demo-grid">
+        <a href="instructor/dashboard.html" class="demo-card">
+          <span class="demo-card__num">01</span>
+          <span class="demo-card__title">Dashboard</span>
+          <span class="demo-card__desc">4-up KPI tiles · today's sessions with live-badge · at-risk learners list · activity feed.</span>
+          <span class="demo-card__path">instructor/dashboard.html</span>
+        </a>
+        <a href="instructor/cohort-detail.html" class="demo-card">
+          <span class="demo-card__num">02</span>
+          <span class="demo-card__title">Cohort detail (the differentiator)</span>
+          <span class="demo-card__desc">Roster table with 8 columns · at-risk tooltip showing criteria · 3-dot actions · bulk toolbar · 4 tabs.</span>
+          <span class="demo-card__path">instructor/cohort-detail.html</span>
+        </a>
+        <a href="instructor/grading-queue.html" class="demo-card">
+          <span class="demo-card__num">03</span>
+          <span class="demo-card__title">Grading queue</span>
+          <span class="demo-card__desc">Filter tabs · submission rows with preview snippets · rubric grading modal · "Needs 1-on-1 (onsite)" return status.</span>
+          <span class="demo-card__path">instructor/grading-queue.html</span>
+        </a>
+        <a href="instructor/content-authoring.html" class="demo-card">
+          <span class="demo-card__num">04</span>
+          <span class="demo-card__title">Content authoring</span>
+          <span class="demo-card__desc">3-column split-pane · module tree (left) · WYSIWYG (center) · meta panel (right). Save draft + Publish.</span>
+          <span class="demo-card__path">instructor/content-authoring.html</span>
+        </a>
+        <a href="instructor/announcement-composer.html" class="demo-card">
+          <span class="demo-card__num">05</span>
+          <span class="demo-card__title">Announcement composer</span>
+          <span class="demo-card__desc">Block editor · audience pills (cohort/at-risk/individual) · channels · schedule radio · sent history.</span>
+          <span class="demo-card__path">instructor/announcement-composer.html</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Track 5+6: Admin -->
+    <section class="demo-section demo-section--track-admin">
+      <div class="demo-section-header">
+        <span class="demo-section-num">Track 05 + 06</span>
+        <h2 class="demo-section-title">Admin portal (Student Portal)</h2>
+        <span class="demo-section-sub">NICHE staff · 14 screens</span>
+      </div>
+
+      <div class="demo-grid">
+        <a href="admin/dashboard.html" class="demo-card">
+          <span class="demo-card__num">01</span>
+          <span class="demo-card__title">Dashboard</span>
+          <span class="demo-card__desc">5-tile KPI strip · at-risk top-10 · recent applications + payments · quick actions.</span>
+          <span class="demo-card__path">admin/dashboard.html</span>
+        </a>
+        <a href="admin/programs.html" class="demo-card">
+          <span class="demo-card__num">02</span>
+          <span class="demo-card__title">Programs</span>
+          <span class="demo-card__desc">12 programs grouped by 3 pillars · cards with level + status · "+ Create program".</span>
+          <span class="demo-card__path">admin/programs.html</span>
+        </a>
+        <a href="admin/cohorts.html" class="demo-card">
+          <span class="demo-card__num">03</span>
+          <span class="demo-card__title">Cohorts</span>
+          <span class="demo-card__desc">All cohorts table · capacity bars with state colors · 5 status pills · filter by Status/Program/Pillar.</span>
+          <span class="demo-card__path">admin/cohorts.html</span>
+        </a>
+        <a href="admin/cohort-detail.html" class="demo-card">
+          <span class="demo-card__num">04</span>
+          <span class="demo-card__title">Cohort detail (admin view)</span>
+          <span class="demo-card__desc">Hero with capacity meter · Roster (with Payments column) · Refund all + Issue certificates · Settings danger zone.</span>
+          <span class="demo-card__path">admin/cohort-detail.html</span>
+        </a>
+        <a href="admin/users.html" class="demo-card">
+          <span class="demo-card__num">05</span>
+          <span class="demo-card__title">Users</span>
+          <span class="demo-card__desc">All users table · role chips · multi-role row demo (Sasha = Learner + Instructor) · bulk actions.</span>
+          <span class="demo-card__path">admin/users.html</span>
+        </a>
+        <a href="admin/user-detail.html" class="demo-card">
+          <span class="demo-card__num">06</span>
+          <span class="demo-card__title">User detail</span>
+          <span class="demo-card__desc">Roles &amp; Access tab · role × scope matrix proving multi-role across cohort+course · PDPA timeline.</span>
+          <span class="demo-card__path">admin/user-detail.html</span>
+        </a>
+        <a href="admin/enrollments.html" class="demo-card">
+          <span class="demo-card__num">07</span>
+          <span class="demo-card__title">Enrollments</span>
+          <span class="demo-card__desc">Status tabs with counts (Applied 12 / Accepted 5 / Enrolled 18 / Waitlisted 3) · Accept/Decline per row.</span>
+          <span class="demo-card__path">admin/enrollments.html</span>
+        </a>
+        <a href="admin/invite-link.html" class="demo-card">
+          <span class="demo-card__num">08</span>
+          <span class="demo-card__title">Invite link generator</span>
+          <span class="demo-card__desc">Form (Cohort/Role/Expiry/Usage) · QR code + copy-to-clipboard · analytics history.</span>
+          <span class="demo-card__path">admin/invite-link.html</span>
+        </a>
+        <a href="admin/schedule.html" class="demo-card">
+          <span class="demo-card__num">09</span>
+          <span class="demo-card__title">Schedule</span>
+          <span class="demo-card__desc">Cross-cohort week-grid calendar · cohort-color events · location-type chips · conflict warning.</span>
+          <span class="demo-card__path">admin/schedule.html</span>
+        </a>
+        <a href="admin/payments.html" class="demo-card">
+          <span class="demo-card__num">10</span>
+          <span class="demo-card__title">Payments</span>
+          <span class="demo-card__desc">4 KPI tiles · transactions table · Sheet detail drawer (paid/pending/failed/refunded states).</span>
+          <span class="demo-card__path">admin/payments.html</span>
+        </a>
+        <a href="admin/analytics.html" class="demo-card">
+          <span class="demo-card__num">11</span>
+          <span class="demo-card__title">Analytics</span>
+          <span class="demo-card__desc">5-tile KPI strip · multi-cohort completion curve (inline SVG) · at-risk learners table.</span>
+          <span class="demo-card__path">admin/analytics.html</span>
+        </a>
+        <a href="admin/role-assignment.html" class="demo-card">
+          <span class="demo-card__num">12</span>
+          <span class="demo-card__title">Role assignment</span>
+          <span class="demo-card__desc">4-step modal · scope picker active · OpenFGA tuple block showing what will be written.</span>
+          <span class="demo-card__path">admin/role-assignment.html</span>
+        </a>
+        <a href="admin/audit-log.html" class="demo-card">
+          <span class="demo-card__num">13</span>
+          <span class="demo-card__title">Audit log</span>
+          <span class="demo-card__desc">Read-only table · filter strip · 15 sample rows · anonymize row with cancel-window countdown.</span>
+          <span class="demo-card__path">admin/audit-log.html</span>
+        </a>
+        <a href="admin/pdpa.html" class="demo-card">
+          <span class="demo-card__num">14</span>
+          <span class="demo-card__title">PDPA &amp; Consent</span>
+          <span class="demo-card__desc">4 KPI tiles · consent dashboard chart · pending exports · pending anonymizations · compliance checklist.</span>
+          <span class="demo-card__path">admin/pdpa.html</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="demo-footer">
+      <div>
+        Code-first design demo · Tokens from <a href="../brand-book/css/tokens.css">brand-book/css/tokens.css</a> · Strategic context in <a href="../design/PLATFORM_DESIGN.md">design/PLATFORM_DESIGN.md</a>
+      </div>
+      <div>
+        NICHE · 2026 · <a href="../README.md">Project README</a>
+      </div>
+    </footer>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — NICHE</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <style>
+    .public-nav { background: var(--color-surface-base); }
+    .public-nav__brand img { height: 28px; width: auto; }
+
+    /* ABOUT HERO */
+    .about-hero {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-128) var(--space-32) var(--space-96);
+    }
+    .about-hero__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+      max-width: 840px;
+    }
+    .about-hero__headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-48);
+    }
+    .about-hero__headline span {
+      color: var(--color-accent-brand);
+    }
+    .about-hero__lead {
+      font-size: clamp(1.125rem, 2vw, 1.375rem);
+      line-height: 1.6;
+      color: rgba(242,241,240,0.75);
+      max-width: 640px;
+    }
+
+    /* MANIFESTO */
+    .manifesto-section {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-surface-base);
+    }
+    .manifesto-inner {
+      max-width: 720px;
+      margin-inline: auto;
+    }
+    .manifesto-line {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      padding: var(--space-32) 0;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .manifesto-line:first-child { border-top: 2px solid var(--color-surface-ink); }
+    .manifesto-line em {
+      font-style: italic;
+      color: var(--color-accent-brand);
+    }
+    .manifesto-coda {
+      padding: var(--space-32) 0;
+      font-size: 15px;
+      color: rgba(37,32,38,0.55);
+      line-height: 1.7;
+    }
+
+    /* THREE PILLARS DEEP */
+    .pillars-deep {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+    .pillars-deep__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .pillar-deep-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-64);
+      margin-top: var(--space-64);
+    }
+    .pillar-deep__num {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--color-accent-brand);
+      line-height: 1;
+      margin-bottom: var(--space-16);
+    }
+    .pillar-deep__name {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: var(--space-16);
+    }
+    .pillar-deep__def {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(242,241,240,0.65);
+    }
+    .pillar-deep__provocation {
+      margin-top: var(--space-24);
+      padding-top: var(--space-24);
+      border-top: 1px solid rgba(242,241,240,0.1);
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(242,241,240,0.45);
+    }
+
+    /* STORY */
+    .story-section {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-surface-base);
+    }
+    .story-inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-80);
+      align-items: start;
+    }
+    .story-text p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(37,32,38,0.75);
+      max-width: 100%;
+      margin-bottom: var(--space-24);
+    }
+    .story-text p:last-child { margin-bottom: 0; }
+    .story-facts {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-32);
+    }
+    .story-fact {
+      padding: var(--space-24);
+      border: 1px solid var(--color-divider);
+      background: white;
+    }
+    .story-fact__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.35);
+      margin-bottom: var(--space-8);
+    }
+    .story-fact__value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-surface-ink);
+    }
+    .story-fact__desc {
+      font-size: 13px;
+      color: rgba(37,32,38,0.55);
+      margin-top: var(--space-4);
+    }
+
+    /* CTA STRIP */
+    .about-cta {
+      background: var(--color-accent-brand);
+      color: var(--color-surface-base);
+      padding: var(--space-80) var(--space-32);
+      text-align: center;
+    }
+    .about-cta__headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-24);
+    }
+    .about-cta__sub {
+      font-size: var(--type-body-l-size);
+      color: rgba(242,241,240,0.75);
+      margin-bottom: var(--space-32);
+    }
+    .btn--white {
+      background: var(--color-surface-base);
+      color: var(--color-accent-brand);
+      font-weight: 700;
+    }
+
+    /* FOOTER */
+    .public-footer {
+      background: var(--color-surface-ink);
+      color: rgba(242,241,240,0.55);
+      padding: var(--space-48) var(--space-32);
+      text-align: center;
+    }
+    .public-footer a {
+      color: rgba(242,241,240,0.55);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .public-footer a:hover { color: var(--color-surface-base); opacity: 1; }
+
+    @media (max-width: 900px) {
+      .pillar-deep-grid { grid-template-columns: 1fr; gap: var(--space-48); }
+      .story-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .about-hero { padding: var(--space-64) var(--space-24) var(--space-64); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="public-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="public-nav__brand">
+      <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
+    </a>
+    <ul class="public-nav__menu">
+      <li><a href="programs.html">Programs</a></li>
+      <li><a href="about.html" style="color: var(--color-surface-ink); font-weight: 700;">About</a></li>
+      <li><a href="faculty.html">Faculty</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+    <div class="public-nav__cta">
+      <a href="apply.html" class="btn btn--primary btn--sm">Apply — Cohort 1</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="about-hero" aria-label="About NICHE">
+    <div class="about-hero__inner">
+      <h1 class="about-hero__headline">Most schools teach trends.<br><span>We teach judgment.</span></h1>
+      <p class="about-hero__lead">NICHE is a new kind of institute. Small cohorts, intensive programs, Bangkok-based — built for people who want to build something real, not collect another credential.</p>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto-section" aria-label="Manifesto">
+    <div class="manifesto-inner">
+      <div class="manifesto-line">The mainstream education system was designed to produce <em>employees.</em></div>
+      <div class="manifesto-line">We were designed for people who find that <em>insufficient.</em></div>
+      <div class="manifesto-line">Creativity, Humanity, and Entrepreneurship are not soft skills. They are the <em>only skills</em> that compound.</div>
+      <div class="manifesto-line">One cohort. Eleven seats. One chance per year. <em>Scarcity is the model.</em></div>
+      <div class="manifesto-line">You don't need more information. You need <em>better judgment.</em></div>
+      <div class="manifesto-line">All eyes on <em>independents.</em></div>
+      <div class="manifesto-coda">
+        NICHE — New Institute of Creativity, Humanity &amp; Entrepreneurship — was founded in Bangkok with a single thesis: the people who will matter in the next decade are building things independently, and they deserve an institute that treats them like adults.
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE PILLARS DEFINED -->
+  <section class="pillars-deep" aria-label="Three pillar definitions">
+    <div class="pillars-deep__inner">
+      <span class="t-eyebrow" style="color: var(--color-accent-brand);">The three pillars</span>
+      <h2 class="t-h1" style="margin-top: var(--space-8); color: var(--color-surface-base);">What we actually mean.</h2>
+      <div class="pillar-deep-grid">
+        <div>
+          <div class="pillar-deep__num">01</div>
+          <h3 class="pillar-deep__name">Creativity</h3>
+          <p class="pillar-deep__def">Not art for its own sake. Creativity is the capacity to make things that other people haven't made yet — in business, in product, in content, in culture. The programs in this pillar teach you to find and defend a distinct creative identity, then build systems that let you operate at scale without losing it.</p>
+          <p class="pillar-deep__provocation">"Your aesthetic is the business model."</p>
+        </div>
+        <div>
+          <div class="pillar-deep__num">02</div>
+          <h3 class="pillar-deep__name">Humanity</h3>
+          <p class="pillar-deep__def">The industries that require you to actually understand people — hospitality, food, events, community. These are not dying sectors. They are the ones most resistant to commoditization because human judgment cannot be automated out. The programs here teach the craft and business of industries built on experience.</p>
+          <p class="pillar-deep__provocation">"What cannot be automated cannot be commoditized."</p>
+        </div>
+        <div>
+          <div class="pillar-deep__num">03</div>
+          <h3 class="pillar-deep__name">Entrepreneurship</h3>
+          <p class="pillar-deep__def">Not startup theater. Entrepreneurship means building something that generates revenue, serves real people, and survives. The programs here are practical to the point of discomfort — you leave with a working business or a working skill set that gets you there faster.</p>
+          <p class="pillar-deep__provocation">"Revenue is evidence. Everything else is theory."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="story-section" aria-label="Institute story">
+    <div class="story-inner">
+      <div class="story-text">
+        <span class="t-eyebrow" style="color: var(--color-accent-brand);">The story</span>
+        <h2 class="t-h2" style="margin-top: var(--space-8); margin-bottom: var(--space-32);">Why we exist.</h2>
+        <p>Southeast Asia is producing a generation of independent builders that has no institution designed for them. Every business school is optimized for corporate placement. Every design school is optimized for agency jobs. Every coding bootcamp is optimized for employment at a tech company.</p>
+        <p>NICHE is optimized for something different: building an independent. Someone who controls their own work, their own income, and their own creative direction.</p>
+        <p>We run one cohort per year because peer learning is the model and peer learning requires depth of relationship that rolling enrollment destroys. When you spend three to twelve months in a cohort of eleven people, something different happens. You stop performing and start working.</p>
+        <p>Bangkok is intentional. It is one of the most dynamic creative and entrepreneurial ecosystems in Southeast Asia, with a depth of craft, food, hospitality, and design culture that makes it a genuinely useful context for all three pillars.</p>
+      </div>
+      <div class="story-facts">
+        <div class="story-fact">
+          <p class="story-fact__label">Founded</p>
+          <p class="story-fact__value">2026</p>
+          <p class="story-fact__desc">First cohort: November 2026</p>
+        </div>
+        <div class="story-fact">
+          <p class="story-fact__label">Location</p>
+          <p class="story-fact__value">Bangkok</p>
+          <p class="story-fact__desc">On-site residency + remote intensives</p>
+        </div>
+        <div class="story-fact">
+          <p class="story-fact__label">Annual intake</p>
+          <p class="story-fact__value">11 per program</p>
+          <p class="story-fact__desc">Once per year. Not rolling. Not negotiable.</p>
+        </div>
+        <div class="story-fact">
+          <p class="story-fact__label">Programs</p>
+          <p class="story-fact__value">12</p>
+          <p class="story-fact__desc">3 pillars × 4 programs each · 3 levels</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <h2 class="about-cta__headline">Cohort 1.<br>November 2026.</h2>
+    <p class="about-cta__sub">11 seats. One intake per year. Apply before it closes.</p>
+    <a href="apply.html" class="btn btn--white">Apply now</a>
+  </section>
+
+  <footer class="public-footer">
+    <a href="index.html">NICHE</a> &nbsp;&mdash;&nbsp;
+    <a href="programs.html">Programs</a> &nbsp;&mdash;&nbsp;
+    <a href="faculty.html">Faculty</a> &nbsp;&mdash;&nbsp;
+    <a href="apply.html">Apply</a>
+    <p style="margin-top: var(--space-16); font-size: 11px; color: rgba(242,241,240,0.3);">&copy; 2026 NICHE · Bangkok, Thailand</p>
+  </footer>
+
+  <div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Public</div>
+
+</body>
+</html>

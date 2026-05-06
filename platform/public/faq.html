@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — NICHE</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <style>
+    .public-nav { background: var(--color-surface-base); }
+    .public-nav__brand img { height: 28px; width: auto; }
+
+    /* MASTHEAD */
+    .faq-masthead {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-96) var(--space-32) var(--space-80);
+    }
+    .faq-masthead__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .faq-masthead__headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 0.97;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-16);
+    }
+    .faq-masthead__sub {
+      font-size: var(--type-body-l-size);
+      color: rgba(242,241,240,0.55);
+      max-width: 480px;
+    }
+
+    /* FAQ BODY */
+    .faq-body {
+      padding: var(--space-80) var(--space-32);
+      background: var(--color-surface-base);
+    }
+    .faq-body__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-64);
+      align-items: start;
+    }
+
+    /* FAQ SIDEBAR */
+    .faq-sidebar {
+      position: sticky;
+      top: 80px;
+    }
+    .faq-sidebar__heading {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.35);
+      margin-bottom: var(--space-16);
+    }
+    .faq-nav-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .faq-nav-list li { margin: 0; }
+    .faq-nav-link {
+      display: block;
+      padding: var(--space-12) var(--space-16);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(37,32,38,0.55);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all var(--motion-quick) var(--ease-standard);
+    }
+    .faq-nav-link:hover {
+      color: var(--color-surface-ink);
+      border-left-color: var(--color-accent-brand);
+      opacity: 1;
+    }
+
+    /* ACCORDION */
+    .faq-group {
+      margin-bottom: var(--space-64);
+    }
+    .faq-group__heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      margin-bottom: var(--space-24);
+    }
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      border-top: 2px solid var(--color-surface-ink);
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .faq-item__trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: var(--space-24) 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-24);
+      cursor: pointer;
+      text-align: left;
+    }
+    .faq-item__trigger:hover .faq-item__q { color: var(--color-accent-brand); }
+    .faq-item__q {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--color-surface-ink);
+      transition: color var(--motion-quick) var(--ease-standard);
+    }
+    .faq-item__icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-divider);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(37,32,38,0.4);
+      transition: transform var(--motion-quick) var(--ease-standard),
+                  border-color var(--motion-quick) var(--ease-standard),
+                  color var(--motion-quick) var(--ease-standard);
+    }
+    .faq-item.is-open .faq-item__icon {
+      transform: rotate(45deg);
+      border-color: var(--color-accent-brand);
+      color: var(--color-accent-brand);
+    }
+    .faq-item__answer {
+      display: none;
+      padding: 0 var(--space-48) var(--space-24) 0;
+    }
+    .faq-item.is-open .faq-item__answer { display: block; }
+    .faq-item__answer p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(37,32,38,0.75);
+      max-width: 640px;
+      margin-bottom: var(--space-12);
+    }
+    .faq-item__answer p:last-child { margin-bottom: 0; }
+    .faq-item__answer strong { color: var(--color-surface-ink); }
+
+    /* CTA STRIP */
+    .faq-cta {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-64) var(--space-32);
+      text-align: center;
+    }
+    .faq-cta__headline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-16);
+    }
+    .faq-cta__sub {
+      color: rgba(242,241,240,0.55);
+      margin-bottom: var(--space-32);
+      font-size: var(--type-body-l-size);
+    }
+
+    /* FOOTER */
+    .public-footer {
+      background: var(--color-surface-ink);
+      color: rgba(242,241,240,0.55);
+      padding: var(--space-48) var(--space-32);
+      text-align: center;
+      border-top: 1px solid rgba(242,241,240,0.08);
+    }
+    .public-footer a { color: rgba(242,241,240,0.55); text-decoration: none; font-size: 13px; }
+    .public-footer a:hover { color: var(--color-surface-base); opacity: 1; }
+
+    @media (max-width: 900px) {
+      .faq-body__inner { grid-template-columns: 1fr; }
+      .faq-sidebar { position: static; display: none; }
+    }
+    @media (max-width: 600px) {
+      .faq-masthead { padding: var(--space-64) var(--space-24) var(--space-48); }
+      .faq-body { padding: var(--space-48) var(--space-24); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="public-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="public-nav__brand">
+      <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
+    </a>
+    <ul class="public-nav__menu">
+      <li><a href="programs.html">Programs</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="faculty.html">Faculty</a></li>
+      <li><a href="faq.html" style="color: var(--color-surface-ink); font-weight: 700;">FAQ</a></li>
+    </ul>
+    <div class="public-nav__cta">
+      <a href="apply.html" class="btn btn--primary btn--sm">Apply — Cohort 1</a>
+    </div>
+  </nav>
+
+  <div class="faq-masthead">
+    <div class="faq-masthead__inner">
+      <span class="t-eyebrow" style="color: var(--color-accent-brand); margin-bottom: var(--space-16); display: block;">FAQ</span>
+      <h1 class="faq-masthead__headline">Questions we<br>get every time.</h1>
+      <p class="faq-masthead__sub">Honest answers. No pitch.</p>
+    </div>
+  </div>
+
+  <div class="faq-body">
+    <div class="faq-body__inner">
+
+      <!-- SIDEBAR NAV -->
+      <aside class="faq-sidebar" aria-label="FAQ navigation">
+        <p class="faq-sidebar__heading">Jump to</p>
+        <ul class="faq-nav-list">
+          <li><a href="#admissions" class="faq-nav-link">Admissions</a></li>
+          <li><a href="#structure" class="faq-nav-link">Program structure</a></li>
+          <li><a href="#cost" class="faq-nav-link">Cost &amp; value</a></li>
+          <li><a href="#after" class="faq-nav-link">After graduation</a></li>
+        </ul>
+      </aside>
+
+      <!-- ACCORDION -->
+      <main>
+
+        <section class="faq-group" id="admissions">
+          <p class="faq-group__heading">Admissions</p>
+          <div class="faq-accordion" role="list">
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Why November only? Why not rolling enrollment?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>The cohort model is not a scheduling preference — it's the core learning mechanism. When everyone starts together and goes through the same material at the same time, the conversations inside the cohort become as valuable as the instruction itself.</p>
+                <p>Rolling enrollment destroys this. You end up with people at different stages, different problems, different contexts. The peer learning evaporates and you're left with a course.</p>
+                <p>November was chosen because it lines up with the end-of-year review cycle that most independents do anyway. If you're serious about a change, November is when you make it.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">What if I'm self-taught already?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>Being self-taught is an advantage here. <strong>NICHE is not built for people who need to be introduced to their field.</strong> It's built for people who are already moving and want to move faster, more deliberately, and with better judgment.</p>
+                <p>If you're self-taught and have been operating for at least 1–2 years, you'll get more out of NICHE than someone with a traditional background and no real-world practice.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">What are the actual admission requirements?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>No degree required. No minimum age. No portfolio requirement for most programs.</p>
+                <p>What we look for: <strong>evidence that you're already doing something.</strong> A project, a practice, a business in early stage — anything that proves you've taken action in your field before applying. The essay question is designed to surface this.</p>
+                <p>For Studio and Degree-level programs, we also look at the quality of your thinking about your own work. Unclear thinkers rarely become clear practitioners.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="faq-group" id="structure">
+          <p class="faq-group__heading">Program structure</p>
+          <div class="faq-accordion" role="list">
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">What does 'cohort-based' actually mean?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>It means you go through the program with the same 10 people from start to finish. Same start date, same end date, same curriculum sequence. You're not browsing a course catalog — you're entering a structured experience with a group.</p>
+                <p>In practice: a 3-week on-site residency in Bangkok to start (for Cohort 1, 11–30 November 2026), followed by monthly intensives and weekly check-ins for the remainder of the program duration. Studio and Degree programs continue for 6 and 12 months respectively after the residency.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Can I do this part-time?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>The opening residency (November 2026, on-site in Bangkok) requires your full time for 3 weeks. After that, the format is intensive monthly sessions plus weekly check-ins.</p>
+                <p>For Bootcamp programs (3 months), this is a stretch but manageable for someone with discipline. For Studio and Degree programs, <strong>you should expect to dedicate 15–20 hours per week</strong> outside of sessions. If you can't make that work, a Bootcamp is the right entry point.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Why does the cohort cap at 11? That seems arbitrary.</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>It's not. 11 is the point at which everyone in the room can still have a real conversation with everyone else. Dunbar's number research suggests this range is where deep social learning happens before group dynamics fragment into subgroups.</p>
+                <p>We tested 15 and 20. The quality of peer interaction dropped measurably. 11 is our number.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="faq-group" id="cost">
+          <p class="faq-group__heading">Cost &amp; value</p>
+          <div class="faq-accordion" role="list">
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Why is NICHE more expensive than online courses?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>Because it's not an online course. Online courses are content distribution. NICHE is structured time with practitioners who are accountable to your progress, in a cohort that multiplies your network for years.</p>
+                <p><strong>The comparison that makes sense is not "vs. an online course."</strong> It's "vs. a semester at a private university." Compared to that, NICHE is dramatically cheaper and directly oriented toward outcomes that matter to an independent.</p>
+                <p>Payment plans are available on request.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Is there any financial aid or scholarships?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>For Cohort 1, we have two partial bursaries available per program for applicants whose work is exceptionally strong but whose access to capital is genuinely limited. These are not discount codes — they require a separate essay explaining your situation.</p>
+                <p>Mention in your application that you want to be considered for a bursary and we'll send you the additional questions.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="faq-group" id="after">
+          <p class="faq-group__heading">After graduation</p>
+          <div class="faq-accordion" role="list">
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">What happens after I graduate?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>You join the NICHE alumni network — a permanent group of people who went through the same experience. This is not a LinkedIn badge. It's a real network with real shared context.</p>
+                <p>Practically: alumni get early access to future cohort applications (relevant if you want to do a second program), invitations to NICHE events and critique sessions, and access to the faculty for ongoing advisory conversations.</p>
+                <p>What we won't promise: placement services, guaranteed employment, or career coaching. You came here to be independent. Act like it.</p>
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-item__trigger" aria-expanded="false" onclick="toggleFaq(this)">
+                <span class="faq-item__q">Is the NICHE certificate recognized?</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-item__answer" role="region">
+                <p>Recognized by whom? We're not accredited by a national education body because we are not trying to be. <strong>The value of the credential is the work you produce and the people you know.</strong></p>
+                <p>If you need a credential for employment purposes, this is not the right program. If you're building something for yourself, no one will ask to see your paperwork.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="faq-cta">
+    <h2 class="faq-cta__headline">Still have questions?</h2>
+    <p class="faq-cta__sub">Apply and ask in your essay. We read every application ourselves.</p>
+    <a href="apply.html" class="btn btn--primary">Apply for Cohort 1</a>
+  </div>
+
+  <footer class="public-footer">
+    <a href="index.html">NICHE</a> &nbsp;&mdash;&nbsp;
+    <a href="programs.html">Programs</a> &nbsp;&mdash;&nbsp;
+    <a href="about.html">About</a> &nbsp;&mdash;&nbsp;
+    <a href="apply.html">Apply</a>
+    <p style="margin-top: var(--space-16); font-size: 11px; color: rgba(242,241,240,0.3);">&copy; 2026 NICHE · Bangkok, Thailand</p>
+  </footer>
+
+  <div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Public</div>
+
+  <script>
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('is-open');
+
+      // Close all
+      document.querySelectorAll('.faq-item.is-open').forEach(el => {
+        el.classList.remove('is-open');
+        el.querySelector('.faq-item__trigger').setAttribute('aria-expanded', 'false');
+      });
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    // Open first FAQ by default
+    const first = document.querySelector('.faq-item');
+    if (first) {
+      first.classList.add('is-open');
+      first.querySelector('.faq-item__trigger').setAttribute('aria-expanded', 'true');
+    }
+  </script>
+
+</body>
+</html>

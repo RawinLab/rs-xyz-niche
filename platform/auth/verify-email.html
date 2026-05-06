@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify your email — NICHE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* ── Full-page centered layout ── */
+    .verify-shell {
+      min-height: 100vh;
+      background: #f2f1f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-32) var(--space-24);
+      position: relative;
+    }
+
+    /* Background texture */
+    .verify-shell::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(37,32,38,0.025) 0px,
+          rgba(37,32,38,0.025) 1px,
+          transparent 1px,
+          transparent 48px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(37,32,38,0.025) 0px,
+          rgba(37,32,38,0.025) 1px,
+          transparent 1px,
+          transparent 48px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Verify card ── */
+    .verify-card {
+      position: relative;
+      z-index: 1;
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-64) var(--space-48);
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* Logo at top */
+    .verify-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-12);
+      margin-bottom: var(--space-40);
+      text-decoration: none;
+      color: var(--color-surface-ink);
+    }
+
+    .verify-logo__mark {
+      width: 36px;
+      height: 36px;
+      background: var(--color-surface-ink);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--color-surface-base);
+    }
+
+    .verify-logo__name {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    /* Icon illustration area */
+    .verify-icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: rgba(37, 32, 38, 0.04);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto var(--space-32);
+    }
+
+    .verify-icon-wrap svg {
+      width: 36px;
+      height: 36px;
+      stroke: var(--color-surface-ink);
+    }
+
+    /* Step badge */
+    .verify-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(37,32,38,0.06);
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.5);
+      margin-bottom: var(--space-16);
+    }
+
+    .verify-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-12);
+    }
+
+    .verify-email-target {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-surface-ink);
+      background: rgba(37,32,38,0.05);
+      padding: var(--space-8) var(--space-16);
+      border-radius: 4px;
+      display: inline-block;
+      margin: var(--space-4) 0 var(--space-24);
+      word-break: break-all;
+    }
+
+    .verify-body {
+      font-size: 15px;
+      color: rgba(37, 32, 38, 0.6);
+      line-height: 1.6;
+      max-width: 340px;
+      margin: 0 auto var(--space-32);
+    }
+
+    /* Resend section */
+    .verify-resend {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-16);
+    }
+
+    .btn--resend {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-12) var(--space-32);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-8);
+      transition: background var(--motion-micro) var(--ease-standard),
+                  transform var(--motion-micro) var(--ease-standard);
+    }
+    .btn--resend:hover:not(:disabled) {
+      background: #3d3440;
+      transform: translateY(-1px);
+    }
+    .btn--resend:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .verify-countdown {
+      font-size: 12px;
+      color: rgba(37, 32, 38, 0.45);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      min-height: 18px;
+    }
+
+    /* Change email link */
+    .verify-change-link {
+      margin-top: var(--space-32);
+      padding-top: var(--space-24);
+      border-top: 1px solid var(--color-divider);
+    }
+
+    .verify-change-link p {
+      font-size: 13px;
+      color: rgba(37, 32, 38, 0.5);
+      max-width: none;
+      margin: 0;
+    }
+
+    .verify-change-link a {
+      color: var(--color-surface-ink);
+      font-weight: 600;
+    }
+
+    /* Hint list */
+    .verify-hints {
+      margin: var(--space-24) 0 0;
+      text-align: left;
+      background: rgba(37,32,38,0.025);
+      border-radius: 4px;
+      padding: var(--space-16) var(--space-20);
+    }
+
+    .verify-hints p {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.4);
+      max-width: none;
+      margin: 0 0 var(--space-8);
+    }
+
+    .verify-hints ul {
+      padding-left: var(--space-16);
+      margin: 0;
+    }
+
+    .verify-hints ul li {
+      font-size: 13px;
+      color: rgba(37, 32, 38, 0.6);
+      margin-bottom: var(--space-4);
+    }
+
+    /* Page footer nav */
+    .verify-page-footer {
+      position: relative;
+      z-index: 1;
+      margin-top: var(--space-24);
+      text-align: center;
+    }
+
+    .verify-page-footer a {
+      font-size: 12px;
+      color: rgba(37, 32, 38, 0.4);
+      text-decoration: none;
+    }
+    .verify-page-footer a:hover { color: var(--color-surface-ink); opacity: 1; }
+
+    @media (max-width: 540px) {
+      .verify-card {
+        padding: var(--space-40) var(--space-24);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="verify-shell">
+
+  <div class="verify-card">
+
+    <a href="/" class="verify-logo" aria-label="NICHE home">
+      <div class="verify-logo__mark">N</div>
+      <span class="verify-logo__name">NICHE</span>
+    </a>
+
+    <!-- Email icon -->
+    <div class="verify-icon-wrap" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="verify-step-badge">
+      <span>Step 2 of 3</span>
+    </div>
+
+    <h1 class="verify-heading">Check your inbox.</h1>
+    <p class="verify-body">We sent a verification link to</p>
+    <span class="verify-email-target" id="target-email">name@example.com</span>
+    <p class="verify-body" style="margin-bottom:0;">Click the link in that email to confirm your address and move to the next step.</p>
+
+    <div class="verify-hints" role="note" aria-label="Email delivery tips">
+      <p>Didn't arrive?</p>
+      <ul>
+        <li>Check your spam or promotions folder</li>
+        <li>Allow 1–2 minutes for delivery</li>
+        <li>Make sure the address above is correct</li>
+      </ul>
+    </div>
+
+    <div class="verify-resend" style="margin-top: var(--space-24);">
+      <button class="btn--resend" id="resend-btn" type="button" disabled onclick="resendEmail()" aria-label="Resend verification email">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        Resend email
+      </button>
+      <span class="verify-countdown" id="countdown" aria-live="polite" aria-atomic="true">Resend available in <strong id="countdown-num">60</strong>s</span>
+    </div>
+
+    <div class="verify-change-link">
+      <p>Wrong email address? <a href="signup.html?step=email">Change it &rarr;</a></p>
+    </div>
+
+  </div>
+
+  <div class="verify-page-footer">
+    <a href="/legal/privacy">Privacy Notice</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/legal/terms">Terms of Use</a>
+    &nbsp;&middot;&nbsp;
+    <a href="mailto:support@niche.ac.th">Contact support</a>
+  </div>
+
+</div>
+
+<!-- Demo banner -->
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo &middot; Auth</div>
+
+<script>
+  // Populate email from URL param (demo purposes)
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email') || 'name@example.com';
+    document.getElementById('target-email').textContent = email;
+  })();
+
+  // Countdown timer
+  let seconds = 60;
+  const btn = document.getElementById('resend-btn');
+  const countdownEl = document.getElementById('countdown');
+  const numEl = document.getElementById('countdown-num');
+
+  const timer = setInterval(function() {
+    seconds--;
+    numEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      btn.disabled = false;
+      countdownEl.textContent = 'Ready to resend.';
+    }
+  }, 1000);
+
+  function resendEmail() {
+    btn.disabled = true;
+    countdownEl.textContent = 'Email sent.';
+
+    // Reset countdown
+    seconds = 60;
+    numEl.textContent = '60';
+    setTimeout(() => {
+      countdownEl.innerHTML = 'Resend available in <strong id="countdown-num">60</strong>s';
+      const numElNew = document.getElementById('countdown-num');
+      const newTimer = setInterval(function() {
+        seconds--;
+        numElNew.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(newTimer);
+          btn.disabled = false;
+          countdownEl.textContent = 'Ready to resend.';
+        }
+      }, 1000);
+    }, 2000);
+  }
+</script>
+
+</body>
+</html>

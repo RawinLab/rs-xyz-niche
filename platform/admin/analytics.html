@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .filter-strip {
+      display: flex; gap: var(--space-12); flex-wrap: wrap; align-items: center;
+      padding: var(--space-16);
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      margin-bottom: var(--space-24);
+    }
+    .filter-select {
+      border: 1px solid var(--color-divider); border-radius: 4px;
+      padding: var(--space-8) var(--space-12);
+      font-family: var(--font-body); font-size: 13px;
+      background: white; cursor: pointer;
+    }
+    .filter-select:focus { outline: none; border-color: var(--color-surface-ink); }
+    .filter-label { font-size: 11px; font-weight: 700; letter-spacing:.08em; text-transform: uppercase; color: rgba(37,32,38,0.45); }
+
+    .section-title {
+      font-family: var(--font-body);
+      font-size: 16px; font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-16);
+    }
+
+    /* Chart card */
+    .chart-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-24);
+      margin-bottom: var(--space-24);
+    }
+    .chart-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: var(--space-24); flex-wrap: wrap; gap: var(--space-12);
+    }
+    .chart-legend {
+      display: flex; gap: var(--space-16); flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: var(--space-8);
+      font-size: 12px; font-weight: 600; color: rgba(37,32,38,0.7);
+    }
+    .legend-line {
+      width: 20px; height: 3px; border-radius: 2px;
+    }
+
+    /* At-risk table */
+    .at-risk-reason {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 10px;
+      font-size: 10px; font-weight: 700; letter-spacing:.04em; text-transform: uppercase;
+      background: rgba(254,29,37,0.1); color: var(--color-accent-brand);
+    }
+    .at-risk-reason--pacing {
+      background: #fff8e1; color: #9a6b00;
+    }
+    .at-risk-reason--inactive {
+      background: rgba(37,32,38,0.06); color: rgba(37,32,38,0.6);
+    }
+
+    .y-axis-label {
+      font-size: 9px; fill: rgba(37,32,38,0.4); font-family: 'Bai Jamjuree', sans-serif;
+    }
+    .x-axis-label {
+      font-size: 9px; fill: rgba(37,32,38,0.4); font-family: 'Bai Jamjuree', sans-serif;
+      text-anchor: middle;
+    }
+    .grid-line { stroke: rgba(37,32,38,0.06); stroke-width: 1; }
+    .chart-line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+  </style>
+</head>
+<body class="app-shell">
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <nav class="sidebar">
+      <a href="#" class="sidebar__brand">
+        <div class="sidebar__brand-mark">N</div>
+        <div>
+          <div class="sidebar__brand-name">NICHE</div>
+          <div class="sidebar__brand-suffix">Admin Portal</div>
+        </div>
+      </a>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="#" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 9h14M2 14h8"/></svg><span class="sidebar__label">Programs</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">Cohorts</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14"/></svg><span class="sidebar__label">Courses</span></a>
+        <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14M6 12h6"/></svg><span class="sidebar__label">Schedule</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Learners</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Instructors</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.8 2.2-5 5-5h6c2.8 0 5 2.2 5 5"/></svg><span class="sidebar__label">All Users</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 5h14v10a1 1 0 01-1 1H3a1 1 0 01-1-1V5zM6 5V3h6v2"/></svg><span class="sidebar__label">Enrollments</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12a1 1 0 011 1v8a1 1 0 01-1 1H6l-4 3V4a1 1 0 011-1z"/></svg><span class="sidebar__label">Announcements</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="payments.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="2"/><path d="M1 8h16M5 12h3"/></svg><span class="sidebar__label">Payments</span></a>
+      </div>
+
+      <div class="sidebar__group" style="border-top: 1px solid var(--color-shell-border); padding-top: var(--space-16); margin-top: var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="role-assignment.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="invite-link.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 8l-6 6M7.5 3.5l7 7-3 3-7-7 3-3z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="pdpa.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="audit-log.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 8h10M2 12h6"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 6l3-3 3 3M6 3v10M15 12l-3 3-3-3M12 15V5"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="avatar" style="background: var(--color-accent-brand); color: var(--color-surface-base);">A</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px; font-weight:600; color:var(--color-shell-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">admin@niche.ac</div>
+            <div style="font-size:11px; color:var(--color-shell-text-mute);">Admin (NICHE)</div>
+          </div>
+          <span class="badge badge--ink" style="font-size:9px; flex-shrink:0;">Admin</span>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="app-topbar">
+    <div class="topbar">
+      <div class="topbar__search">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <input type="search" placeholder="Search…">
+      </div>
+      <div class="topbar__actions">
+        <button class="topbar__icon-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 14.5a2 2 0 004 0"/></svg>
+          <span class="topbar__icon-btn-badge"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="app-main">
+    <div class="main">
+      <div class="page-header">
+        <div class="page-header__title">
+          <div class="page-header__eyebrow">Overview</div>
+          <h1 class="page-header__heading">Analytics</h1>
+          <div class="page-header__sub">Platform-wide learning metrics · Updated Dec 10, 2026</div>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn--ghost">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l6 6 6-6M9 3v12"/></svg>
+            Export Report
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter strip -->
+      <div class="filter-strip">
+        <span class="filter-label">Filter:</span>
+        <select class="filter-select"><option>Last 90 days</option><option>Last 30 days</option><option>This cohort cycle</option><option>Custom…</option></select>
+        <select class="filter-select"><option>All Cohorts</option><option>Creative ID&amp;ST C1</option><option>Food Business C1</option><option>AI×Content C1</option><option>Pilot C0</option></select>
+        <select class="filter-select"><option>All Programs</option><option>Creative ID&amp;ST</option><option>Food Business</option><option>AI×Content</option></select>
+        <select class="filter-select"><option>All Pillars</option><option>Creativity</option><option>Humanity</option><option>Entrepreneurship</option></select>
+      </div>
+
+      <!-- KPI strip (5 tiles) -->
+      <div class="kpi-strip" style="grid-template-columns: repeat(5, 1fr); margin-bottom: var(--space-32);">
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+          </div>
+          <div class="kpi-tile__label">Active Cohorts</div>
+          <div class="kpi-tile__value">4</div>
+          <div class="kpi-tile__delta" style="color: rgba(37,32,38,0.45);">Nov – Apr cycle</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+          </div>
+          <div class="kpi-tile__label">Enrolled Learners</div>
+          <div class="kpi-tile__value">87</div>
+          <div class="kpi-tile__delta kpi-tile__delta--up">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3l6 6H3l6-6z"/></svg>
+            +12 this month
+          </div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: var(--color-accent-secondary-shade);">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 9h16M9 1l8 8-8 8"/></svg>
+          </div>
+          <div class="kpi-tile__label">Cohort Fill Rate</div>
+          <div class="kpi-tile__value">76%</div>
+          <div class="kpi-tile__delta kpi-tile__delta--up">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3l6 6H3l6-6z"/></svg>
+            vs last cycle
+          </div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: #e8a13d;">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 14l4-6 4 3 4-8"/></svg>
+          </div>
+          <div class="kpi-tile__label">Avg Completion</div>
+          <div class="kpi-tile__value">61%</div>
+          <div class="kpi-tile__delta kpi-tile__delta--down">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 15l6-6H3l6 6z"/></svg>
+            Needs attention
+          </div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="16" height="12" rx="2"/><path d="M1 8h16"/></svg>
+          </div>
+          <div class="kpi-tile__label">MRR</div>
+          <div class="kpi-tile__value">฿248K</div>
+          <div class="kpi-tile__delta kpi-tile__delta--up">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3l6 6H3l6-6z"/></svg>
+            +8% MoM
+          </div>
+        </div>
+      </div>
+
+      <!-- Cohort completion curve chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="section-title" style="margin-bottom:4px;">Cohort Completion Curves</div>
+            <div style="font-size:13px; color:rgba(37,32,38,0.5);">% learners completing each week's required content · Weeks 1–10</div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-line" style="background:#fe1d25;"></div>Creative ID&amp;ST C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:#4a5c33;"></div>Food Business C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:#5b7fc4;"></div>AI×Content C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:#a07840; height:2px; border-top: 2px dashed #a07840; background:none;"></div>Pilot C0</div>
+          </div>
+        </div>
+
+        <!-- Inline SVG chart -->
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%; display:block; overflow:visible;" role="img" aria-label="Cohort completion curve chart">
+          <!-- Grid lines (y = 0,20,40,60,80,100%) -->
+          <!-- y=0% → y=230, y=100% → y=30; range=200px; each 20% = 40px -->
+          <line x1="60" y1="230" x2="670" y2="230" class="grid-line"/>
+          <line x1="60" y1="190" x2="670" y2="190" class="grid-line"/>
+          <line x1="60" y1="150" x2="670" y2="150" class="grid-line"/>
+          <line x1="60" y1="110" x2="670" y2="110" class="grid-line"/>
+          <line x1="60" y1="70" x2="670" y2="70" class="grid-line"/>
+          <line x1="60" y1="30" x2="670" y2="30" class="grid-line"/>
+
+          <!-- Y axis labels -->
+          <text x="52" y="234" class="y-axis-label" text-anchor="end">0%</text>
+          <text x="52" y="194" class="y-axis-label" text-anchor="end">20%</text>
+          <text x="52" y="154" class="y-axis-label" text-anchor="end">40%</text>
+          <text x="52" y="114" class="y-axis-label" text-anchor="end">60%</text>
+          <text x="52" y="74" class="y-axis-label" text-anchor="end">80%</text>
+          <text x="52" y="34" class="y-axis-label" text-anchor="end">100%</text>
+
+          <!-- X axis labels (weeks 1–10) -->
+          <!-- x range: 60 to 670 = 610px / 9 intervals = 67.8px each -->
+          <text x="60"  y="248" class="x-axis-label">W1</text>
+          <text x="128" y="248" class="x-axis-label">W2</text>
+          <text x="196" y="248" class="x-axis-label">W3</text>
+          <text x="264" y="248" class="x-axis-label">W4</text>
+          <text x="332" y="248" class="x-axis-label">W5</text>
+          <text x="400" y="248" class="x-axis-label">W6</text>
+          <text x="468" y="248" class="x-axis-label">W7</text>
+          <text x="536" y="248" class="x-axis-label">W8</text>
+          <text x="604" y="248" class="x-axis-label">W9</text>
+          <text x="670" y="248" class="x-axis-label">W10</text>
+
+          <!-- Creative ID&ST (red) — strong start, slight dip -->
+          <!-- % values: 85, 82, 79, 74, 70, 65, 63, 60, 58, 55 -->
+          <!-- y = 230 - (pct/100)*200 -->
+          <polyline class="chart-line" stroke="#fe1d25"
+            points="60,60 128,66 196,72 264,82 332,90 400,100 468,104 536,110 604,114 670,120"/>
+
+          <!-- Food Business (green) — steadier, slightly lower -->
+          <!-- % values: 75, 73, 71, 68, 64, 62, 60, 57, 55, 52 -->
+          <polyline class="chart-line" stroke="#4a5c33"
+            points="60,80 128,84 196,88 264,94 332,102 400,106 468,110 536,116 604,120 670,126"/>
+
+          <!-- AI×Content (blue) — starts slower, catches up -->
+          <!-- % values: 65, 67, 70, 72, 70, 68, 65, 63, 62, 60 -->
+          <polyline class="chart-line" stroke="#5b7fc4"
+            points="60,100 128,96 196,90 264,86 332,90 400,94 468,100 536,104 604,106 670,110"/>
+
+          <!-- Pilot C0 (amber, dashed, ends at week 8) — benchmark line -->
+          <!-- % values: 90, 88, 84, 80, 76, 72, 68, 66 -->
+          <polyline class="chart-line" stroke="#a07840" stroke-dasharray="6,3" stroke-width="2"
+            points="60,50 128,54 196,62 264,70 332,78 400,86 468,94 536,98"/>
+
+          <!-- Data point dots for Creative -->
+          <circle cx="670" cy="120" r="4" fill="#fe1d25"/>
+          <circle cx="670" cy="126" r="4" fill="#4a5c33"/>
+          <circle cx="536" cy="98" r="4" fill="#a07840"/>
+
+          <!-- Annotation: at-risk dip on Creative W6 -->
+          <circle cx="400" cy="100" r="5" fill="none" stroke="#fe1d25" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- At-risk learners -->
+      <div class="section-title">At-Risk Learners</div>
+      <div class="data-table">
+        <div class="data-table__toolbar">
+          <input type="search" class="data-table__search" placeholder="Search learners…">
+          <select style="border: 1px solid var(--color-divider); border-radius: 4px; padding: var(--space-8) var(--space-12); font-size:13px; font-family: var(--font-body);">
+            <option>All Cohorts</option>
+            <option>Creative ID&amp;ST C1</option>
+            <option>Food Business C1</option>
+          </select>
+          <span style="margin-left:auto; font-size:12px; color:rgba(37,32,38,0.45);">7 at-risk learners</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Learner</th>
+              <th>Cohort</th>
+              <th>Progress</th>
+              <th>Last Active</th>
+              <th>Days Inactive</th>
+              <th>Risk Criteria</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-user"><div class="avatar" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">M</div><div><div style="font-weight:600;">Manee Suwan</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">manee@suwan.th</div></div></div></td>
+              <td><span style="font-size:12px;">Creative ID&amp;ST C1</span></td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill progress__fill--brand" style="width:28%;"></div></div>
+                  <span style="color:var(--color-accent-brand); font-weight:700;">28%</span>
+                </div>
+              </td>
+              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 22, 2026</td>
+              <td style="font-weight:700; color:var(--color-accent-brand);">18 days</td>
+              <td>
+                <span class="at-risk-reason">Low progress</span>
+                <span class="at-risk-reason" style="margin-left:4px;">Inactive 14d+</span>
+              </td>
+              <td><button class="btn btn--ghost btn--sm">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-user"><div class="avatar">B</div><div><div style="font-weight:600;">Boon Chaiwong</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">boon@ch.th</div></div></div></td>
+              <td><span style="font-size:12px;">Food Business C1</span></td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill progress__fill--brand" style="width:35%;"></div></div>
+                  <span style="color:var(--color-accent-brand); font-weight:700;">35%</span>
+                </div>
+              </td>
+              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 26, 2026</td>
+              <td style="font-weight:700; color:var(--color-accent-brand);">14 days</td>
+              <td><span class="at-risk-reason">Low progress</span></td>
+              <td><button class="btn btn--ghost btn--sm">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-user"><div class="avatar" style="background:rgba(91,127,196,0.12);color:#2f5498;">O</div><div><div style="font-weight:600;">Onuma Phak</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">onuma@phak.th</div></div></div></td>
+              <td><span style="font-size:12px;">AI×Content C1</span></td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#e8a13d;width:42%;"></div></div>
+                  <span style="color:#9a6b00; font-weight:700;">42%</span>
+                </div>
+              </td>
+              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Dec 02, 2026</td>
+              <td style="font-weight:700; color:#9a6b00;">8 days</td>
+              <td><span class="at-risk-reason at-risk-reason--pacing">Behind pace</span></td>
+              <td><button class="btn btn--ghost btn--sm">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-user"><div class="avatar">R</div><div><div style="font-weight:600;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">ratchaporn@t.th</div></div></div></td>
+              <td><span style="font-size:12px;">Creative ID&amp;ST C1</span></td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill progress__fill--brand" style="width:30%;"></div></div>
+                  <span style="color:var(--color-accent-brand); font-weight:700;">30%</span>
+                </div>
+              </td>
+              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 19, 2026</td>
+              <td style="font-weight:700; color:var(--color-accent-brand);">21 days</td>
+              <td><span class="at-risk-reason">Inactive 14d+</span><span class="at-risk-reason" style="margin-left:4px;">Low progress</span></td>
+              <td><button class="btn btn--ghost btn--sm">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-user"><div class="avatar">S</div><div><div style="font-weight:600;">Supakorn Watt</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">supakorn@w.th</div></div></div></td>
+              <td><span style="font-size:12px;">Food Business C1</span></td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#e8a13d;width:38%;"></div></div>
+                  <span style="color:#9a6b00; font-weight:700;">38%</span>
+                </div>
+              </td>
+              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 30, 2026</td>
+              <td style="font-weight:700; color:#9a6b00;">10 days</td>
+              <td><span class="at-risk-reason at-risk-reason--pacing">Behind pace</span></td>
+              <td><button class="btn btn--ghost btn--sm">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin Ops</div>
+</body>
+</html>

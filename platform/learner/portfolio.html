@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* Portfolio grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-24);
+    }
+
+    .portfolio-item {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: box-shadow var(--motion-quick) var(--ease-standard),
+                  border-color var(--motion-quick) var(--ease-standard);
+    }
+    .portfolio-item:hover { box-shadow: var(--shadow-card); border-color: rgba(37,32,38,0.2); }
+    .portfolio-item--featured { border-color: var(--color-surface-ink); border-width: 1.5px; }
+
+    .portfolio-item__cover {
+      height: 180px;
+      background: rgba(37,32,38,0.06);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .portfolio-item__cover-placeholder {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(37,32,38,0.1);
+      letter-spacing: -0.02em;
+    }
+    .portfolio-item__cover--creativity { background: rgba(254,29,37,0.06); }
+    .portfolio-item__cover--humanity   { background: rgba(74,92,51,0.08); }
+    .portfolio-item__cover--default    { background: rgba(37,32,38,0.05); }
+
+    /* Controls overlay on cover */
+    .portfolio-item__cover-actions {
+      position: absolute;
+      top: var(--space-12); right: var(--space-12);
+      display: flex;
+      gap: var(--space-8);
+      opacity: 0;
+      transition: opacity var(--motion-quick) var(--ease-standard);
+    }
+    .portfolio-item:hover .portfolio-item__cover-actions { opacity: 1; }
+    .cover-action-btn {
+      width: 32px; height: 32px;
+      background: white;
+      border-radius: 6px;
+      display: grid; place-items: center;
+      cursor: pointer;
+      border: 1px solid var(--color-divider);
+      box-shadow: var(--shadow-subtle);
+    }
+    .cover-action-btn svg { width: 14px; height: 14px; stroke: rgba(37,32,38,0.6); stroke-width: 1.5; fill: none; }
+    .cover-action-btn--star.is-active svg { stroke: #e8a13d; fill: #e8a13d; }
+
+    /* Featured badge */
+    .featured-badge {
+      position: absolute;
+      top: var(--space-12); left: var(--space-12);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .featured-badge svg { width: 10px; height: 10px; fill: #e8a13d; }
+
+    .portfolio-item__body {
+      padding: var(--space-20);
+    }
+    .portfolio-item__title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-4);
+    }
+    .portfolio-item__source {
+      font-size: 11px;
+      color: rgba(37,32,38,0.5);
+      margin-bottom: var(--space-12);
+    }
+    .portfolio-item__desc {
+      font-size: 12px;
+      color: rgba(37,32,38,0.7);
+      line-height: 1.55;
+      margin-bottom: var(--space-12);
+    }
+    .portfolio-item__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-8);
+    }
+
+    /* Visibility toggle */
+    .visibility-toggle {
+      display: flex;
+      gap: 2px;
+      background: rgba(37,32,38,0.05);
+      border-radius: 4px;
+      padding: 2px;
+    }
+    .visibility-toggle__opt {
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      background: transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      color: rgba(37,32,38,0.45);
+      font-family: var(--font-body);
+    }
+    .visibility-toggle__opt.is-active {
+      background: white;
+      color: var(--color-surface-ink);
+      box-shadow: 0 1px 2px rgba(37,32,38,0.08);
+    }
+
+    /* Public profile bar */
+    .profile-url-bar {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-radius: 8px;
+      padding: var(--space-20) var(--space-24);
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      margin-bottom: var(--space-32);
+      flex-wrap: wrap;
+    }
+    .profile-url-bar__url {
+      flex: 1;
+      font-size: 13px;
+      font-family: 'SF Mono', monospace;
+      color: rgba(242,241,240,0.7);
+      min-width: 200px;
+    }
+    .profile-url-bar__url strong { color: var(--color-surface-base); }
+
+    /* Add manually card */
+    .add-item-card {
+      background: transparent;
+      border: 2px dashed var(--color-divider);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-12);
+      min-height: 300px;
+      cursor: pointer;
+      transition: border-color var(--motion-quick) var(--ease-standard),
+                  background var(--motion-quick) var(--ease-standard);
+    }
+    .add-item-card:hover { border-color: var(--color-surface-ink); background: rgba(37,32,38,0.02); }
+    .add-item-card__icon { width: 40px; height: 40px; background: rgba(37,32,38,0.06); border-radius: 8px; display: grid; place-items: center; }
+    .add-item-card__icon svg { width: 20px; height: 20px; stroke: rgba(37,32,38,0.4); stroke-width: 1.5; fill: none; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand"><div class="sidebar__brand-mark">N</div><div><div class="sidebar__brand-name">NICHE</div><div class="sidebar__brand-suffix">Learner Portal</div></div></a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg><span class="sidebar__label">Curriculum</span></a>
+          <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:13px;">AS</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div><div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div></div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);"><svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>Behind by 1 session</span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search portfolio…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Career System</div>
+            <h1 class="page-header__heading">Portfolio</h1>
+            <p class="page-header__sub">5 items · 2 featured · auto-aggregated from graded work</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--ghost">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>
+              Preview public page
+            </button>
+            <button class="btn btn--secondary">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 2v7M4 7l3 3 3-3"/><path d="M2 11h10"/></svg>
+              Add item manually
+            </button>
+          </div>
+        </div>
+
+        <!-- Public profile URL bar -->
+        <div class="profile-url-bar">
+          <svg style="width:18px;height:18px;stroke:rgba(242,241,240,0.5);stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 2c-2.5 3-2.5 11 0 14M9 2c2.5 3 2.5 11 0 14M2 9h14"/></svg>
+          <div class="profile-url-bar__url">
+            <strong>niche.institute/p/</strong>aira-sukcharoen
+          </div>
+          <div style="display:flex; gap:var(--space-8);">
+            <button class="btn btn--ghost-on-dark btn--sm">
+              <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M2 2h8v8M4 8L10 2"/></svg>
+              View
+            </button>
+            <button class="btn btn--ghost-on-dark btn--sm">
+              <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><rect x="1" y="3" width="8" height="8" rx="1"/><path d="M4 3V2a1 1 0 011-1h5a1 1 0 011 1v5a1 1 0 01-1 1h-1"/></svg>
+              Copy link
+            </button>
+          </div>
+          <div style="margin-left:auto; display:flex; align-items:center; gap:var(--space-8);">
+            <span style="font-size:11px; color:rgba(242,241,240,0.5);">Profile visibility:</span>
+            <div class="visibility-toggle">
+              <button class="visibility-toggle__opt">Private</button>
+              <button class="visibility-toggle__opt">Employer</button>
+              <button class="visibility-toggle__opt is-active">Public</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs: All / Featured / From assignments / Manual -->
+        <div class="tabs" style="margin-bottom: var(--space-24);">
+          <button class="tabs__item is-active">All items <span class="tabs__count">5</span></button>
+          <button class="tabs__item">Featured <span class="tabs__count">2</span></button>
+          <button class="tabs__item">From assignments <span class="tabs__count">4</span></button>
+          <button class="tabs__item">Added manually <span class="tabs__count">1</span></button>
+        </div>
+
+        <!-- Grid -->
+        <div class="portfolio-grid">
+
+          <!-- Featured: assignment 1 -->
+          <div class="portfolio-item portfolio-item--featured">
+            <div class="portfolio-item__cover portfolio-item__cover--creativity">
+              <div class="portfolio-item__cover-placeholder">S₁</div>
+              <div class="featured-badge">
+                <svg viewBox="0 0 10 10"><polygon points="5,1 6.5,4 10,4 7,6 8,9.5 5,7.5 2,9.5 3,6 0,4 3.5,4"/></svg>
+                Featured
+              </div>
+              <div class="portfolio-item__cover-actions">
+                <div class="cover-action-btn cover-action-btn--star is-active" title="Remove from featured">
+                  <svg viewBox="0 0 14 14"><polygon points="7,1 9,5 13,5 10,8 11,12 7,10 3,12 4,8 1,5 5,5"/></svg>
+                </div>
+                <div class="cover-action-btn" title="Edit">
+                  <svg viewBox="0 0 14 14"><path d="M9 2l3 3-8 8H1v-3L9 2z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-item__body">
+              <div class="portfolio-item__title">Identity Brand Audit — Sirivannavari</div>
+              <div class="portfolio-item__source">From Assignment #1 · Module 1.2 · Graded 88/100</div>
+              <div class="portfolio-item__desc">A comprehensive brand audit of Sirivannavari's visual identity system, applying cultural semiotics and positioning theory.</div>
+              <div class="portfolio-item__footer">
+                <div style="display:flex; gap:var(--space-8); flex-wrap:wrap;">
+                  <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+                  <span class="badge badge--success">Graded</span>
+                </div>
+                <div class="visibility-toggle">
+                  <button class="visibility-toggle__opt">Priv</button>
+                  <button class="visibility-toggle__opt is-active">Pub</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured: assignment 2 -->
+          <div class="portfolio-item portfolio-item--featured">
+            <div class="portfolio-item__cover portfolio-item__cover--creativity">
+              <div class="portfolio-item__cover-placeholder">P₂</div>
+              <div class="featured-badge">
+                <svg viewBox="0 0 10 10"><polygon points="5,1 6.5,4 10,4 7,6 8,9.5 5,7.5 2,9.5 3,6 0,4 3.5,4"/></svg>
+                Featured
+              </div>
+              <div class="portfolio-item__cover-actions">
+                <div class="cover-action-btn cover-action-btn--star is-active" title="Remove from featured">
+                  <svg viewBox="0 0 14 14"><polygon points="7,1 9,5 13,5 10,8 11,12 7,10 3,12 4,8 1,5 5,5"/></svg>
+                </div>
+                <div class="cover-action-btn" title="Edit">
+                  <svg viewBox="0 0 14 14"><path d="M9 2l3 3-8 8H1v-3L9 2z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-item__body">
+              <div class="portfolio-item__title">Personal Brand Manifesto — Draft 2</div>
+              <div class="portfolio-item__source">From Assignment #2 · Module 2.3 · Graded 91/100</div>
+              <div class="portfolio-item__desc">A manifesto defining my creative positioning within the Thai design industry — research-led, visually accompanied.</div>
+              <div class="portfolio-item__footer">
+                <div style="display:flex; gap:var(--space-8);">
+                  <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+                  <span class="badge badge--success">Graded</span>
+                </div>
+                <div class="visibility-toggle">
+                  <button class="visibility-toggle__opt">Priv</button>
+                  <button class="visibility-toggle__opt is-active">Pub</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Non-featured: assignment 3 (needs revision) -->
+          <div class="portfolio-item">
+            <div class="portfolio-item__cover portfolio-item__cover--default">
+              <div class="portfolio-item__cover-placeholder">SA</div>
+              <div class="portfolio-item__cover-actions">
+                <div class="cover-action-btn cover-action-btn--star" title="Add to featured">
+                  <svg viewBox="0 0 14 14"><polygon points="7,1 9,5 13,5 10,8 11,12 7,10 3,12 4,8 1,5 5,5"/></svg>
+                </div>
+                <div class="cover-action-btn" title="Edit">
+                  <svg viewBox="0 0 14 14"><path d="M9 2l3 3-8 8H1v-3L9 2z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-item__body">
+              <div class="portfolio-item__title">Semiotic Analysis — Nike Thailand</div>
+              <div class="portfolio-item__source">From Assignment #3 · Module 3.1 · Pending resubmission</div>
+              <div class="portfolio-item__desc">Semiotic deconstruction of Nike's Thai-market visual campaigns. Currently under revision.</div>
+              <div class="portfolio-item__footer">
+                <div style="display:flex; gap:var(--space-8);">
+                  <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+                  <span class="status-chip status-chip--needs-revision" style="font-size:10px; padding:2px 6px;">Needs revision</span>
+                </div>
+                <div class="visibility-toggle">
+                  <button class="visibility-toggle__opt is-active">Priv</button>
+                  <button class="visibility-toggle__opt">Pub</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Non-featured: assignment from phase 2 -->
+          <div class="portfolio-item">
+            <div class="portfolio-item__cover portfolio-item__cover--humanity">
+              <div class="portfolio-item__cover-placeholder">RD</div>
+              <div class="portfolio-item__cover-actions">
+                <div class="cover-action-btn cover-action-btn--star" title="Add to featured">
+                  <svg viewBox="0 0 14 14"><polygon points="7,1 9,5 13,5 10,8 11,12 7,10 3,12 4,8 1,5 5,5"/></svg>
+                </div>
+                <div class="cover-action-btn" title="Edit">
+                  <svg viewBox="0 0 14 14"><path d="M9 2l3 3-8 8H1v-3L9 2z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-item__body">
+              <div class="portfolio-item__title">Research Deck — Thai Creative Economy</div>
+              <div class="portfolio-item__source">From Assignment #2b · Module 2.1 · Graded 85/100</div>
+              <div class="portfolio-item__desc">15-slide research deck mapping the Thai creative industry ecosystem — TCDC data, interviews, and market gaps.</div>
+              <div class="portfolio-item__footer">
+                <div style="display:flex; gap:var(--space-8);">
+                  <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+                  <span class="badge badge--success">Graded</span>
+                </div>
+                <div class="visibility-toggle">
+                  <button class="visibility-toggle__opt">Priv</button>
+                  <button class="visibility-toggle__opt is-active">Pub</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Manual item -->
+          <div class="portfolio-item">
+            <div class="portfolio-item__cover portfolio-item__cover--default">
+              <div class="portfolio-item__cover-placeholder">FP</div>
+              <div class="portfolio-item__cover-actions">
+                <div class="cover-action-btn cover-action-btn--star" title="Add to featured">
+                  <svg viewBox="0 0 14 14"><polygon points="7,1 9,5 13,5 10,8 11,12 7,10 3,12 4,8 1,5 5,5"/></svg>
+                </div>
+                <div class="cover-action-btn" title="Edit">
+                  <svg viewBox="0 0 14 14"><path d="M9 2l3 3-8 8H1v-3L9 2z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="portfolio-item__body">
+              <div class="portfolio-item__title">Freelance Project — GLOW Magazine Rebrand</div>
+              <div class="portfolio-item__source">Added manually · Oct 2026</div>
+              <div class="portfolio-item__desc">Full rebrand concept for GLOW Magazine's digital pivot — art direction, type system, editorial grid. Personal project.</div>
+              <div class="portfolio-item__footer">
+                <div style="display:flex; gap:var(--space-8);">
+                  <span class="badge badge--neutral">Manual</span>
+                </div>
+                <div class="visibility-toggle">
+                  <button class="visibility-toggle__opt">Priv</button>
+                  <button class="visibility-toggle__opt is-active">Pub</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add item card -->
+          <div class="add-item-card" role="button" tabindex="0">
+            <div class="add-item-card__icon">
+              <svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg>
+            </div>
+            <div style="font-size:13px; font-weight:700; color:rgba(37,32,38,0.6);">Add item manually</div>
+            <div style="font-size:12px; color:rgba(37,32,38,0.4); text-align:center; max-width:180px;">Personal projects, external work, or anything not from a NICHE assignment</div>
+          </div>
+
+        </div>
+
+        <!-- Featured limit notice -->
+        <div style="margin-top:var(--space-24); padding:var(--space-16) var(--space-20); background:rgba(37,32,38,0.04); border-radius:6px; font-size:12px; color:rgba(37,32,38,0.6);">
+          <strong style="color:var(--color-surface-ink);">2 of 3 featured slots used.</strong> Starred items appear at the top of your public profile. Maximum 3 featured items.
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

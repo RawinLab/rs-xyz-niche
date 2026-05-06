@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* Dashboard-specific layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: var(--space-32);
+      align-items: start;
+    }
+    .dashboard-focus { display: flex; flex-direction: column; gap: var(--space-24); }
+    .dashboard-rail  { display: flex; flex-direction: column; gap: var(--space-24); }
+
+    /* Continue card */
+    .continue-card {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-radius: 8px;
+      padding: var(--space-32);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      position: relative;
+      overflow: hidden;
+    }
+    .continue-card::after {
+      content: '';
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(254, 29, 37, 0.08);
+    }
+    .continue-card__eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+    }
+    .continue-card__title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      max-width: 480px;
+    }
+    .continue-card__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      flex-wrap: wrap;
+    }
+    .continue-card__meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      font-size: 12px;
+      color: rgba(242, 241, 240, 0.65);
+    }
+    .continue-card__meta-icon {
+      width: 14px; height: 14px;
+      stroke: currentColor; stroke-width: 1.5; fill: none;
+    }
+    .continue-card__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      margin-top: var(--space-8);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* At-risk alert */
+    .alert-card {
+      background: rgba(254, 29, 37, 0.06);
+      border: 1px solid rgba(254, 29, 37, 0.2);
+      border-radius: 8px;
+      padding: var(--space-20) var(--space-24);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-16);
+    }
+    .alert-card__icon {
+      width: 36px; height: 36px;
+      background: rgba(254, 29, 37, 0.1);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+      color: var(--color-accent-brand);
+    }
+    .alert-card__icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .alert-card__title { font-size: 14px; font-weight: 700; color: var(--color-accent-brand); margin-bottom: 4px; }
+    .alert-card__body { font-size: 13px; color: rgba(37,32,38,0.75); line-height: 1.5; }
+
+    /* Announcements feed */
+    .announcement-item {
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      gap: var(--space-12);
+      align-items: flex-start;
+    }
+    .announcement-item:last-child { border-bottom: none; }
+    .announcement-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-accent-brand);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .announcement-dot--read { background: var(--color-divider); }
+    .announcement-item__title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .announcement-item__body { font-size: 12px; color: rgba(37,32,38,0.6); line-height: 1.5; }
+    .announcement-item__time { font-size: 11px; color: rgba(37,32,38,0.4); margin-top: 4px; }
+
+    /* Rail: schedule strip */
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-12) 0;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .schedule-item:last-child { border-bottom: none; }
+    .schedule-time { font-size: 11px; font-weight: 700; color: rgba(37,32,38,0.45); min-width: 52px; }
+    .schedule-icon {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .schedule-icon--onsite { background: rgba(37,32,38,0.08); }
+    .schedule-icon--online { background: rgba(74, 92, 51, 0.12); }
+    .schedule-icon--async  { background: rgba(254, 29, 37, 0.08); }
+    .schedule-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .schedule-info { flex: 1; min-width: 0; }
+    .schedule-info__name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .schedule-info__sub { font-size: 11px; color: rgba(37,32,38,0.5); }
+
+    /* Rail: cohort peers */
+    .peer-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-10) 0;
+      border-bottom: 1px solid var(--color-divider);
+      font-size: 12px;
+    }
+    .peer-item:last-child { border-bottom: none; }
+    .peer-item__text { flex: 1; line-height: 1.4; }
+    .peer-item__time { font-size: 10px; color: rgba(37,32,38,0.4); white-space: nowrap; }
+
+    /* Cohort progress */
+    .cohort-progress-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-24);
+    }
+    .cohort-meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-20); }
+    .cohort-meta-row h3 { font-size: 14px; font-weight: 700; }
+
+    @media (max-width: 1100px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .dashboard-rail { display: grid; grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .dashboard-rail { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Learner Portal</div>
+          </div>
+        </a>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+            <span class="sidebar__label">My Cohort</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg>
+            <span class="sidebar__label">Curriculum</span>
+          </a>
+          <a href="schedule.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+          <a href="assignment-submit.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg>
+            <span class="sidebar__label">Assignments</span>
+            <span class="sidebar__item-badge">2</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+            <span class="sidebar__label">Portfolio</span>
+          </a>
+          <a href="resume.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg>
+            <span class="sidebar__label">Resume</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg>
+            <span class="sidebar__label">Certificates</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span class="sidebar__label">Profile &amp; Settings</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 13px;">AS</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Aira Sukcharoen</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">Cohort 1 · Bangkok</div>
+            </div>
+            <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;flex-shrink:0;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
+          </div>
+          <div style="margin-top: var(--space-8);">
+            <a href="#" class="sidebar__item" style="font-size:12px;">
+              <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M12 3h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M8 12l4-4-4-4M3 9h9"/></svg>
+              <span class="sidebar__label">Sign out</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Cohort 1 · Module 4/12
+        </div>
+        <span class="pace pace--behind" style="margin-left: var(--space-8);">
+          <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><path d="M7 2v5l3 2"/><circle cx="7" cy="7" r="5"/></svg>
+          Behind by 1 session
+        </span>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search sessions, materials…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
+            <span class="topbar__icon-btn-badge"></span>
+          </button>
+          <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 12px; cursor: pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="app-main">
+      <div class="main">
+
+        <!-- Page header -->
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Wednesday · Week 4 of 12</div>
+            <h1 class="page-header__heading">Welcome back, Aira.</h1>
+            <p class="page-header__sub">Creative Identity &amp; Storytelling · Cohort 1 · 11–30 Nov 2026</p>
+          </div>
+        </div>
+
+        <!-- At-risk alert -->
+        <div class="alert-card mb-32">
+          <div class="alert-card__icon">
+            <svg viewBox="0 0 18 18"><path d="M9 3L2 15h14L9 3z"/><path d="M9 8v4M9 13.5v.5"/></svg>
+          </div>
+          <div>
+            <div class="alert-card__title">You're 1 session behind.</div>
+            <div class="alert-card__body">You missed Monday's onsite studio. Your mentor can help you catch up — or message them now to reschedule.<br>
+              <a href="#" style="color: var(--color-accent-brand); font-weight: 600; font-size: 13px; text-decoration: none; margin-top: 8px; display: inline-block;">Message your mentor →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <!-- Focus column -->
+          <div class="dashboard-focus">
+
+            <!-- Continue card -->
+            <div class="continue-card">
+              <div class="continue-card__eyebrow">Resume your work</div>
+              <div class="continue-card__title">Week 4 · Visual Narrative Lab — Identity Collage</div>
+              <div class="continue-card__meta">
+                <div class="continue-card__meta-item">
+                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="10" rx="1"/><path d="M1 5h12"/></svg>
+                  Session 10 of 36
+                </div>
+                <div class="continue-card__meta-item">
+                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><path d="M7 1v6l3 2"/><circle cx="7" cy="7" r="6"/></svg>
+                  Onsite · Studio A
+                </div>
+                <div class="continue-card__meta-item">
+                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M7 4v3l2 2"/></svg>
+                  09:00 – 13:00 today
+                </div>
+              </div>
+              <div class="continue-card__actions">
+                <a href="session.html" class="btn btn--primary">Resume your work</a>
+                <a href="curriculum.html" class="btn btn--ghost-on-dark btn--sm">View curriculum</a>
+                <span class="status-chip status-chip--live-now" style="margin-left: auto;">
+                  <span class="status-chip__dot"></span>Live now
+                </span>
+              </div>
+            </div>
+
+            <!-- KPI strip -->
+            <div class="kpi-strip">
+              <div class="kpi-tile">
+                <div class="kpi-tile__label">Sessions attended</div>
+                <div class="kpi-tile__value">9</div>
+                <div class="kpi-tile__delta kpi-tile__delta--down">of 10 possible</div>
+                <div class="kpi-tile__icon-tile">
+                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M5 9l3 3 5-5"/></svg>
+                </div>
+              </div>
+              <div class="kpi-tile">
+                <div class="kpi-tile__label">Assignments due</div>
+                <div class="kpi-tile__value">2</div>
+                <div class="kpi-tile__delta kpi-tile__delta--down">this week</div>
+                <div class="kpi-tile__icon-tile">
+                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg>
+                </div>
+              </div>
+              <div class="kpi-tile">
+                <div class="kpi-tile__label">Onsite hours</div>
+                <div class="kpi-tile__value">36</div>
+                <div class="kpi-tile__delta kpi-tile__delta--up">↑ 4 this week</div>
+                <div class="kpi-tile__icon-tile">
+                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><rect x="2" y="6" width="14" height="10" rx="1"/><path d="M6 6V4a3 3 0 016 0v2"/></svg>
+                </div>
+              </div>
+              <div class="kpi-tile">
+                <div class="kpi-tile__label">Portfolio items</div>
+                <div class="kpi-tile__value">5</div>
+                <div class="kpi-tile__delta kpi-tile__delta--up">↑ 2 new this month</div>
+                <div class="kpi-tile__icon-tile">
+                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cohort progress -->
+            <div class="cohort-progress-card">
+              <div class="cohort-meta-row">
+                <h3 class="t-h4">Cohort Progress</h3>
+                <span class="badge badge--neutral">Cohort 1 · 16 learners</span>
+              </div>
+              <div class="progress-row mb-16">
+                <span class="progress-row__label" style="min-width:120px;">Your progress</span>
+                <div class="progress progress--lg"><div class="progress__fill progress__fill--brand" style="width:31%"></div></div>
+                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">9/36</span>
+              </div>
+              <div class="progress-row mb-16">
+                <span class="progress-row__label" style="min-width:120px;">Cohort average</span>
+                <div class="progress progress--lg"><div class="progress__fill progress__fill--moss" style="width:36%"></div></div>
+                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">10/36</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-row__label" style="min-width:120px;">Top learner</span>
+                <div class="progress progress--lg"><div class="progress__fill" style="width:44%"></div></div>
+                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">11/36</span>
+              </div>
+              <div style="margin-top: var(--space-16); padding-top: var(--space-16); border-top: 1px solid var(--color-divider); display:flex; gap: var(--space-16);">
+                <span class="pillar-tag pillar-tag--creativity t-caption" style="font-size:11px;">Creativity</span>
+                <span style="font-size:12px; color: rgba(37,32,38,0.55);">Bootcamp · 3 months · Nov–Jan</span>
+              </div>
+            </div>
+
+            <!-- Announcements -->
+            <div class="card">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--space-16);">
+                <h3 class="t-h4">Announcements</h3>
+                <span class="badge badge--danger">2 new</span>
+              </div>
+              <div class="announcement-item">
+                <div class="announcement-dot"></div>
+                <div>
+                  <div class="announcement-item__title">Studio B schedule change — Week 5</div>
+                  <div class="announcement-item__body">Wednesday Nov 18 onsite moves to 13:00–17:00 due to equipment maintenance. All other sessions unchanged.</div>
+                  <div class="announcement-item__time">Today, 08:30</div>
+                </div>
+              </div>
+              <div class="announcement-item">
+                <div class="announcement-dot"></div>
+                <div>
+                  <div class="announcement-item__title">Assignment #4 brief is live</div>
+                  <div class="announcement-item__body">Your Brand Manifesto brief is now available. Submission deadline: Friday Nov 13, 23:59.</div>
+                  <div class="announcement-item__time">Yesterday, 14:00</div>
+                </div>
+              </div>
+              <div class="announcement-item">
+                <div class="announcement-dot announcement-dot--read"></div>
+                <div>
+                  <div class="announcement-item__title">Welcome to Week 4</div>
+                  <div class="announcement-item__body">This week we move into visual narrative. Come prepared with your identity mood board from Week 3.</div>
+                  <div class="announcement-item__time">Mon Nov 9, 09:00</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /focus -->
+
+          <!-- Right rail -->
+          <div class="dashboard-rail">
+
+            <!-- Today's schedule -->
+            <div class="card">
+              <h3 class="t-h4" style="margin-bottom: var(--space-16);">Today's Schedule</h3>
+              <div class="schedule-item">
+                <div class="schedule-time">09:00</div>
+                <div class="schedule-icon schedule-icon--onsite" style="color:var(--color-surface-ink);">
+                  <svg viewBox="0 0 16 16"><rect x="2" y="6" width="12" height="8" rx="1"/><path d="M5 6V4a3 3 0 016 0v2"/><rect x="6" y="10" width="4" height="4"/></svg>
+                </div>
+                <div class="schedule-info">
+                  <div class="schedule-info__name">Visual Narrative Lab</div>
+                  <div class="schedule-info__sub">Onsite · Studio A · 4h</div>
+                </div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-time">14:00</div>
+                <div class="schedule-icon schedule-icon--async" style="color:var(--color-accent-brand);">
+                  <svg viewBox="0 0 16 16"><path d="M3 3h10a1 1 0 011 1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M5 7h6M5 10h4"/></svg>
+                </div>
+                <div class="schedule-info">
+                  <div class="schedule-info__name">Reading: Semiotic Systems</div>
+                  <div class="schedule-info__sub">Async · ~45 min</div>
+                </div>
+              </div>
+              <div style="margin-top: var(--space-16);">
+                <a href="schedule.html" class="btn btn--ghost btn--sm" style="width:100%; justify-content:center;">Full schedule</a>
+              </div>
+            </div>
+
+            <!-- Cohort peers -->
+            <div class="card">
+              <h3 class="t-h4" style="margin-bottom: var(--space-16);">Cohort Activity</h3>
+              <div class="peer-item">
+                <div class="avatar avatar--sm" style="background: rgba(74,92,51,0.15); color: var(--color-accent-secondary-shade);">M</div>
+                <div class="peer-item__text">
+                  <strong>Mika</strong> submitted Week 3 brief
+                </div>
+                <div class="peer-item__time">2h ago</div>
+              </div>
+              <div class="peer-item">
+                <div class="avatar avatar--sm" style="background: rgba(254,29,37,0.1); color: var(--color-accent-brand);">T</div>
+                <div class="peer-item__text">
+                  <strong>Tanwarin</strong> completed Session 10
+                </div>
+                <div class="peer-item__time">3h ago</div>
+              </div>
+              <div class="peer-item">
+                <div class="avatar avatar--sm" style="background: rgba(37,32,38,0.08);">+5</div>
+                <div class="peer-item__text">
+                  5 classmates checked in to today's onsite
+                </div>
+                <div class="peer-item__time">09:05</div>
+              </div>
+              <div class="peer-item">
+                <div class="avatar avatar--sm" style="background: rgba(74,92,51,0.15); color: var(--color-accent-secondary-shade);">P</div>
+                <div class="peer-item__text">
+                  <strong>Praew</strong> added to portfolio
+                </div>
+                <div class="peer-item__time">Yesterday</div>
+              </div>
+            </div>
+
+            <!-- Quick links -->
+            <div class="card">
+              <h3 class="t-h4" style="margin-bottom: var(--space-12);">Quick access</h3>
+              <div style="display:flex; flex-direction:column; gap: var(--space-8);">
+                <a href="assignment-submit.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
+                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 2H4a1 1 0 00-1 1v8a1 1 0 001 1h6a1 1 0 001-1V2z"/><path d="M4 5h6M4 8h4"/></svg>
+                  Assignment #4 brief
+                  <span class="badge badge--warning" style="margin-left:auto;">Due Fri</span>
+                </a>
+                <a href="session.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
+                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><polygon points="5,4 11,7 5,10"/></svg>
+                  Session 10 — live now
+                </a>
+                <a href="portfolio.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
+                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M4 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+                  Portfolio (5 items)
+                </a>
+              </div>
+            </div>
+
+          </div><!-- /rail -->
+        </div><!-- /grid -->
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

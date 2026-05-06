@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .resume-layout {
+      display: grid;
+      grid-template-columns: 480px 1fr;
+      gap: var(--space-32);
+      align-items: start;
+    }
+    .resume-editor { display: flex; flex-direction: column; gap: var(--space-24); }
+    .resume-preview-pane {
+      position: sticky;
+      top: calc(var(--topbar-height) + var(--space-32));
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    /* Template picker */
+    .template-picker { display: flex; gap: var(--space-16); margin-bottom: var(--space-8); }
+    .template-card {
+      flex: 1;
+      border: 2px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-16);
+      cursor: pointer;
+      transition: border-color var(--motion-quick) var(--ease-standard);
+      text-align: center;
+    }
+    .template-card.is-selected { border-color: var(--color-surface-ink); }
+    .template-card__thumb {
+      height: 80px;
+      border-radius: 4px;
+      background: rgba(37,32,38,0.06);
+      margin-bottom: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-8);
+      gap: 4px;
+    }
+    .template-card__thumb-line { height: 5px; border-radius: 2px; background: rgba(37,32,38,0.2); }
+    .template-card--creative .template-card__thumb { background: var(--color-surface-ink); }
+    .template-card--creative .template-card__thumb-line { background: rgba(242,241,240,0.3); }
+    .template-card--creative .template-card__thumb-line:first-child { background: var(--color-accent-brand); height: 8px; width: 60%; }
+    .template-card__name { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+    .template-card__desc { font-size: 11px; color: rgba(37,32,38,0.5); margin-top: 2px; }
+
+    /* Section card in editor */
+    .section-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .section-card__header {
+      padding: var(--space-16) var(--space-20);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      cursor: pointer;
+    }
+    .section-card__header-icon {
+      width: 28px; height: 28px;
+      background: rgba(37,32,38,0.06);
+      border-radius: 4px;
+      display: grid; place-items: center;
+    }
+    .section-card__header-icon svg { width: 14px; height: 14px; stroke: rgba(37,32,38,0.5); stroke-width: 1.5; fill: none; }
+    .section-card__title { font-size: 13px; font-weight: 700; flex: 1; }
+    .section-card__caret { width: 14px; height: 14px; stroke: rgba(37,32,38,0.35); stroke-width: 1.5; fill: none; }
+    .section-card__body { padding: var(--space-20); display: flex; flex-direction: column; gap: var(--space-16); }
+
+    /* Entry row in section */
+    .entry-row {
+      background: rgba(37,32,38,0.02);
+      border: 1px solid rgba(37,32,38,0.06);
+      border-radius: 6px;
+      padding: var(--space-16);
+    }
+    .entry-row__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8); margin-bottom: var(--space-12); }
+    .entry-row__title { font-size: 13px; font-weight: 700; }
+    .entry-row__sub { font-size: 11px; color: rgba(37,32,38,0.55); margin-top: 2px; }
+    .entry-row__niche-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(254,29,37,0.08); color: var(--color-accent-brand);
+      padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+    }
+    .entry-row__actions { display: flex; gap: var(--space-8); }
+    .entry-row__actions button { font-size: 11px; padding: 4px 8px; }
+
+    /* Skills chips */
+    .skills-chips { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+    .skill-chip {
+      padding: 4px 12px;
+      background: rgba(37,32,38,0.06);
+      border: 1px solid rgba(37,32,38,0.1);
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      cursor: default;
+    }
+    .skill-chip--niche { background: rgba(254,29,37,0.06); border-color: rgba(254,29,37,0.15); color: var(--color-accent-brand); }
+    .skill-chip__remove { cursor: pointer; color: rgba(37,32,38,0.35); line-height: 0; }
+    .skill-chip__remove svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    /* Resume preview (simplified A4 in browser) */
+    .resume-preview-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .resume-preview-card__toolbar {
+      padding: var(--space-12) var(--space-16);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-8);
+      background: rgba(37,32,38,0.02);
+    }
+    .resume-preview-card__toolbar-label { font-size: 11px; font-weight: 700; color: rgba(37,32,38,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+    .resume-paper {
+      padding: var(--space-32);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .resume-paper__name {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .resume-paper__contact { font-size: 10px; color: rgba(37,32,38,0.6); margin-bottom: var(--space-16); }
+    .resume-paper__section { margin-bottom: var(--space-16); }
+    .resume-paper__section-title {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-bottom: 1.5px solid var(--color-surface-ink);
+      padding-bottom: 4px;
+      margin-bottom: var(--space-8);
+    }
+    .resume-paper__entry { margin-bottom: var(--space-8); }
+    .resume-paper__entry-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 11px; }
+    .resume-paper__entry-sub { font-size: 10px; color: rgba(37,32,38,0.6); }
+    .resume-paper__entry-desc { font-size: 10px; color: rgba(37,32,38,0.7); margin-top: 3px; line-height: 1.5; }
+    .resume-paper__skills-list { display: flex; flex-wrap: wrap; gap: 4px; }
+    .resume-paper__skill-tag { font-size: 9px; padding: 2px 6px; background: rgba(37,32,38,0.06); border-radius: 2px; }
+
+    @media (max-width: 1100px) {
+      .resume-layout { grid-template-columns: 1fr; }
+      .resume-preview-pane { position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand"><div class="sidebar__brand-mark">N</div><div><div class="sidebar__brand-name">NICHE</div><div class="sidebar__brand-suffix">Learner Portal</div></div></a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg><span class="sidebar__label">Curriculum</span></a>
+          <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:13px;">AS</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div><div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div></div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);"><svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>Behind by 1 session</span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Career System</div>
+            <h1 class="page-header__heading">Resume Builder</h1>
+            <p class="page-header__sub">Pre-populated from your program data. Edit, add, and export.</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn--ghost">Save draft</button>
+            <button class="btn btn--primary">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 2v7M4 7l3 3 3-3"/><path d="M2 11h10"/></svg>
+              Generate PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="resume-layout">
+          <div class="resume-editor">
+
+            <!-- Template picker -->
+            <div class="section-card">
+              <div class="section-card__header">
+                <div class="section-card__header-icon">
+                  <svg viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="1"/><path d="M4 4h6M4 7h4"/></svg>
+                </div>
+                <div class="section-card__title">Template</div>
+              </div>
+              <div class="section-card__body">
+                <div class="template-picker">
+                  <div class="template-card is-selected" onclick="this.closest('.template-picker').querySelectorAll('.template-card').forEach(c=>c.classList.remove('is-selected'));this.classList.add('is-selected');">
+                    <div class="template-card__thumb">
+                      <div class="template-card__thumb-line" style="width:40%;"></div>
+                      <div class="template-card__thumb-line" style="width:70%;"></div>
+                      <div class="template-card__thumb-line" style="width:60%;"></div>
+                    </div>
+                    <div class="template-card__name">Clean</div>
+                    <div class="template-card__desc">Minimal, ATS-friendly</div>
+                  </div>
+                  <div class="template-card template-card--creative" onclick="this.closest('.template-picker').querySelectorAll('.template-card').forEach(c=>c.classList.remove('is-selected'));this.classList.add('is-selected');">
+                    <div class="template-card__thumb">
+                      <div class="template-card__thumb-line"></div>
+                      <div class="template-card__thumb-line" style="width:80%;"></div>
+                      <div class="template-card__thumb-line" style="width:55%;"></div>
+                    </div>
+                    <div class="template-card__name" style="color:var(--color-surface-base);">Creative</div>
+                    <div class="template-card__desc" style="color:rgba(242,241,240,0.5);">Bold, portfolio-forward</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Education -->
+            <div class="section-card">
+              <div class="section-card__header">
+                <div class="section-card__header-icon"><svg viewBox="0 0 14 14"><path d="M7 2l6 3-6 3-6-3 6-3z"/><path d="M1 5v5M13 5v5M4 7v3a3 3 0 006 0V7"/></svg></div>
+                <div class="section-card__title">Education</div>
+                <svg class="section-card__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+              <div class="section-card__body">
+                <div class="entry-row">
+                  <div class="entry-row__header">
+                    <div>
+                      <div class="entry-row__title">Creative Identity &amp; Storytelling</div>
+                      <div class="entry-row__sub">NICHE — New Institute of Creativity, Humanity &amp; Entrepreneurship · Bangkok</div>
+                      <div class="entry-row__sub">Nov 2026 – Jan 2027 · Bootcamp</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-8);">
+                      <span class="entry-row__niche-badge">From NICHE</span>
+                      <div class="entry-row__actions">
+                        <button class="btn btn--ghost btn--sm">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" style="font-size:10px;">Description (optional)</label>
+                    <textarea class="textarea" style="min-height:64px; font-size:12px;" placeholder="Add a brief description of what you studied…">Cohort-based bootcamp focused on brand identity, visual storytelling, and creative positioning. Hands-on studio practice with onsite sessions in Bangkok.</textarea>
+                  </div>
+                </div>
+                <button class="btn btn--ghost btn--sm">+ Add education</button>
+              </div>
+            </div>
+
+            <!-- Work experience -->
+            <div class="section-card">
+              <div class="section-card__header">
+                <div class="section-card__header-icon"><svg viewBox="0 0 14 14"><rect x="1" y="4" width="12" height="8" rx="1"/><path d="M4 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/></svg></div>
+                <div class="section-card__title">Work Experience</div>
+                <svg class="section-card__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+              <div class="section-card__body">
+                <div class="entry-row">
+                  <div class="entry-row__header">
+                    <div>
+                      <div class="entry-row__title">Freelance Brand Designer</div>
+                      <div class="entry-row__sub">Self-employed · Bangkok</div>
+                      <div class="entry-row__sub">Jan 2025 – Present</div>
+                    </div>
+                    <div class="entry-row__actions">
+                      <button class="btn btn--ghost btn--sm">Edit</button>
+                      <button class="btn btn--destructive btn--sm">Remove</button>
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <textarea class="textarea" style="min-height:64px; font-size:12px;">Brand identity and visual communication for SMEs and independent creative studios. Clients include GLOW Magazine, Yindee Café.</textarea>
+                  </div>
+                </div>
+                <button class="btn btn--ghost btn--sm">+ Add experience</button>
+              </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="section-card">
+              <div class="section-card__header">
+                <div class="section-card__header-icon"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.6L7 9l-3.1 1.5.6-3.6L2 4.5l3.5-.5z"/></svg></div>
+                <div class="section-card__title">Projects</div>
+                <svg class="section-card__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+              <div class="section-card__body">
+                <div class="entry-row">
+                  <div class="entry-row__header">
+                    <div>
+                      <div class="entry-row__title">GLOW Magazine Rebrand Concept</div>
+                      <div class="entry-row__sub">Personal project · Oct 2026</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-8);">
+                      <div class="entry-row__actions">
+                        <button class="btn btn--ghost btn--sm">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="entry-row">
+                  <div class="entry-row__header">
+                    <div>
+                      <div class="entry-row__title">Identity Brand Audit — Sirivannavari</div>
+                      <div class="entry-row__sub">NICHE Assignment #1 · Graded 88/100</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-8);">
+                      <span class="entry-row__niche-badge">From NICHE</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn--ghost btn--sm">+ Add project</button>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="section-card">
+              <div class="section-card__header">
+                <div class="section-card__header-icon"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg></div>
+                <div class="section-card__title">Skills</div>
+                <svg class="section-card__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+              <div class="section-card__body">
+                <div style="margin-bottom: var(--space-8); font-size:11px; color:rgba(37,32,38,0.5);">Red chips are auto-suggested from your program curriculum.</div>
+                <div class="skills-chips">
+                  <div class="skill-chip skill-chip--niche">Brand Identity<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip skill-chip--niche">Visual Storytelling<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip skill-chip--niche">Semiotics<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip">Adobe Illustrator<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip">Figma<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip">Typography<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip skill-chip--niche">Creative Direction<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <div class="skill-chip">Photography<span class="skill-chip__remove"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></span></div>
+                  <button class="btn btn--ghost btn--sm">+ Add skill</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /editor -->
+
+          <!-- Preview pane -->
+          <div class="resume-preview-pane">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-size:12px; font-weight:700; color:rgba(37,32,38,0.5); text-transform:uppercase; letter-spacing:0.08em;">Preview</div>
+              <button class="btn btn--primary btn--sm">
+                <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M6 2v6M3 6l3 3 3-3"/><path d="M1 10h10"/></svg>
+                Generate PDF
+              </button>
+            </div>
+            <div class="resume-preview-card">
+              <div class="resume-preview-card__toolbar">
+                <div class="resume-preview-card__toolbar-label">Clean template · A4</div>
+                <button class="btn btn--ghost btn--sm" style="font-size:10px;">Fullscreen</button>
+              </div>
+              <div class="resume-paper">
+                <div class="resume-paper__name">Aira Sukcharoen</div>
+                <div class="resume-paper__contact">aira.sukcharoen@email.com · Bangkok, Thailand · niche.institute/p/aira-sukcharoen</div>
+
+                <div class="resume-paper__section">
+                  <div class="resume-paper__section-title">Education</div>
+                  <div class="resume-paper__entry">
+                    <div class="resume-paper__entry-header">
+                      <span>Creative Identity &amp; Storytelling — NICHE</span>
+                      <span>Nov 2026 – Jan 2027</span>
+                    </div>
+                    <div class="resume-paper__entry-sub">Bootcamp · Bangkok</div>
+                    <div class="resume-paper__entry-desc">Cohort-based bootcamp: brand identity, visual storytelling, creative positioning.</div>
+                  </div>
+                </div>
+
+                <div class="resume-paper__section">
+                  <div class="resume-paper__section-title">Experience</div>
+                  <div class="resume-paper__entry">
+                    <div class="resume-paper__entry-header">
+                      <span>Freelance Brand Designer</span>
+                      <span>Jan 2025 – Present</span>
+                    </div>
+                    <div class="resume-paper__entry-sub">Self-employed · Bangkok</div>
+                    <div class="resume-paper__entry-desc">Brand identity and visual communication for SMEs and creative studios.</div>
+                  </div>
+                </div>
+
+                <div class="resume-paper__section">
+                  <div class="resume-paper__section-title">Projects</div>
+                  <div class="resume-paper__entry">
+                    <div class="resume-paper__entry-header"><span>GLOW Magazine Rebrand Concept</span><span>2026</span></div>
+                    <div class="resume-paper__entry-desc">Full rebrand concept for digital pivot: art direction, type system, editorial grid.</div>
+                  </div>
+                  <div class="resume-paper__entry">
+                    <div class="resume-paper__entry-header"><span>Identity Brand Audit — Sirivannavari</span><span>2026</span></div>
+                    <div class="resume-paper__entry-desc">Comprehensive brand audit using cultural semiotics and positioning theory. Grade: 88/100.</div>
+                  </div>
+                </div>
+
+                <div class="resume-paper__section">
+                  <div class="resume-paper__section-title">Skills</div>
+                  <div class="resume-paper__skills-list">
+                    <span class="resume-paper__skill-tag">Brand Identity</span>
+                    <span class="resume-paper__skill-tag">Visual Storytelling</span>
+                    <span class="resume-paper__skill-tag">Semiotics</span>
+                    <span class="resume-paper__skill-tag">Figma</span>
+                    <span class="resume-paper__skill-tag">Illustrator</span>
+                    <span class="resume-paper__skill-tag">Typography</span>
+                    <span class="resume-paper__skill-tag">Creative Direction</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

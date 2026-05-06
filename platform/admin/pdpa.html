@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDPA &amp; Consent — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing:.1em;
+      text-transform: uppercase; color: rgba(37,32,38,0.45);
+      margin-bottom: var(--space-12);
+    }
+    .section-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: var(--space-24);
+    }
+    .section-card__header {
+      padding: var(--space-20) var(--space-24);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .section-card__title {
+      font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+      display: flex; align-items: center; gap: var(--space-8);
+    }
+    .section-card__body { padding: var(--space-24); }
+
+    /* Consent bar chart */
+    .consent-chart {
+      display: flex; flex-direction: column; gap: var(--space-16);
+    }
+    .consent-bar-row { display: flex; flex-direction: column; gap: var(--space-8); }
+    .consent-bar-label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px;
+    }
+    .consent-bar-label__name { font-weight: 600; }
+    .consent-bar-label__pct { font-weight: 700; font-family: var(--font-display); font-size: 16px; }
+    .consent-bar-track {
+      height: 10px; background: rgba(37,32,38,0.06); border-radius: 5px; overflow: hidden;
+    }
+    .consent-bar-fill {
+      height: 100%; border-radius: 5px;
+      transition: width var(--motion-slow) var(--ease-entrance);
+    }
+
+    /* Countdown pill */
+    .countdown-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: .04em;
+      white-space: nowrap;
+    }
+    .countdown-pill--active { background: #fff8e1; color: #9a6b00; }
+    .countdown-pill--expired { background: rgba(254,29,37,0.1); color: var(--color-accent-brand); }
+
+    /* Compliance checklist */
+    .compliance-list { display: flex; flex-direction: column; gap: var(--space-12); }
+    .compliance-item {
+      display: flex; align-items: flex-start; gap: var(--space-12);
+      padding: var(--space-12) var(--space-16);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+    }
+    .compliance-item__icon {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: grid; place-items: center; flex-shrink: 0; margin-top: 1px;
+    }
+    .compliance-item__icon--pass { background: rgba(74,92,51,0.15); }
+    .compliance-item__icon--pass svg { stroke: var(--color-accent-secondary-shade); }
+    .compliance-item__icon--warn { background: #fff8e1; }
+    .compliance-item__icon--warn svg { stroke: #9a6b00; }
+    .compliance-item__label { font-size: 13px; font-weight: 600; }
+    .compliance-item__meta { font-size: 11px; color: rgba(37,32,38,0.5); margin-top: 2px; }
+
+    /* KPI tile small override */
+    .kpi-strip .kpi-tile .kpi-tile__value { font-size: 28px; }
+  </style>
+</head>
+<body class="app-shell">
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <nav class="sidebar">
+      <a href="#" class="sidebar__brand">
+        <div class="sidebar__brand-mark">N</div>
+        <div>
+          <div class="sidebar__brand-name">NICHE</div>
+          <div class="sidebar__brand-suffix">Admin Portal</div>
+        </div>
+      </a>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 9h14M2 14h8"/></svg><span class="sidebar__label">Programs</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">Cohorts</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14"/></svg><span class="sidebar__label">Courses</span></a>
+        <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14M6 12h6"/></svg><span class="sidebar__label">Schedule</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Learners</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Instructors</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.8 2.2-5 5-5h6c2.8 0 5 2.2 5 5"/></svg><span class="sidebar__label">All Users</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 5h14v10a1 1 0 01-1 1H3a1 1 0 01-1-1V5zM6 5V3h6v2"/></svg><span class="sidebar__label">Enrollments</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12a1 1 0 011 1v8a1 1 0 01-1 1H6l-4 3V4a1 1 0 011-1z"/></svg><span class="sidebar__label">Announcements</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="payments.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="2"/><path d="M1 8h16M5 12h3"/></svg><span class="sidebar__label">Payments</span></a>
+      </div>
+
+      <div class="sidebar__group" style="border-top: 1px solid var(--color-shell-border); padding-top: var(--space-16); margin-top: var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="role-assignment.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="invite-link.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 8l-6 6M7.5 3.5l7 7-3 3-7-7 3-3z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="pdpa.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="audit-log.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 8h10M2 12h6"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 6l3-3 3 3M6 3v10M15 12l-3 3-3-3M12 15V5"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="avatar" style="background: var(--color-accent-brand); color: var(--color-surface-base);">A</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px; font-weight:600; color:var(--color-shell-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">admin@niche.ac</div>
+            <div style="font-size:11px; color:var(--color-shell-text-mute);">Admin (NICHE)</div>
+          </div>
+          <span class="badge badge--ink" style="font-size:9px; flex-shrink:0;">Admin</span>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="app-topbar">
+    <div class="topbar">
+      <div class="topbar__search">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <input type="search" placeholder="Search…">
+      </div>
+      <div class="topbar__actions">
+        <button class="topbar__icon-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 14.5a2 2 0 004 0"/></svg>
+          <span class="topbar__icon-btn-badge"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="app-main">
+    <div class="main">
+      <div class="page-header">
+        <div class="page-header__title">
+          <div class="page-header__eyebrow">Settings</div>
+          <h1 class="page-header__heading">PDPA &amp; Consent</h1>
+          <div class="page-header__sub">Thai Personal Data Protection Act compliance dashboard</div>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn--ghost">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l6 6 6-6M9 3v12"/></svg>
+            Download PDPA Report
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI tiles -->
+      <div class="kpi-strip" style="grid-template-columns: repeat(4, 1fr); margin-bottom: var(--space-32);">
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: var(--color-accent-secondary-shade);">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9l4 4 6-8"/></svg>
+          </div>
+          <div class="kpi-tile__label">Active Consents</div>
+          <div class="kpi-tile__value">84</div>
+          <div class="kpi-tile__delta kpi-tile__delta--up">
+            <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3l6 6H3l6-6z"/></svg>
+            97% of enrolled
+          </div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: #e8a13d;">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5v4M9 13h.01"/><circle cx="9" cy="9" r="7"/></svg>
+          </div>
+          <div class="kpi-tile__label">Withdrawal Requests</div>
+          <div class="kpi-tile__value" style="font-size:28px;">2</div>
+          <div class="kpi-tile__delta" style="color:#9a6b00;">Pending review</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: #5b7fc4;">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l6 6 6-6M9 3v12"/></svg>
+          </div>
+          <div class="kpi-tile__label">Pending Exports</div>
+          <div class="kpi-tile__value" style="font-size:28px;">3</div>
+          <div class="kpi-tile__delta" style="color:#2f5498;">Within 30-day SLA</div>
+        </div>
+        <div class="kpi-tile">
+          <div class="kpi-tile__icon-tile" style="background: var(--color-accent-brand);">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg>
+          </div>
+          <div class="kpi-tile__label">Pending Anonymizations</div>
+          <div class="kpi-tile__value" style="font-size:28px;">1</div>
+          <div class="kpi-tile__delta kpi-tile__delta--down">Cancel window active</div>
+        </div>
+      </div>
+
+      <!-- 2-column grid for top two sections -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); margin-bottom: var(--space-0);">
+
+        <!-- Section 1: Consent Dashboard -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9l4 4 6-8"/><circle cx="9" cy="9" r="7"/></svg>
+              Consent Dashboard
+            </div>
+            <span style="font-size:11px; color:rgba(37,32,38,0.45);">87 learners total</span>
+          </div>
+          <div class="section-card__body">
+            <div class="consent-chart">
+              <div class="consent-bar-row">
+                <div class="consent-bar-label">
+                  <span class="consent-bar-label__name">Account &amp; course delivery</span>
+                  <span class="consent-bar-label__pct" style="color:var(--color-accent-secondary-shade);">97%</span>
+                </div>
+                <div class="consent-bar-track">
+                  <div class="consent-bar-fill" style="width:97%; background:var(--color-accent-secondary-shade);"></div>
+                </div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.45);">84 / 87 learners · 3 pending</div>
+              </div>
+              <div class="consent-bar-row">
+                <div class="consent-bar-label">
+                  <span class="consent-bar-label__name">Cohort progress analytics</span>
+                  <span class="consent-bar-label__pct" style="color:var(--color-accent-secondary-shade);">91%</span>
+                </div>
+                <div class="consent-bar-track">
+                  <div class="consent-bar-fill" style="width:91%; background:var(--color-accent-secondary-shade);"></div>
+                </div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.45);">79 / 87 learners</div>
+              </div>
+              <div class="consent-bar-row">
+                <div class="consent-bar-label">
+                  <span class="consent-bar-label__name">Aggregated platform analytics</span>
+                  <span class="consent-bar-label__pct" style="color:#e8a13d;">78%</span>
+                </div>
+                <div class="consent-bar-track">
+                  <div class="consent-bar-fill" style="width:78%; background:#e8a13d;"></div>
+                </div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.45);">68 / 87 learners</div>
+              </div>
+              <div class="consent-bar-row">
+                <div class="consent-bar-label">
+                  <span class="consent-bar-label__name">Career &amp; employer access</span>
+                  <span class="consent-bar-label__pct" style="color:var(--color-accent-brand);">44%</span>
+                </div>
+                <div class="consent-bar-track">
+                  <div class="consent-bar-fill" style="width:44%; background:var(--color-accent-brand);"></div>
+                </div>
+                <div style="font-size:11px;color:rgba(37,32,38,0.45);">38 / 87 learners · opt-in</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Compliance Status -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg>
+              Compliance Status
+            </div>
+            <span class="badge badge--success">Compliant</span>
+          </div>
+          <div class="section-card__body">
+            <div class="compliance-list">
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">PDPA Register up to date</div>
+                  <div class="compliance-item__meta">Last updated Nov 15, 2026</div>
+                </div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">DPO Contact designated</div>
+                  <div class="compliance-item__meta">dpo@niche.ac · Khun Siriporn Tanakit</div>
+                </div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">Privacy Notice v2026-09-01</div>
+                  <div class="compliance-item__meta">Published Sep 1, 2026 · EN + TH</div>
+                </div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">Last DPO Review</div>
+                  <div class="compliance-item__meta">Nov 01, 2026 · Next review due Feb 2027</div>
+                </div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">Disco DPA signed</div>
+                  <div class="compliance-item__meta">Data Processing Agreement · Oct 2026</div>
+                </div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-item__icon compliance-item__icon--pass"><svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg></div>
+                <div>
+                  <div class="compliance-item__label">Stripe DPA signed</div>
+                  <div class="compliance-item__meta">Payment processing agreement · Sep 2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--space-24);"></div>
+
+      <!-- Section 2: Pending Data Exports -->
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">
+            <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l6 6 6-6M9 3v12"/></svg>
+            Pending Data Exports
+          </div>
+          <span class="badge badge--warning">3 pending</span>
+        </div>
+        <table class="data-table__inner" style="width:100%;">
+          <thead>
+            <tr style="background:rgba(37,32,38,0.02); border-bottom:1px solid var(--color-divider);">
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">User</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Requested At</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Status</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">SLA Days Left</th>
+              <th style="padding:var(--space-12) var(--space-16);"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:var(--space-12) var(--space-16);">
+                <div class="cell-user">
+                  <div class="avatar">M</div>
+                  <div><div style="font-weight:600; font-size:13px;">Manee Suwan</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">manee@suwan.th</div></div>
+                </div>
+              </td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 09, 2026 at 11:42</td>
+              <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--pending"><span class="status-chip__dot"></span>Preparing</span></td>
+              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#9a6b00;">21 days</td>
+              <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--ghost btn--sm">Send Export</button></td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:var(--space-12) var(--space-16);">
+                <div class="cell-user">
+                  <div class="avatar">R</div>
+                  <div><div style="font-weight:600; font-size:13px;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">ratchaporn@t.th</div></div>
+                </div>
+              </td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 06, 2026 at 09:15</td>
+              <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--pending"><span class="status-chip__dot"></span>Preparing</span></td>
+              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#9a6b00;">24 days</td>
+              <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--ghost btn--sm">Send Export</button></td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-12) var(--space-16);">
+                <div class="cell-user">
+                  <div class="avatar" style="background:rgba(91,127,196,0.12);color:#2f5498;">O</div>
+                  <div><div style="font-weight:600; font-size:13px;">Onuma Phak</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">onuma@phak.th</div></div>
+                </div>
+              </td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 03, 2026 at 14:30</td>
+              <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Ready</span></td>
+              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:var(--color-accent-secondary-shade);">27 days</td>
+              <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--primary btn--sm">Send Export</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section 3: Pending Anonymizations -->
+      <div class="section-card">
+        <div class="section-card__header">
+          <div class="section-card__title">
+            <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/><line x1="14" y1="4" x2="16" y2="6"/><line x1="16" y1="4" x2="14" y2="6"/></svg>
+            Pending Anonymizations
+          </div>
+          <span class="badge badge--danger">1 pending · cancel window active</span>
+        </div>
+        <table class="data-table__inner" style="width:100%;">
+          <thead>
+            <tr style="background:rgba(37,32,38,0.02); border-bottom:1px solid var(--color-divider);">
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">User</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Requested At</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Scheduled For</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Cancel Window</th>
+              <th style="padding:var(--space-12) var(--space-16);"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: rgba(255,248,225,0.4);">
+              <td style="padding:var(--space-12) var(--space-16);">
+                <div class="cell-user">
+                  <div class="avatar" style="background: rgba(37,32,38,0.06);">?</div>
+                  <div>
+                    <div style="font-weight:600; font-size:13px; font-family:'SF Mono',monospace; font-size:12px; color:rgba(37,32,38,0.6);">user-anon-pending</div>
+                    <div style="font-size:11px; color:rgba(37,32,38,0.4);">PII redacted from display</div>
+                  </div>
+                </div>
+              </td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 14, 2026 at 16:45</td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px;">Jan 13, 2027 at 16:45</td>
+              <td style="padding:var(--space-12) var(--space-16);">
+                <div class="countdown-pill countdown-pill--active">
+                  <svg width="10" height="10" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+                  16 days remaining
+                </div>
+              </td>
+              <td style="padding:var(--space-12) var(--space-16);">
+                <button class="btn btn--destructive btn--sm" style="white-space:nowrap;">
+                  Cancel Anonymization
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding:var(--space-12) var(--space-16); border-top:1px solid var(--color-divider); background:rgba(255,248,225,0.25); font-size:12px; color:#9a6b00; display:flex; align-items:center; gap:var(--space-8);">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="#9a6b00" stroke-width="1.8"><circle cx="9" cy="9" r="7"/><path d="M9 5v4M9 13h.01"/></svg>
+          Anonymization is irreversible. PII will be replaced with pseudonyms; enrollment history is preserved for financial records.
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin Ops</div>
+</body>
+</html>

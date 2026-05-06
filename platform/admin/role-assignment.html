@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Role Assignment — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* Dimmed background to simulate modal context */
+    .modal-page-bg {
+      background: rgba(37,32,38,0.45);
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: var(--space-48) var(--space-24);
+    }
+
+    /* Stepper — polished 36px circles, 2px connectors */
+    .stepper {
+      display: flex; align-items: center;
+      gap: 0;
+      margin-bottom: var(--space-32);
+    }
+    .stepper__step {
+      display: flex; align-items: center; gap: var(--space-12);
+      flex: 1;
+    }
+    .stepper__step:last-child { flex: none; }
+    .stepper__circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+      border: 2px solid var(--color-divider);
+      background: white;
+      color: rgba(37,32,38,0.35);
+      transition: background var(--motion-quick) var(--ease-standard),
+                  border-color var(--motion-quick) var(--ease-standard);
+    }
+    .stepper__step.is-done .stepper__circle {
+      background: var(--color-surface-ink);
+      border-color: var(--color-surface-ink);
+      color: white;
+    }
+    .stepper__step.is-active .stepper__circle {
+      background: var(--color-accent-brand);
+      border-color: var(--color-accent-brand);
+      color: white;
+    }
+    .stepper__label {
+      font-size: 12px; font-weight: 700; white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .stepper__step.is-active .stepper__label { color: var(--color-surface-ink); }
+    .stepper__step.is-done .stepper__label { color: rgba(37,32,38,0.5); }
+    .stepper__step:not(.is-active):not(.is-done) .stepper__label { color: rgba(37,32,38,0.35); }
+    .stepper__connector {
+      flex: 1; height: 2px;
+      background: var(--color-divider);
+      margin: 0 var(--space-12);
+    }
+    .stepper__connector.is-done { background: var(--color-surface-ink); }
+
+    /* Radio scope grid */
+    .scope-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-12); margin-bottom: var(--space-24);
+    }
+    .scope-option {
+      border: 2px solid var(--color-divider);
+      border-radius: 6px;
+      padding: var(--space-16);
+      cursor: pointer;
+      transition: border-color var(--motion-quick) var(--ease-standard),
+                  background var(--motion-quick) var(--ease-standard);
+    }
+    .scope-option.is-selected {
+      border-color: var(--color-surface-ink);
+      background: rgba(37,32,38,0.03);
+    }
+    .scope-option__radio {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid var(--color-divider);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: var(--space-8);
+      flex-shrink: 0;
+    }
+    .scope-option.is-selected .scope-option__radio {
+      border-color: var(--color-surface-ink);
+    }
+    .scope-option.is-selected .scope-option__radio::after {
+      content: '';
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-surface-ink);
+    }
+    .scope-option__label {
+      display: flex; align-items: center;
+      font-size: 14px; font-weight: 600;
+    }
+    .scope-option__desc { font-size: 12px; color: rgba(37,32,38,0.5); margin-top: 4px; padding-left: 24px; }
+
+    /* Selected cohort preview */
+    .cohort-preview {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-12) var(--space-16);
+      background: rgba(37,32,38,0.03);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      margin-top: var(--space-16);
+    }
+    .cohort-preview__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-accent-brand); flex-shrink: 0; }
+    .cohort-preview__name { font-size: 14px; font-weight: 700; }
+    .cohort-preview__meta { font-size: 12px; color: rgba(37,32,38,0.5); }
+
+    /* OpenFGA tuple block */
+    .tuple-card {
+      background: var(--color-surface-ink);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .tuple-card__header {
+      padding: var(--space-12) var(--space-16);
+      border-bottom: 1px solid rgba(242,241,240,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tuple-card__label {
+      font-size: 10px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: rgba(242,241,240,0.45);
+    }
+    .tuple-card__badge {
+      font-size: 9px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 10px;
+      background: rgba(74,92,51,0.3); color: #b4c49a;
+    }
+    .tuple-code {
+      padding: var(--space-20) var(--space-24);
+      margin: 0;
+      background: transparent;
+      color: var(--color-surface-base);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      border-radius: 0;
+    }
+    .tuple-code .kw { color: rgba(242,241,240,0.5); }
+    .tuple-code .val-relation { color: #b4c49a; }
+    .tuple-code .val-user { color: #8bc4f0; }
+    .tuple-code .val-object { color: #fe8c8f; }
+
+    .context-summary {
+      background: rgba(37,32,38,0.04);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      padding: var(--space-12) var(--space-16);
+      margin-bottom: var(--space-24);
+      font-size: 13px;
+    }
+    .context-summary strong { color: var(--color-surface-ink); }
+
+    .modal-card {
+      background: white;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 24px 64px rgba(37,32,38,0.3);
+      overflow: hidden;
+    }
+    .modal-card__header {
+      padding: var(--space-24) var(--space-24) var(--space-20);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .modal-card__body {
+      padding: var(--space-24);
+    }
+    .modal-card__footer {
+      padding: var(--space-16) var(--space-24);
+      border-top: 1px solid var(--color-divider);
+      display: flex; gap: var(--space-12); justify-content: space-between;
+    }
+  </style>
+</head>
+<body class="app-shell">
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <nav class="sidebar">
+      <a href="#" class="sidebar__brand">
+        <div class="sidebar__brand-mark">N</div>
+        <div>
+          <div class="sidebar__brand-name">NICHE</div>
+          <div class="sidebar__brand-suffix">Admin Portal</div>
+        </div>
+      </a>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 9h14M2 14h8"/></svg><span class="sidebar__label">Programs</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/></svg><span class="sidebar__label">Cohorts</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14"/></svg><span class="sidebar__label">Courses</span></a>
+        <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2"/><path d="M6 3V2M12 3V2M2 8h14M6 12h6"/></svg><span class="sidebar__label">Schedule</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Learners</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Instructors</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.8 2.2-5 5-5h6c2.8 0 5 2.2 5 5"/></svg><span class="sidebar__label">All Users</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 5h14v10a1 1 0 01-1 1H3a1 1 0 01-1-1V5zM6 5V3h6v2"/></svg><span class="sidebar__label">Enrollments</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12a1 1 0 011 1v8a1 1 0 01-1 1H6l-4 3V4a1 1 0 011-1z"/></svg><span class="sidebar__label">Announcements</span></a>
+      </div>
+
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="payments.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="2"/><path d="M1 8h16M5 12h3"/></svg><span class="sidebar__label">Payments</span></a>
+      </div>
+
+      <div class="sidebar__group" style="border-top: 1px solid var(--color-shell-border); padding-top: var(--space-16); margin-top: var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="role-assignment.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.2 3.2l1.4 1.4M13.4 13.4l1.4 1.4M3.2 14.8l1.4-1.4M13.4 4.6l1.4-1.4"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="invite-link.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 8l-6 6M7.5 3.5l7 7-3 3-7-7 3-3z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="pdpa.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="audit-log.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14M2 8h10M2 12h6"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 6l3-3 3 3M6 3v10M15 12l-3 3-3-3M12 15V5"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="avatar" style="background: var(--color-accent-brand); color: var(--color-surface-base);">A</div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px; font-weight:600; color:var(--color-shell-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">admin@niche.ac</div>
+            <div style="font-size:11px; color:var(--color-shell-text-mute);">Admin (NICHE)</div>
+          </div>
+          <span class="badge badge--ink" style="font-size:9px; flex-shrink:0;">Admin</span>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="app-topbar">
+    <div class="topbar">
+      <div class="topbar__search">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <input type="search" placeholder="Search…">
+      </div>
+      <div class="topbar__actions">
+        <button class="topbar__icon-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 14.5a2 2 0 004 0"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main with dim overlay -->
+  <main class="app-main">
+    <div class="modal-page-bg">
+      <div class="modal-card">
+        <!-- Header -->
+        <div class="modal-card__header">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-20);">
+            <div>
+              <div style="font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--color-accent-brand); margin-bottom:4px;">Settings · Roles &amp; Permissions</div>
+              <h2 style="font-family:var(--font-display); font-size:22px; font-weight:700; letter-spacing:-0.01em;">Grant Role</h2>
+            </div>
+            <button style="background:none;border:none;cursor:pointer;padding:var(--space-8);color:rgba(37,32,38,0.4);" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l10 10M14 4L4 14"/></svg>
+            </button>
+          </div>
+
+          <!-- Stepper -->
+          <div class="stepper">
+            <div class="stepper__step is-done">
+              <div class="stepper__circle">
+                <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg>
+              </div>
+              <span class="stepper__label">1. Search User</span>
+            </div>
+            <div class="stepper__connector is-done"></div>
+            <div class="stepper__step is-done">
+              <div class="stepper__circle">
+                <svg width="12" height="12" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l5 5 7-8"/></svg>
+              </div>
+              <span class="stepper__label">2. Pick Role</span>
+            </div>
+            <div class="stepper__connector is-done"></div>
+            <div class="stepper__step is-active">
+              <div class="stepper__circle">3</div>
+              <span class="stepper__label">3. Pick Scope</span>
+            </div>
+            <div class="stepper__connector"></div>
+            <div class="stepper__step">
+              <div class="stepper__circle">4</div>
+              <span class="stepper__label">4. Confirm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body: Step 3 active -->
+        <div class="modal-card__body">
+          <!-- Context summary from prior steps -->
+          <div class="context-summary">
+            Granting <strong>Instructor</strong> role to
+            <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,32,38,0.06);padding:2px 8px;border-radius:4px;font-weight:700;">
+              <span class="avatar avatar--sm" style="background:rgba(74,92,51,0.12);color:var(--color-accent-secondary-shade);">A</span>
+              achara@niche.ac
+            </span>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Scope Type</label>
+            <div class="field__hint" style="margin-bottom: var(--space-12);">Define where this role applies</div>
+            <div class="scope-grid">
+              <div class="scope-option">
+                <div class="scope-option__label">
+                  <span class="scope-option__radio"></span>
+                  Platform-wide
+                </div>
+                <div class="scope-option__desc">Full access across all programs and cohorts</div>
+              </div>
+              <div class="scope-option">
+                <div class="scope-option__label">
+                  <span class="scope-option__radio"></span>
+                  Program
+                </div>
+                <div class="scope-option__desc">All cohorts within a specific program</div>
+              </div>
+              <div class="scope-option is-selected">
+                <div class="scope-option__label">
+                  <span class="scope-option__radio"></span>
+                  Cohort
+                </div>
+                <div class="scope-option__desc">A single cohort only</div>
+              </div>
+              <div class="scope-option">
+                <div class="scope-option__label">
+                  <span class="scope-option__radio"></span>
+                  Course
+                </div>
+                <div class="scope-option__desc">A specific course within a cohort</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cohort picker (shown because Cohort is selected) -->
+          <div class="field">
+            <label class="field__label">Select Cohort</label>
+            <select class="select">
+              <option value="" disabled>Choose a cohort…</option>
+              <option value="cohort-1-creative-idst-nov-2026" selected>Cohort 1 — Creative ID&amp;ST · Nov 2026</option>
+              <option value="cohort-1-food-business-nov-2026">Cohort 1 — Food Business · Nov 2026</option>
+              <option value="cohort-1-ai-content-nov-2026">Cohort 1 — AI×Content · Nov 2026</option>
+              <option value="cohort-0-pilot">Cohort 0 — Pilot</option>
+            </select>
+            <div class="cohort-preview">
+              <div class="cohort-preview__dot"></div>
+              <div>
+                <div class="cohort-preview__name">Cohort 1 — Creative ID&amp;ST</div>
+                <div class="cohort-preview__meta">Nov 2026 · 22/25 enrolled · Active</div>
+              </div>
+              <span class="pillar-tag pillar-tag--creativity" style="margin-left:auto; font-size:11px;">Creativity</span>
+            </div>
+          </div>
+
+          <!-- OpenFGA tuple preview -->
+          <div class="field">
+            <label class="field__label">OpenFGA Tuple Preview</label>
+            <div class="field__hint" style="margin-bottom:var(--space-12);">This tuple will be written to the authorization store on grant</div>
+            <div class="tuple-card">
+              <div class="tuple-card__header">
+                <span class="tuple-card__label">OpenFGA · write tuple</span>
+                <span class="tuple-card__badge">Preview</span>
+              </div>
+              <pre class="tuple-code"><span class="kw">write tuple</span>
+  <span class="kw">user:</span>     <span class="val-user">user:achara@niche.ac</span>
+  <span class="kw">relation:</span> <span class="val-relation">instructor</span>
+  <span class="kw">object:</span>   <span class="val-object">cohort:cohort-1-creative-idst-nov-2026</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-card__footer">
+          <div style="display:flex; gap: var(--space-12);">
+            <button class="btn btn--ghost">
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4l-6 5 6 5"/></svg>
+              Back
+            </button>
+            <button class="btn btn--destructive">Cancel</button>
+          </div>
+          <button class="btn btn--primary btn--lg">
+            Continue to Step 4
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4l6 5-6 5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin Ops</div>
+</body>
+</html>

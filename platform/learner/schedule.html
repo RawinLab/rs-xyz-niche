@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* View toggle */
+    .view-toggle {
+      display: flex;
+      gap: 2px;
+      background: rgba(37,32,38,0.06);
+      border-radius: 6px;
+      padding: 3px;
+    }
+    .view-toggle__btn {
+      padding: var(--space-8) var(--space-16);
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      color: rgba(37,32,38,0.55);
+      font-family: var(--font-body);
+      transition: all var(--motion-quick) var(--ease-standard);
+    }
+    .view-toggle__btn.is-active {
+      background: white;
+      color: var(--color-surface-ink);
+      box-shadow: 0 1px 3px rgba(37,32,38,0.1);
+    }
+
+    /* Week view grid */
+    .week-grid {
+      display: grid;
+      grid-template-columns: 60px repeat(7, 1fr);
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .week-header {
+      background: rgba(37,32,38,0.02);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .week-header-cell {
+      padding: var(--space-12) var(--space-8);
+      text-align: center;
+      border-right: 1px solid var(--color-divider);
+    }
+    .week-header-cell:last-child { border-right: none; }
+    .week-header-cell__day { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(37,32,38,0.45); }
+    .week-header-cell__date {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+      margin-top: 4px;
+    }
+    .week-header-cell--today .week-header-cell__date {
+      background: var(--color-accent-brand);
+      color: white;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 4px auto 0;
+    }
+
+    .time-col { border-right: 1px solid var(--color-divider); }
+    .time-slot {
+      height: 64px;
+      padding: var(--space-8) var(--space-8) 0;
+      font-size: 10px;
+      color: rgba(37,32,38,0.35);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid rgba(37,32,38,0.04);
+    }
+    .day-col { border-right: 1px solid rgba(37,32,38,0.04); }
+    .day-col:last-child { border-right: none; }
+    .day-slot {
+      height: 64px;
+      border-bottom: 1px solid rgba(37,32,38,0.04);
+      position: relative;
+    }
+
+    /* Calendar events */
+    .cal-event {
+      position: absolute;
+      left: 4px; right: 4px;
+      border-radius: 4px;
+      padding: var(--space-4) var(--space-8);
+      font-size: 11px;
+      font-weight: 600;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 1;
+      text-decoration: none;
+      color: inherit;
+    }
+    .cal-event--onsite {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+    .cal-event--online {
+      background: rgba(74,92,51,0.15);
+      color: var(--color-accent-secondary-shade);
+      border: 1px solid rgba(74,92,51,0.25);
+    }
+    .cal-event--async {
+      background: rgba(254,29,37,0.08);
+      color: var(--color-accent-brand);
+      border: 1px solid rgba(254,29,37,0.15);
+    }
+    .cal-event--past {
+      opacity: 0.5;
+    }
+    .cal-event__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cal-event__time { font-size: 10px; opacity: 0.7; font-weight: 400; }
+
+    /* Agenda list */
+    .agenda-date-group { margin-bottom: var(--space-32); }
+    .agenda-date-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      margin-bottom: var(--space-16);
+    }
+    .agenda-date-num {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      min-width: 48px;
+    }
+    .agenda-date-num--today { color: var(--color-accent-brand); }
+    .agenda-date-info__month { font-size: 12px; color: rgba(37,32,38,0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .agenda-date-info__weekday { font-size: 14px; font-weight: 700; }
+    .agenda-date-info__today { font-size: 11px; color: var(--color-accent-brand); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .agenda-event {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-16);
+      padding: var(--space-16) var(--space-20);
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      margin-bottom: var(--space-8);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color var(--motion-quick) var(--ease-standard);
+    }
+    .agenda-event:hover { border-color: rgba(37,32,38,0.25); }
+    .agenda-event--today { border-color: var(--color-accent-brand); border-width: 1.5px; }
+    .agenda-event__time { font-size: 12px; font-weight: 700; min-width: 80px; color: rgba(37,32,38,0.55); padding-top: 2px; }
+    .agenda-event__type-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 5px;
+    }
+    .agenda-event__type-dot--onsite { background: var(--color-surface-ink); }
+    .agenda-event__type-dot--online { background: var(--color-accent-secondary); }
+    .agenda-event__type-dot--async  { background: var(--color-accent-brand); }
+    .agenda-event__body { flex: 1; }
+    .agenda-event__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .agenda-event__sub { font-size: 12px; color: rgba(37,32,38,0.55); }
+    .agenda-event__chips { display: flex; gap: var(--space-8); margin-top: var(--space-8); }
+
+    /* Attendance overlay chip */
+    .att-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 2px 6px; border-radius: 10px;
+    }
+    .att-chip--attended { background: rgba(74,92,51,0.12); color: var(--color-accent-secondary-shade); }
+    .att-chip--missed { background: rgba(254,29,37,0.1); color: var(--color-accent-brand); }
+    .att-chip--upcoming { background: rgba(37,32,38,0.06); color: rgba(37,32,38,0.5); }
+
+    /* Month mini calendar (simplified) */
+    .month-mini {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-24);
+    }
+    .month-mini-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-16);
+    }
+    .month-mini-title { font-size: 15px; font-weight: 700; }
+    .month-mini-nav { display: flex; gap: var(--space-4); }
+    .month-mini-nav button { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--color-divider); border-radius: 4px; background: none; cursor: pointer; }
+    .month-mini-nav button svg { width: 12px; height: 12px; stroke: rgba(37,32,38,0.5); stroke-width: 1.5; fill: none; }
+
+    .month-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+    .month-grid-cell {
+      aspect-ratio: 1;
+      display: grid; place-items: center;
+      font-size: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .month-grid-cell--header { font-size: 9px; font-weight: 700; color: rgba(37,32,38,0.4); text-transform: uppercase; }
+    .month-grid-cell--today { background: var(--color-accent-brand); color: white; font-weight: 700; }
+    .month-grid-cell--has-event { font-weight: 700; }
+    .month-grid-cell--has-event::after { display: none; }
+    .month-grid-cell { position: relative; }
+    .event-dot {
+      position: absolute; bottom: 1px;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--color-accent-brand);
+    }
+
+    .view-panel { display: none; }
+    .view-panel.is-active { display: block; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand"><div class="sidebar__brand-mark">N</div><div><div class="sidebar__brand-name">NICHE</div><div class="sidebar__brand-suffix">Learner Portal</div></div></a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg><span class="sidebar__label">Curriculum</span></a>
+          <a href="schedule.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:13px;">AS</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div><div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div></div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);"><svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>Behind by 1 session</span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search sessions…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Week 4 · November 2026</div>
+            <h1 class="page-header__heading">Schedule</h1>
+          </div>
+          <div class="page-header__actions">
+            <div class="view-toggle">
+              <button class="view-toggle__btn" onclick="showView('week', this)">Week</button>
+              <button class="view-toggle__btn is-active" onclick="showView('agenda', this)">Agenda</button>
+              <button class="view-toggle__btn" onclick="showView('month', this)">Month</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div style="display:flex; gap:var(--space-16); margin-bottom:var(--space-24); flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:var(--space-8); font-size:12px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--color-surface-ink);"></span>Onsite
+          </div>
+          <div style="display:flex; align-items:center; gap:var(--space-8); font-size:12px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--color-accent-secondary);"></span>Online (live)
+          </div>
+          <div style="display:flex; align-items:center; gap:var(--space-8); font-size:12px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--color-accent-brand);"></span>Async
+          </div>
+        </div>
+
+        <!-- Week view -->
+        <div class="view-panel" id="view-week">
+          <div class="week-grid">
+            <!-- Header row -->
+            <div class="week-header week-header-cell" style="border-right:1px solid var(--color-divider);"></div>
+            <div class="week-header week-header-cell"><div class="week-header-cell__day">Mon</div><div class="week-header-cell__date">9</div></div>
+            <div class="week-header week-header-cell week-header-cell--today"><div class="week-header-cell__day">Tue</div><div class="week-header-cell__date">10</div></div>
+            <div class="week-header week-header-cell week-header-cell--today"><div class="week-header-cell__day" style="color:var(--color-accent-brand);">Wed</div><div class="week-header-cell__date">12</div></div>
+            <div class="week-header week-header-cell"><div class="week-header-cell__day">Thu</div><div class="week-header-cell__date">13</div></div>
+            <div class="week-header week-header-cell"><div class="week-header-cell__day">Fri</div><div class="week-header-cell__date">14</div></div>
+            <div class="week-header week-header-cell"><div class="week-header-cell__day">Sat</div><div class="week-header-cell__date">15</div></div>
+            <div class="week-header week-header-cell"><div class="week-header-cell__day">Sun</div><div class="week-header-cell__date">16</div></div>
+
+            <!-- 09:00 row -->
+            <div class="time-col time-slot">09:00</div>
+            <div class="day-col day-slot" style="background:rgba(254,29,37,0.04);"><!-- missed --></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot">
+              <a href="session.html" class="cal-event cal-event--onsite" style="top:4px; height:calc(256px - 8px);">
+                <div class="cal-event__name">Visual Narrative Lab</div>
+                <div class="cal-event__time">09:00–13:00</div>
+              </a>
+            </div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+
+            <!-- 10:00 -->
+            <div class="time-col time-slot">10:00</div>
+            <div class="day-col day-slot" style="background:rgba(254,29,37,0.04);"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+
+            <!-- 14:00 -->
+            <div class="time-col time-slot">14:00</div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot">
+              <a href="session.html" class="cal-event cal-event--async" style="top:4px; height:52px;">
+                <div class="cal-event__name">Reading: Semiotic Systems</div>
+                <div class="cal-event__time">~45 min</div>
+              </a>
+            </div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+
+            <!-- 18:00 -->
+            <div class="time-col time-slot">18:00</div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot">
+              <a href="session.html" class="cal-event cal-event--online" style="top:4px; height:120px;">
+                <div class="cal-event__name">Semiotic Deconstruction</div>
+                <div class="cal-event__time">18:00–20:00</div>
+              </a>
+            </div>
+            <div class="day-col day-slot"></div>
+            <div class="day-col day-slot"></div>
+          </div>
+        </div>
+
+        <!-- Agenda view (default) -->
+        <div class="view-panel is-active" id="view-agenda">
+
+          <!-- Mon Nov 9 — missed -->
+          <div class="agenda-date-group">
+            <div class="agenda-date-header">
+              <div class="agenda-date-num" style="color:rgba(37,32,38,0.25);">9</div>
+              <div class="agenda-date-info">
+                <div class="agenda-date-info__month">November 2026</div>
+                <div class="agenda-date-info__weekday" style="color:rgba(37,32,38,0.5);">Monday</div>
+              </div>
+            </div>
+            <a href="session.html" class="agenda-event" style="opacity:0.6;">
+              <div class="agenda-event__time">09:00–13:00</div>
+              <div class="agenda-event__type-dot agenda-event__type-dot--onsite"></div>
+              <div class="agenda-event__body">
+                <div class="agenda-event__title">Cultural Mapping Lab</div>
+                <div class="agenda-event__sub">Onsite · Studio A · Session 9</div>
+                <div class="agenda-event__chips">
+                  <span class="att-chip att-chip--missed">Missed</span>
+                  <span class="status-chip status-chip--onsite-only" style="font-size:10px; padding:2px 6px;">Onsite</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Wed Nov 12 — today -->
+          <div class="agenda-date-group">
+            <div class="agenda-date-header">
+              <div class="agenda-date-num agenda-date-num--today">12</div>
+              <div class="agenda-date-info">
+                <div class="agenda-date-info__month">November 2026</div>
+                <div class="agenda-date-info__weekday">Wednesday</div>
+                <div class="agenda-date-info__today">Today</div>
+              </div>
+            </div>
+            <a href="session.html" class="agenda-event agenda-event--today">
+              <div class="agenda-event__time">09:00–13:00</div>
+              <div class="agenda-event__type-dot agenda-event__type-dot--onsite"></div>
+              <div class="agenda-event__body">
+                <div class="agenda-event__title">Visual Narrative Lab — Identity Collage</div>
+                <div class="agenda-event__sub">Onsite · Studio A · Session 10</div>
+                <div class="agenda-event__chips">
+                  <span class="status-chip status-chip--live-now" style="font-size:10px; padding:2px 6px;"><span class="status-chip__dot"></span>Live now</span>
+                  <span class="att-chip att-chip--upcoming">Pending check-in</span>
+                </div>
+              </div>
+            </a>
+            <a href="session.html" class="agenda-event">
+              <div class="agenda-event__time">14:00 · ~45 min</div>
+              <div class="agenda-event__type-dot agenda-event__type-dot--async"></div>
+              <div class="agenda-event__body">
+                <div class="agenda-event__title">Reading — Semiotic Systems Ch.3</div>
+                <div class="agenda-event__sub">Async · Self-paced</div>
+                <div class="agenda-event__chips">
+                  <span class="att-chip att-chip--upcoming">To do</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Fri Nov 14 -->
+          <div class="agenda-date-group">
+            <div class="agenda-date-header">
+              <div class="agenda-date-num">14</div>
+              <div class="agenda-date-info">
+                <div class="agenda-date-info__month">November 2026</div>
+                <div class="agenda-date-info__weekday">Friday</div>
+              </div>
+            </div>
+            <a href="session.html" class="agenda-event">
+              <div class="agenda-event__time">18:00–20:00</div>
+              <div class="agenda-event__type-dot agenda-event__type-dot--online"></div>
+              <div class="agenda-event__body">
+                <div class="agenda-event__title">Semiotic Deconstruction Workshop</div>
+                <div class="agenda-event__sub">Online · Zoom · Session 11</div>
+                <div class="agenda-event__chips">
+                  <span class="att-chip att-chip--upcoming">Upcoming</span>
+                  <span class="badge badge--warning" style="font-size:10px;">Assign. due 23:59</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Mon Nov 16 -->
+          <div class="agenda-date-group">
+            <div class="agenda-date-header">
+              <div class="agenda-date-num" style="color:rgba(37,32,38,0.4);">16</div>
+              <div class="agenda-date-info">
+                <div class="agenda-date-info__month">November 2026</div>
+                <div class="agenda-date-info__weekday" style="color:rgba(37,32,38,0.6);">Monday — Week 5</div>
+              </div>
+            </div>
+            <a href="#" class="agenda-event" style="opacity:0.55;">
+              <div class="agenda-event__time">09:00–13:00</div>
+              <div class="agenda-event__type-dot agenda-event__type-dot--onsite"></div>
+              <div class="agenda-event__body">
+                <div class="agenda-event__title">Narrative Construction Studio</div>
+                <div class="agenda-event__sub">Onsite · Studio A · Session 13 · Module 3.2</div>
+              </div>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Month view -->
+        <div class="view-panel" id="view-month">
+          <div class="month-mini" style="max-width:480px;">
+            <div class="month-mini-header">
+              <div class="month-mini-title">November 2026</div>
+              <div class="month-mini-nav">
+                <button><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg></button>
+                <button><svg viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg></button>
+              </div>
+            </div>
+            <div class="month-grid">
+              <div class="month-grid-cell month-grid-cell--header">Su</div>
+              <div class="month-grid-cell month-grid-cell--header">Mo</div>
+              <div class="month-grid-cell month-grid-cell--header">Tu</div>
+              <div class="month-grid-cell month-grid-cell--header">We</div>
+              <div class="month-grid-cell month-grid-cell--header">Th</div>
+              <div class="month-grid-cell month-grid-cell--header">Fr</div>
+              <div class="month-grid-cell month-grid-cell--header">Sa</div>
+              <div class="month-grid-cell" style="opacity:0.3;">26</div>
+              <div class="month-grid-cell" style="opacity:0.3;">27</div>
+              <div class="month-grid-cell" style="opacity:0.3;">28</div>
+              <div class="month-grid-cell" style="opacity:0.3;">29</div>
+              <div class="month-grid-cell" style="opacity:0.3;">30</div>
+              <div class="month-grid-cell" style="opacity:0.3;">31</div>
+              <div class="month-grid-cell">1</div>
+              <div class="month-grid-cell">2</div>
+              <div class="month-grid-cell month-grid-cell--has-event">3<span class="event-dot"></span></div>
+              <div class="month-grid-cell">4</div>
+              <div class="month-grid-cell month-grid-cell--has-event">5<span class="event-dot"></span></div>
+              <div class="month-grid-cell">6</div>
+              <div class="month-grid-cell month-grid-cell--has-event">7<span class="event-dot"></span></div>
+              <div class="month-grid-cell">8</div>
+              <div class="month-grid-cell month-grid-cell--has-event">9<span class="event-dot" style="background:var(--color-accent-brand);"></span></div>
+              <div class="month-grid-cell">10</div>
+              <div class="month-grid-cell month-grid-cell--has-event">11<span class="event-dot"></span></div>
+              <div class="month-grid-cell month-grid-cell--today">12</div>
+              <div class="month-grid-cell">13</div>
+              <div class="month-grid-cell month-grid-cell--has-event">14<span class="event-dot" style="background:var(--color-accent-secondary);"></span></div>
+              <div class="month-grid-cell">15</div>
+              <div class="month-grid-cell month-grid-cell--has-event">16<span class="event-dot"></span></div>
+              <div class="month-grid-cell">17</div>
+              <div class="month-grid-cell month-grid-cell--has-event">18<span class="event-dot"></span></div>
+              <div class="month-grid-cell">19</div>
+              <div class="month-grid-cell month-grid-cell--has-event">20<span class="event-dot"></span></div>
+              <div class="month-grid-cell">21</div>
+              <div class="month-grid-cell">22</div>
+              <div class="month-grid-cell">23</div>
+              <div class="month-grid-cell">24</div>
+              <div class="month-grid-cell">25</div>
+              <div class="month-grid-cell">26</div>
+              <div class="month-grid-cell">27</div>
+              <div class="month-grid-cell">28</div>
+              <div class="month-grid-cell">29</div>
+              <div class="month-grid-cell">30</div>
+              <div class="month-grid-cell" style="opacity:0.3;">1</div>
+              <div class="month-grid-cell" style="opacity:0.3;">2</div>
+              <div class="month-grid-cell" style="opacity:0.3;">3</div>
+              <div class="month-grid-cell" style="opacity:0.3;">4</div>
+              <div class="month-grid-cell" style="opacity:0.3;">5</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+
+<script>
+function showView(view, btn) {
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('is-active'));
+  document.querySelectorAll('.view-toggle__btn').forEach(b => b.classList.remove('is-active'));
+  document.getElementById('view-' + view).classList.add('is-active');
+  btn.classList.add('is-active');
+}
+</script>
+</body>
+</html>

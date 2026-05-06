@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment #3 — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .assignment-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: var(--space-48);
+      align-items: start;
+    }
+    .assignment-body { display: flex; flex-direction: column; gap: var(--space-32); }
+    .assignment-rail { display: flex; flex-direction: column; gap: var(--space-24); position: sticky; top: calc(var(--topbar-height) + var(--space-32)); }
+
+    /* Brief section */
+    .brief-section {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .brief-section__header {
+      padding: var(--space-24);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-16);
+    }
+    .brief-section__body {
+      padding: var(--space-24);
+    }
+    .brief-section__body p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(37,32,38,0.8);
+      max-width: none;
+      margin-top: 0;
+    }
+    .brief-section__body p + p { margin-top: var(--space-12); }
+
+    /* Deliverables list */
+    .deliverables-list { margin-top: var(--space-16); padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
+    .deliverables-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-8);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .deliverables-list li::before {
+      content: '';
+      width: 16px; height: 16px;
+      background: rgba(74,92,51,0.12);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 8l3 3 5-5' stroke='%234a5c33' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-size: contain;
+    }
+
+    /* Rubric table */
+    .rubric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .rubric-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.5);
+      padding: var(--space-12) var(--space-16);
+      background: rgba(37,32,38,0.02);
+      border-bottom: 1px solid var(--color-divider);
+      text-align: left;
+    }
+    .rubric-table td {
+      padding: var(--space-12) var(--space-16);
+      border-bottom: 1px solid rgba(37,32,38,0.05);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .rubric-table tr:last-child td { border-bottom: none; }
+    .rubric-weight {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: rgba(37,32,38,0.2);
+      white-space: nowrap;
+    }
+
+    /* Drop zone */
+    .dropzone {
+      border: 2px dashed var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-48) var(--space-32);
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--motion-quick) var(--ease-standard),
+                  background var(--motion-quick) var(--ease-standard);
+      background: white;
+    }
+    .dropzone:hover, .dropzone.is-dragover {
+      border-color: var(--color-surface-ink);
+      background: rgba(37,32,38,0.02);
+    }
+    .dropzone__icon {
+      width: 48px; height: 48px;
+      margin: 0 auto var(--space-16);
+      background: rgba(37,32,38,0.06);
+      border-radius: 8px;
+      display: grid; place-items: center;
+    }
+    .dropzone__icon svg { width: 24px; height: 24px; stroke: rgba(37,32,38,0.4); stroke-width: 1.5; fill: none; }
+    .dropzone__title { font-size: 14px; font-weight: 700; margin-bottom: var(--space-8); }
+    .dropzone__sub { font-size: 12px; color: rgba(37,32,38,0.5); }
+
+    /* Uploaded files */
+    .uploaded-file {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-12) var(--space-16);
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      margin-bottom: var(--space-8);
+    }
+    .uploaded-file__icon {
+      width: 32px; height: 32px;
+      background: rgba(254,29,37,0.08);
+      border-radius: 4px;
+      display: grid; place-items: center;
+    }
+    .uploaded-file__icon svg { width: 16px; height: 16px; stroke: var(--color-accent-brand); stroke-width: 1.5; fill: none; }
+    .uploaded-file__info { flex: 1; min-width: 0; }
+    .uploaded-file__name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .uploaded-file__size { font-size: 11px; color: rgba(37,32,38,0.5); }
+    .uploaded-file__remove { width: 28px; height: 28px; display: grid; place-items: center; cursor: pointer; color: rgba(37,32,38,0.35); }
+    .uploaded-file__remove svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    /* Submission history */
+    .history-item {
+      display: flex;
+      gap: var(--space-16);
+      padding: var(--space-16);
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      margin-bottom: var(--space-12);
+    }
+    .history-item__badge {
+      width: 36px; height: 36px;
+      background: rgba(37,32,38,0.06);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 800;
+      flex-shrink: 0;
+      color: rgba(37,32,38,0.5);
+    }
+    .history-item__body { flex: 1; }
+    .history-item__title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .history-item__meta { font-size: 11px; color: rgba(37,32,38,0.5); }
+    .history-item__feedback {
+      margin-top: var(--space-8);
+      padding: var(--space-8) var(--space-12);
+      background: rgba(37,32,38,0.03);
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(37,32,38,0.7);
+      border-left: 2px solid var(--color-accent-brand);
+    }
+    .history-item__feedback strong { display: block; font-size: 11px; color: var(--color-accent-brand); margin-bottom: 4px; }
+
+    @media (max-width: 1100px) {
+      .assignment-layout { grid-template-columns: 1fr; }
+      .assignment-rail { position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div><div class="sidebar__brand-name">NICHE</div><div class="sidebar__brand-suffix">Learner Portal</div></div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg><span class="sidebar__label">Curriculum</span></a>
+          <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:13px;">AS</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div><div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div></div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);"><svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>Behind by 1 session</span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search sessions, materials…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Assignment #3 · Module 3.1</div>
+            <h1 class="page-header__heading">Semiotic Analysis</h1>
+            <p class="page-header__sub">Deconstruct a brand using semiotic theory.</p>
+          </div>
+          <div class="page-header__actions">
+            <span class="status-chip status-chip--needs-revision"><span class="status-chip__dot"></span>Needs revision</span>
+            <span class="badge badge--warning">Due Fri 14 Nov · 23:59</span>
+          </div>
+        </div>
+
+        <div class="assignment-layout">
+          <div class="assignment-body">
+
+            <!-- Brief -->
+            <div class="brief-section">
+              <div class="brief-section__header">
+                <div>
+                  <h2 class="t-h4">Assignment brief</h2>
+                  <div style="font-size:12px; color:rgba(37,32,38,0.55); margin-top: var(--space-4);">Assigned by Karnwipa Jantara · Mon 9 Nov</div>
+                </div>
+                <a href="#" class="btn btn--ghost btn--sm">
+                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 2H3a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V7l-5-5z"/></svg>
+                  Download PDF
+                </a>
+              </div>
+              <div class="brief-section__body">
+                <p>Select a Thai or international brand identity and conduct a structured semiotic analysis. Your analysis should reveal how signs, symbols, and visual codes work together to construct meaning — and for whom.</p>
+                <p>Your submission must include both written analysis and a visual board that illustrates your key semiotic arguments.</p>
+                <div style="margin-top: var(--space-16);">
+                  <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(37,32,38,0.5); margin-bottom: var(--space-12);">Deliverables</div>
+                  <ul class="deliverables-list">
+                    <li>Written analysis: 800–1,200 words (PDF or Google Doc link)</li>
+                    <li>Visual board: A3 size, annotated, exported as PNG or PDF</li>
+                    <li>Brand reference list: minimum 3 secondary sources</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rubric -->
+            <div class="brief-section">
+              <div class="brief-section__header">
+                <h2 class="t-h4">Evaluation rubric</h2>
+                <span class="badge badge--neutral">100 points</span>
+              </div>
+              <table class="rubric-table">
+                <thead>
+                  <tr>
+                    <th>Criterion</th>
+                    <th>Points</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Theoretical depth</strong></td>
+                    <td><span class="rubric-weight">30</span></td>
+                    <td style="color:rgba(37,32,38,0.65);">Accurate application of semiotic concepts (denotation, connotation, myth, sign systems).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Visual analysis</strong></td>
+                    <td><span class="rubric-weight">30</span></td>
+                    <td style="color:rgba(37,32,38,0.65);">Quality and rigor of the visual board; annotations clearly tied to analysis.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Argument clarity</strong></td>
+                    <td><span class="rubric-weight">25</span></td>
+                    <td style="color:rgba(37,32,38,0.65);">Coherent written structure; argument builds progressively; conclusion is distinct.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>References</strong></td>
+                    <td><span class="rubric-weight">15</span></td>
+                    <td style="color:rgba(37,32,38,0.65);">Sources cited correctly; minimum 3 secondary sources relevant to semiotic theory.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Submission area -->
+            <div>
+              <h2 class="t-h4" style="margin-bottom: var(--space-16);">Your submission</h2>
+
+              <!-- Uploaded files -->
+              <div style="margin-bottom: var(--space-16);">
+                <div class="uploaded-file">
+                  <div class="uploaded-file__icon">
+                    <svg viewBox="0 0 16 16"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6l-3-4z"/><path d="M10 2v4h3"/></svg>
+                  </div>
+                  <div class="uploaded-file__info">
+                    <div class="uploaded-file__name">Aira_Semiotic_Analysis_v1.pdf</div>
+                    <div class="uploaded-file__size">PDF · 1.8 MB · Submitted 10 Nov 14:23</div>
+                  </div>
+                  <div class="uploaded-file__remove">
+                    <svg viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12"/></svg>
+                  </div>
+                </div>
+                <div class="uploaded-file">
+                  <div class="uploaded-file__icon">
+                    <svg viewBox="0 0 16 16"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6l-3-4z"/><path d="M10 2v4h3"/></svg>
+                  </div>
+                  <div class="uploaded-file__info">
+                    <div class="uploaded-file__name">Aira_Visual_Board_A3.png</div>
+                    <div class="uploaded-file__size">PNG · 4.2 MB · Submitted 10 Nov 14:24</div>
+                  </div>
+                  <div class="uploaded-file__remove">
+                    <svg viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drop zone -->
+              <div class="dropzone" role="button" tabindex="0" aria-label="Drop files or click to upload">
+                <div class="dropzone__icon">
+                  <svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+                </div>
+                <div class="dropzone__title">Drop files or click to add more</div>
+                <div class="dropzone__sub">PDF, PNG, JPG, DOC · Max 50 MB per file</div>
+              </div>
+
+              <!-- Text submission -->
+              <div class="field" style="margin-top: var(--space-24);">
+                <label class="field__label" for="text-note">Notes or Google Doc link (optional)</label>
+                <div class="field__hint">Add a link to a Google Doc, or any note for your facilitator about this resubmission.</div>
+                <textarea class="textarea" id="text-note" placeholder="https://docs.google.com/… or add a note here"></textarea>
+              </div>
+
+              <!-- Submit -->
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-16);">
+                <div style="font-size:12px; color:rgba(37,32,38,0.55);">This is a resubmission. Your facilitator's feedback is below.</div>
+                <div style="display:flex; gap:var(--space-12);">
+                  <button class="btn btn--ghost">Save draft</button>
+                  <button class="btn btn--primary">
+                    <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M12 2L2 7l4 2 2 4 4-11z"/></svg>
+                    Submit revision
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /body -->
+
+          <!-- Rail -->
+          <div class="assignment-rail">
+
+            <!-- Facilitator feedback -->
+            <div class="card--dark card" style="border-radius:8px;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(242,241,240,0.45); margin-bottom:var(--space-12);">Facilitator feedback</div>
+              <div style="display:flex; align-items:center; gap:var(--space-10); margin-bottom:var(--space-16);">
+                <div class="avatar avatar--sm" style="background:rgba(255,255,255,0.1);color:var(--color-surface-base);">K</div>
+                <div>
+                  <div style="font-size:13px; font-weight:600; color:var(--color-surface-base);">Karnwipa Jantara</div>
+                  <div style="font-size:11px; color:rgba(242,241,240,0.45);">Returned 11 Nov · 09:15</div>
+                </div>
+              </div>
+              <div style="font-size:13px; line-height:1.65; color:rgba(242,241,240,0.8);">
+                Strong theoretical framing in sections 1–2. The Barthes application is accurate. <strong style="color:var(--color-surface-base);">The visual board needs more direct annotation</strong> — tie each element to a specific sign in your written analysis. Also expand the 'myth' section; one paragraph is too brief given its weight in the rubric.
+              </div>
+              <div style="margin-top:var(--space-16); padding-top:var(--space-16); border-top:1px solid rgba(242,241,240,0.08); display:flex; gap:var(--space-8);">
+                <span class="badge badge--warning">Needs revision</span>
+                <span style="font-size:11px; color:rgba(242,241,240,0.4); align-self:center;">Score held until revision</span>
+              </div>
+            </div>
+
+            <!-- Assignment meta -->
+            <div class="card">
+              <h3 style="font-size:13px; font-weight:700; margin-bottom:var(--space-16);">Assignment details</h3>
+              <div style="display:flex; flex-direction:column; gap:var(--space-12); font-size:12px;">
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="color:rgba(37,32,38,0.5);">Module</span>
+                  <span style="font-weight:600;">3.1 — Semiotic Systems</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="color:rgba(37,32,38,0.5);">Deadline</span>
+                  <span style="font-weight:600; color:var(--color-accent-brand);">Fri 14 Nov · 23:59</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="color:rgba(37,32,38,0.5);">Submissions</span>
+                  <span style="font-weight:600;">1 of unlimited</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span style="color:rgba(37,32,38,0.5);">Peer review</span>
+                  <span style="font-weight:600; color:rgba(37,32,38,0.4);">Not required</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Previous submissions -->
+            <div>
+              <h3 style="font-size:13px; font-weight:700; margin-bottom:var(--space-12);">Submission history</h3>
+              <div class="history-item">
+                <div class="history-item__badge">v1</div>
+                <div class="history-item__body">
+                  <div class="history-item__title">First submission</div>
+                  <div class="history-item__meta">10 Nov 2026 · 14:24 · 2 files</div>
+                  <div class="history-item__feedback">
+                    <strong>Karnwipa · Returned 11 Nov</strong>
+                    Visual board needs more annotation. Expand the 'myth' section.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /rail -->
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

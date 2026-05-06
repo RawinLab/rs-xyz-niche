@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — NICHE Instructor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .instructor-greeting {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      padding: var(--space-24) var(--space-32);
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-bottom: 1px solid rgba(242,241,240,0.08);
+    }
+    .instructor-greeting__text { display: flex; flex-direction: column; gap: 4px; }
+    .instructor-greeting__name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .instructor-greeting__meta { font-size: 12px; color: rgba(242,241,240,0.55); }
+    .instructor-greeting__avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--color-accent-brand);
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 16px;
+      color: var(--color-surface-base);
+      flex-shrink: 0;
+    }
+    .instructor-greeting__notice {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      background: rgba(254,29,37,0.15);
+      border: 1px solid rgba(254,29,37,0.3);
+      border-radius: 6px;
+      padding: var(--space-8) var(--space-16);
+      font-size: 12px;
+      max-width: 340px;
+    }
+    .instructor-greeting__notice-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-accent-brand);
+      flex-shrink: 0;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: var(--space-32);
+    }
+    @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.45);
+      margin-bottom: var(--space-16);
+    }
+
+    /* Today's sessions */
+    .session-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-16) var(--space-20);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-16);
+      margin-bottom: var(--space-12);
+      transition: box-shadow var(--motion-quick) var(--ease-standard);
+    }
+    .session-card:hover { box-shadow: var(--shadow-card); }
+    .session-card__time-block {
+      flex-shrink: 0;
+      width: 52px;
+      text-align: center;
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-radius: 6px;
+      padding: var(--space-8) var(--space-4);
+    }
+    .session-card__time-block .hour {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .session-card__time-block .ampm { font-size: 9px; letter-spacing: 0.08em; opacity: 0.6; }
+    .session-card__body { flex: 1; }
+    .session-card__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .session-card__meta { font-size: 12px; color: rgba(37,32,38,0.55); display: flex; gap: var(--space-12); flex-wrap: wrap; }
+    .session-card__live-badge {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      background: rgba(254,29,37,0.08);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+    .session-card__live-badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--color-accent-brand);
+      animation: pulse-dot 2s var(--ease-standard) infinite;
+    }
+    .session-card__online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.55);
+      background: rgba(37,32,38,0.05);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+
+    /* At-risk learners */
+    .at-risk-list { display: flex; flex-direction: column; gap: var(--space-8); }
+    .at-risk-item {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-left: 3px solid var(--color-accent-brand);
+      border-radius: 0 6px 6px 0;
+      padding: var(--space-12) var(--space-16);
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+    }
+    .at-risk-item__avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(254,29,37,0.12);
+      color: var(--color-accent-brand);
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .at-risk-item__info { flex: 1; min-width: 0; }
+    .at-risk-item__name { font-size: 13px; font-weight: 700; }
+    .at-risk-item__reason { font-size: 11px; color: rgba(37,32,38,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .at-risk-item__action {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-accent-brand);
+      text-decoration: none;
+      padding: 4px 8px;
+      border: 1px solid rgba(254,29,37,0.25);
+      border-radius: 3px;
+    }
+
+    /* Activity feed */
+    .activity-feed { display: flex; flex-direction: column; }
+    .activity-item {
+      display: flex;
+      gap: var(--space-12);
+      padding: var(--space-12) 0;
+      border-bottom: 1px solid rgba(37,32,38,0.05);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .activity-item__dot--submit { background: var(--color-accent-secondary-shade); }
+    .activity-item__dot--atrisk  { background: var(--color-accent-brand); }
+    .activity-item__dot--admin   { background: rgba(37,32,38,0.4); }
+    .activity-item__text { flex: 1; font-size: 13px; line-height: 1.45; }
+    .activity-item__time { font-size: 11px; color: rgba(37,32,38,0.4); white-space: nowrap; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Platform</div>
+          </div>
+        </a>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="cohort-detail.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="sidebar__label">My Cohorts</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Teaching</div>
+          <a href="content-authoring.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="sidebar__label">Content</span>
+          </a>
+          <a href="grading-queue.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="sidebar__label">Grading</span>
+            <span class="sidebar__item-badge">7</span>
+          </a>
+          <a href="announcement-composer.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="sidebar__label">Announcements</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Calendar</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="sidebar__label">Profile</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M21 12h-2M5 12H3M12 21v-2M12 5V3"/></svg>
+            <span class="sidebar__label">Settings</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;">AW</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:var(--color-shell-text);">Achara Wongchai</div>
+              <div style="font-size:11px;color:var(--color-shell-text-mute);">Instructor</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Teaching: Cohort 1 — Creative ID&amp;ST
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" placeholder="Search learners, submissions…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div class="topbar__icon-btn-badge"></div>
+          </button>
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
+            <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
+            <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <!-- Greeting banner -->
+      <div class="instructor-greeting">
+        <div class="instructor-greeting__avatar">AW</div>
+        <div class="instructor-greeting__text">
+          <div class="instructor-greeting__name">Good morning, Achara</div>
+          <div class="instructor-greeting__meta">Wed Nov 19, 2026 · Cohort 1 — Creative Identity &amp; Storytelling · 18 enrolled</div>
+        </div>
+        <div class="instructor-greeting__notice">
+          <div class="instructor-greeting__notice-dot"></div>
+          <span><strong>Admin:</strong> Reminder — Mid-cohort review meeting Friday 10:00</span>
+        </div>
+      </div>
+
+      <div class="main">
+
+        <!-- KPI Strip -->
+        <div class="kpi-strip">
+          <div class="kpi-tile">
+            <div class="kpi-tile__label">Pending Submissions</div>
+            <div class="kpi-tile__value" style="color:var(--color-accent-brand);">7</div>
+            <div class="kpi-tile__delta kpi-tile__delta--down">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+              3 late submissions
+            </div>
+            <div class="kpi-tile__icon-tile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+          </div>
+
+          <div class="kpi-tile">
+            <div class="kpi-tile__label">Cohort Attendance</div>
+            <div class="kpi-tile__value">87%</div>
+            <div class="kpi-tile__delta kpi-tile__delta--up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              +2% this week
+            </div>
+            <div class="kpi-tile__icon-tile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </div>
+          </div>
+
+          <div class="kpi-tile">
+            <div class="kpi-tile__label">Avg. Progress</div>
+            <div class="kpi-tile__value">64%</div>
+            <div style="margin-top:4px;">
+              <div class="progress">
+                <div class="progress__fill progress__fill--moss" style="width:64%;"></div>
+              </div>
+            </div>
+            <div class="kpi-tile__delta kpi-tile__delta--up">Median: 8/12 modules</div>
+            <div class="kpi-tile__icon-tile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+          </div>
+
+          <div class="kpi-tile">
+            <div class="kpi-tile__label">Unread Announcements</div>
+            <div class="kpi-tile__value">1</div>
+            <div class="kpi-tile__delta" style="color:rgba(37,32,38,0.5);">From Admin · 2h ago</div>
+            <div class="kpi-tile__icon-tile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-grid">
+          <!-- Left column -->
+          <div>
+            <!-- Today's sessions -->
+            <div class="section-label">Today's Sessions — Wed Nov 19</div>
+            <div class="session-card">
+              <div class="session-card__time-block">
+                <div class="hour">09</div>
+                <div class="ampm">AM</div>
+              </div>
+              <div class="session-card__body">
+                <div class="session-card__title">Onsite Studio Workshop — Visual Identity Systems</div>
+                <div class="session-card__meta">
+                  <span>09:00 – 13:00</span>
+                  <span>🏢 Studio B, NICHE Bangkok</span>
+                  <span>18 learners expected</span>
+                </div>
+              </div>
+              <span class="session-card__live-badge">
+                <span class="session-card__live-badge-dot"></span>
+                Live Now
+              </span>
+            </div>
+            <div class="session-card">
+              <div class="session-card__time-block" style="background:rgba(37,32,38,0.15);color:var(--color-surface-ink);">
+                <div class="hour">19</div>
+                <div class="ampm">PM</div>
+              </div>
+              <div class="session-card__body">
+                <div class="session-card__title">Office Hours — Live Online Q&amp;A</div>
+                <div class="session-card__meta">
+                  <span>19:00 – 20:00</span>
+                  <span>📹 Zoom · niche.ac/zoom/cohort1</span>
+                  <span>Open to all enrolled</span>
+                </div>
+              </div>
+              <span class="session-card__online-badge">Tonight</span>
+            </div>
+
+            <!-- At-risk learners -->
+            <div class="section-label" style="margin-top:var(--space-32);">At-Risk Learners <span style="color:var(--color-accent-brand);font-weight:800;">2</span></div>
+            <div class="at-risk-list">
+              <div class="at-risk-item">
+                <div class="at-risk-item__avatar">AS</div>
+                <div class="at-risk-item__info">
+                  <div class="at-risk-item__name">Aira Sukcharoen</div>
+                  <div class="at-risk-item__reason">Behind by 2 sessions · 1 overdue submission · Progress 52%</div>
+                </div>
+                <a href="cohort-detail.html" class="at-risk-item__action">View</a>
+              </div>
+              <div class="at-risk-item">
+                <div class="at-risk-item__avatar">KM</div>
+                <div class="at-risk-item__info">
+                  <div class="at-risk-item__name">Krit Mehra</div>
+                  <div class="at-risk-item__reason">9 days no login · 2 overdue submissions · Progress 47%</div>
+                </div>
+                <a href="cohort-detail.html" class="at-risk-item__action">View</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column: activity feed -->
+          <div>
+            <div class="section-label">Recent Activity</div>
+            <div class="card" style="padding:var(--space-16);">
+              <div class="activity-feed">
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--submit"></div>
+                  <div class="activity-item__text"><strong>Nattacha Boonma</strong> submitted <em>Module 5 Reflection</em></div>
+                  <div class="activity-item__time">12m ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--atrisk"></div>
+                  <div class="activity-item__text"><strong>Krit Mehra</strong> flagged at-risk — no login 9 days</div>
+                  <div class="activity-item__time">1h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--submit"></div>
+                  <div class="activity-item__text"><strong>Pasin Rattanachot</strong> submitted <em>Brand Story Draft</em> (late)</div>
+                  <div class="activity-item__time">3h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--admin"></div>
+                  <div class="activity-item__text"><strong>Admin</strong> sent announcement: "Mid-cohort review meeting"</div>
+                  <div class="activity-item__time">2h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--submit"></div>
+                  <div class="activity-item__text"><strong>Wanlaya Khunying</strong> completed Module 8</div>
+                  <div class="activity-item__time">5h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--submit"></div>
+                  <div class="activity-item__text"><strong>Supakan Thongdee</strong> submitted <em>Moodboard Workshop</em></div>
+                  <div class="activity-item__time">6h ago</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--atrisk"></div>
+                  <div class="activity-item__text"><strong>Aira Sukcharoen</strong> missed Session 6 attendance</div>
+                  <div class="activity-item__time">Yesterday</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-item__dot activity-item__dot--submit"></div>
+                  <div class="activity-item__text"><strong>Chalisa Nakorn</strong> submitted <em>Personal Brand Map</em></div>
+                  <div class="activity-item__time">Yesterday</div>
+                </div>
+              </div>
+              <div style="margin-top:var(--space-12);padding-top:var(--space-12);border-top:1px solid var(--color-divider);text-align:center;">
+                <a href="#" style="font-size:12px;color:rgba(37,32,38,0.45);text-decoration:none;font-weight:600;">View all activity →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Instructor</div>
+</body>
+</html>

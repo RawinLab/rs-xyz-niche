@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programs — NICHE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-16);
+    }
+    .program-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-20);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .program-card:hover {
+      box-shadow: 0 4px 16px rgba(37,32,38,0.08);
+      transform: translateY(-1px);
+    }
+    .program-card__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+    .program-card__title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .program-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-12);
+      border-top: 1px solid var(--color-divider);
+      margin-top: auto;
+    }
+    .pillar-section-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      margin-bottom: var(--space-16);
+      margin-top: var(--space-32);
+    }
+    .pillar-section-label:first-child { margin-top: 0; }
+    .pillar-section-label__line {
+      flex: 1;
+      height: 1px;
+      background: var(--color-divider);
+    }
+  </style>
+</head>
+<body class="app-shell">
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="app-sidebar sidebar">
+    <a href="dashboard.html" class="sidebar__brand">
+      <div class="sidebar__brand-mark">N</div>
+      <div>
+        <div class="sidebar__brand-name">NICHE</div>
+        <div class="sidebar__brand-suffix">Admin Portal</div>
+      </div>
+    </a>
+
+    <nav style="display:flex;flex-direction:column;gap:var(--space-8);flex:1;">
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Overview</div>
+        <a href="dashboard.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="1" width="7" height="7" rx="1.5"/><rect x="10" y="1" width="7" height="7" rx="1.5"/><rect x="1" y="10" width="7" height="7" rx="1.5"/><rect x="10" y="10" width="7" height="7" rx="1.5"/></svg>
+          <span class="sidebar__label">Dashboard</span>
+        </a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Programs</div>
+        <a href="programs.html" class="sidebar__item is-active">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 3h14M2 9h14M2 15h8"/></svg>
+          <span class="sidebar__label">Programs</span>
+        </a>
+        <a href="cohorts.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+          <span class="sidebar__label">Cohorts</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 3h12v12H3z"/><path d="M7 7h4M7 11h4"/></svg>
+          <span class="sidebar__label">Courses</span>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1.5"/><path d="M5 1v4M13 1v4M2 8h14"/></svg>
+          <span class="sidebar__label">Schedule</span>
+        </a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">People</div>
+        <a href="users.html?role=learner" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg>
+          <span class="sidebar__label">Learners</span>
+        </a>
+        <a href="users.html?role=instructor" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="7" cy="6" r="3"/><path d="M1 16c0-3.314 2.686-6 6-6"/><circle cx="13" cy="11" r="2"/><path d="M13 9v1M13 14v1M11 12h1M14 12h1"/></svg>
+          <span class="sidebar__label">Instructors</span>
+        </a>
+        <a href="users.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="6" r="2.5"/><path d="M1 16c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5"/></svg>
+          <span class="sidebar__label">All Users</span>
+        </a>
+        <a href="enrollments.html" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M14 9a5 5 0 1 1-5-5"/><path d="M14 2v5h-5"/></svg>
+          <span class="sidebar__label">Enrollments</span>
+          <span class="sidebar__item-badge">12</span>
+        </a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Communications</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M2 4h14v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4z"/><path d="M2 4l7 6 7-6"/></svg>
+          <span class="sidebar__label">Announcements</span>
+        </a>
+      </div>
+      <div class="sidebar__group">
+        <div class="sidebar__group-label">Finance</div>
+        <a href="#" class="sidebar__item">
+          <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="1" y="4" width="16" height="12" rx="1.5"/><path d="M1 8h16"/><circle cx="5" cy="12" r="1"/></svg>
+          <span class="sidebar__label">Payments</span>
+        </a>
+      </div>
+      <div class="sidebar__group" style="border-top:1px solid var(--color-shell-border);padding-top:var(--space-16);margin-top:var(--space-8);">
+        <div class="sidebar__group-label">Settings</div>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2"/><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></svg><span class="sidebar__label">Roles &amp; Permissions</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H7L2 7v4l5 5h4l5-5V7l-5-5z"/></svg><span class="sidebar__label">Invite Links</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 1 0 16A8 8 0 0 1 9 1z"/></svg><span class="sidebar__label">PDPA &amp; Consent</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/></svg><span class="sidebar__label">Audit Log</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 9h12M9 3l6 6-6 6"/></svg><span class="sidebar__label">Integrations</span></a>
+        <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M6 9h6M9 6v6"/></svg><span class="sidebar__label">Workspace</span></a>
+      </div>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="avatar" style="background:var(--color-accent-brand);color:white;font-weight:800;">P</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;color:var(--color-shell-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Praew Nilsuwan</div>
+          <div style="font-size:11px;color:var(--color-shell-text-mute);">praew@niche.ac</div>
+        </div>
+        <span class="badge badge--ink" style="font-size:10px;white-space:nowrap;flex-shrink:0;">Admin</span>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="app-topbar topbar">
+    <nav style="display:flex;align-items:center;gap:var(--space-8);font-size:13px;color:var(--color-shell-text-mute);">
+      <a href="dashboard.html" style="color:var(--color-shell-text-mute);text-decoration:none;">Dashboard</a>
+      <span>/</span>
+      <span style="color:var(--color-shell-text);font-weight:600;">Programs</span>
+    </nav>
+    <div class="topbar__actions">
+      <button class="topbar__icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2a5 5 0 0 1 5 5v3l1.5 2H2.5L4 10V7a5 5 0 0 1 5-5z"/><path d="M7 15a2 2 0 0 0 4 0"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="app-main main">
+    <div class="page-header">
+      <div class="page-header__title">
+        <div class="page-header__eyebrow">Programs</div>
+        <h1 class="page-header__heading">Programs <span style="font-size:24px;font-weight:400;color:rgba(37,32,38,0.4);">(12)</span></h1>
+        <p class="page-header__sub">3 pillars · 12 programs · Bootcamp / Studio / Degree tracks</p>
+      </div>
+      <div class="page-header__actions">
+        <button class="btn btn--ghost btn--sm">Import CSV</button>
+        <button class="btn btn--primary btn--sm">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>
+          Create Program
+        </button>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-24);flex-wrap:wrap;">
+      <input type="search" class="data-table__search" placeholder="Search programs…" style="max-width:280px;">
+      <div style="display:flex;gap:var(--space-8);">
+        <button class="btn btn--ghost btn--sm is-active" style="background:rgba(37,32,38,0.06);">All Pillars</button>
+        <button class="btn btn--ghost btn--sm">Creativity</button>
+        <button class="btn btn--ghost btn--sm">Humanity</button>
+        <button class="btn btn--ghost btn--sm">Entrepreneurship</button>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:var(--space-8);align-items:center;">
+        <span style="font-size:12px;color:rgba(37,32,38,0.5);">Status:</span>
+        <select class="select btn--sm" style="width:auto;padding:6px 10px;font-size:12px;">
+          <option>All</option>
+          <option>Active</option>
+          <option>Draft</option>
+          <option>Archived</option>
+        </select>
+        <span style="font-size:12px;color:rgba(37,32,38,0.5);margin-left:var(--space-8);">Density:</span>
+        <div style="display:flex;border:1px solid var(--color-divider);border-radius:4px;overflow:hidden;">
+          <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;padding:4px 8px;font-size:11px;">Compact</button>
+          <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;border-left:1px solid var(--color-divider);border-right:1px solid var(--color-divider);padding:4px 8px;font-size:11px;background:rgba(37,32,38,0.05);">Default</button>
+          <button class="btn btn--ghost btn--sm" style="border-radius:0;border:none;padding:4px 8px;font-size:11px;">Spacious</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILLAR: CREATIVITY -->
+    <div class="pillar-section-label">
+      <span class="pillar-tag pillar-tag--creativity" style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Creativity</span>
+      <div class="pillar-section-label__line"></div>
+      <span style="font-size:12px;color:rgba(37,32,38,0.4);">4 programs</span>
+    </div>
+    <div class="program-grid" style="margin-bottom:var(--space-8);">
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+          <span class="badge badge--ink" style="font-size:10px;">Studio 6m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">AI × Content Engine Studio</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Master generative workflows for content at scale. SEO, social, long-form.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);">
+            <span style="font-weight:600;color:var(--color-surface-ink);">2</span> cohorts
+          </div>
+          <div style="display:flex;gap:var(--space-8);">
+            <span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 3d ago</span>
+            <a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+          <span class="badge badge--ink" style="font-size:10px;">Studio 6m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">Product &amp; Experience Design Studio</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">UX research, prototyping, design systems for digital products.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);">
+            <span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 1w ago</span>
+            <a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+          <span class="badge" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Bootcamp 3m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">Creative Identity &amp; Storytelling</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Brand voice, narrative architecture, personal creative identity.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">2</span> cohorts</div>
+          <div style="display:flex;gap:var(--space-8);">
+            <span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 2d ago</span>
+            <a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--creativity" style="font-size:10px;">Creativity</span>
+          <span class="badge" style="font-size:10px;background:rgba(254,29,37,0.08);color:var(--color-accent-brand);">Degree 12m</span>
+          <span class="status-chip status-chip--draft" style="font-size:9px;padding:2px 7px;margin-left:auto;">Draft</span>
+        </div>
+        <div class="program-card__title">The Business of Craft</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Turn creative expertise into sustainable business models.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">0</span> cohorts</div>
+          <div style="display:flex;gap:var(--space-8);">
+            <span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 1m ago</span>
+            <a href="#" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">Edit →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PILLAR: HUMANITY -->
+    <div class="pillar-section-label">
+      <span class="pillar-tag pillar-tag--humanity" style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Humanity</span>
+      <div class="pillar-section-label__line"></div>
+      <span style="font-size:12px;color:rgba(37,32,38,0.4);">4 programs</span>
+    </div>
+    <div class="program-grid" style="margin-bottom:var(--space-8);">
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--humanity" style="font-size:10px;">Humanity</span>
+          <span class="badge badge--ink" style="font-size:10px;">Studio 6m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">New Hospitality</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Human-centered service design for the experience economy.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 5d ago</span><a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--humanity" style="font-size:10px;">Humanity</span>
+          <span class="badge badge--ink" style="font-size:10px;">Studio 6m</span>
+          <span class="status-chip status-chip--draft" style="font-size:9px;padding:2px 7px;margin-left:auto;">Draft</span>
+        </div>
+        <div class="program-card__title">Event &amp; Experience Design</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Live experiences, pop-ups, and immersive brand activations.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">0</span> cohorts</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 2w ago</span><a href="#" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">Edit →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--humanity" style="font-size:10px;">Humanity</span>
+          <span class="badge" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Bootcamp 3m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">Food Business 3.0</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Modern F&amp;B operations, brand, and growth in the post-delivery era.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">2</span> cohorts</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 1d ago</span><a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--humanity" style="font-size:10px;">Humanity</span>
+          <span class="badge" style="font-size:10px;background:rgba(254,29,37,0.08);color:var(--color-accent-brand);">Degree 12m</span>
+          <span class="status-chip status-chip--locked" style="font-size:9px;padding:2px 7px;margin-left:auto;">Archived</span>
+        </div>
+        <div class="program-card__title">Community &amp; Localization</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Building rooted communities and locally-resonant brands.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 3m ago</span><a href="#" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PILLAR: ENTREPRENEURSHIP -->
+    <div class="pillar-section-label">
+      <span class="pillar-tag pillar-tag--entrepreneurship" style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Entrepreneurship</span>
+      <div class="pillar-section-label__line"></div>
+      <span style="font-size:12px;color:rgba(37,32,38,0.4);">4 programs</span>
+    </div>
+    <div class="program-grid">
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--entrepreneurship" style="font-size:10px;">Entrepreneurship</span>
+          <span class="badge badge--ink" style="font-size:10px;">Studio 6m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">AI-native Business Builder</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Launch and operate lean businesses with AI at the core.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 4d ago</span><a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--entrepreneurship" style="font-size:10px;">Entrepreneurship</span>
+          <span class="badge" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Bootcamp 3m</span>
+          <span class="status-chip status-chip--draft" style="font-size:9px;padding:2px 7px;margin-left:auto;">Draft</span>
+        </div>
+        <div class="program-card__title">SME Automation Lab</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Workflow automation, no-code tools, and ops efficiency for SMEs.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">0</span> cohorts</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 1w ago</span><a href="#" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">Edit →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--entrepreneurship" style="font-size:10px;">Entrepreneurship</span>
+          <span class="badge" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Bootcamp 3m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">Sales &amp; Dealmaking</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">B2B selling, pitching, negotiation for Thai market context.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 6d ago</span><a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__meta">
+          <span class="pillar-tag pillar-tag--entrepreneurship" style="font-size:10px;">Entrepreneurship</span>
+          <span class="badge" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Bootcamp 3m</span>
+          <span class="status-chip status-chip--current" style="font-size:9px;padding:2px 7px;margin-left:auto;">Active</span>
+        </div>
+        <div class="program-card__title">First Venture Bootcamp</div>
+        <div style="font-size:12px;color:rgba(37,32,38,0.55);">Zero to MVP: validate, build, and pitch your first venture.</div>
+        <div class="program-card__footer">
+          <div style="font-size:12px;color:rgba(37,32,38,0.55);"><span style="font-weight:600;color:var(--color-surface-ink);">1</span> cohort</div>
+          <div style="display:flex;gap:var(--space-8);"><span style="font-size:11px;color:rgba(37,32,38,0.4);">Updated 2d ago</span><a href="cohorts.html" class="btn btn--ghost btn--sm" style="padding:3px 8px;font-size:11px;">View →</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-32);padding-top:var(--space-16);border-top:1px solid var(--color-divider);">
+      <span style="font-size:13px;color:rgba(37,32,38,0.55);">Showing 1–12 of 12 programs</span>
+      <div style="display:flex;gap:var(--space-8);">
+        <button class="btn btn--ghost btn--sm" disabled style="opacity:0.3;">← Prev</button>
+        <button class="btn btn--ghost btn--sm" style="background:rgba(37,32,38,0.06);">1</button>
+        <button class="btn btn--ghost btn--sm" disabled style="opacity:0.3;">Next →</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Admin</div>
+
+</body>
+</html>

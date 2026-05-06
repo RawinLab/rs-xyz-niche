@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session 10 — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .session-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: var(--space-48);
+      align-items: start;
+    }
+    .session-main { display: flex; flex-direction: column; gap: var(--space-32); }
+    .session-rail { display: flex; flex-direction: column; gap: var(--space-24); position: sticky; top: calc(var(--topbar-height) + var(--space-32)); }
+
+    /* Video embed placeholder */
+    .video-embed {
+      background: var(--color-surface-ink);
+      border-radius: 8px;
+      aspect-ratio: 16/9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-16);
+      position: relative;
+      overflow: hidden;
+    }
+    .video-embed__bg {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(242,241,240,0.02) 0px,
+        rgba(242,241,240,0.02) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+    }
+    .video-embed__play {
+      width: 64px; height: 64px;
+      background: var(--color-accent-brand);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      cursor: pointer;
+      position: relative; z-index: 1;
+      transition: transform var(--motion-quick) var(--ease-standard);
+    }
+    .video-embed__play:hover { transform: scale(1.08); }
+    .video-embed__play svg { width: 24px; height: 24px; fill: white; margin-left: 4px; }
+    .video-embed__label {
+      position: relative; z-index: 1;
+      text-align: center;
+      color: rgba(242,241,240,0.55);
+      font-size: 12px;
+    }
+    .video-embed__label strong {
+      display: block;
+      color: var(--color-surface-base);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .video-embed__onsite-notice {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(37,32,38,0.85);
+      color: var(--color-surface-base);
+      padding: var(--space-12) var(--space-24);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    /* Materials list */
+    .material-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-14) var(--space-20);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+      background: white;
+      transition: border-color var(--motion-quick) var(--ease-standard);
+      margin-bottom: var(--space-8);
+    }
+    .material-item:hover { border-color: rgba(37,32,38,0.3); }
+    .material-icon {
+      width: 36px; height: 36px;
+      border-radius: 6px;
+      background: rgba(37,32,38,0.06);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .material-icon svg { width: 18px; height: 18px; stroke: rgba(37,32,38,0.6); stroke-width: 1.5; fill: none; }
+    .material-icon--pdf { background: rgba(254,29,37,0.08); }
+    .material-icon--pdf svg { stroke: var(--color-accent-brand); }
+    .material-icon--link { background: rgba(74,92,51,0.12); }
+    .material-icon--link svg { stroke: var(--color-accent-secondary-shade); }
+    .material-info { flex: 1; min-width: 0; }
+    .material-info__name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .material-info__meta { font-size: 11px; color: rgba(37,32,38,0.5); margin-top: 2px; }
+    .material-download {
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      color: rgba(37,32,38,0.4);
+    }
+    .material-download svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    /* Live session info card */
+    .live-info-card {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      border-radius: 8px;
+      padding: var(--space-24);
+    }
+    .live-info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-12);
+      padding: var(--space-12) 0;
+      border-bottom: 1px solid rgba(242,241,240,0.08);
+      font-size: 13px;
+    }
+    .live-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .live-info-row svg { width: 16px; height: 16px; stroke: rgba(242,241,240,0.5); stroke-width: 1.5; fill: none; flex-shrink: 0; margin-top: 2px; }
+    .live-info-row__label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(242,241,240,0.45); margin-bottom: 2px; }
+    .live-info-row__value { color: var(--color-surface-base); }
+
+    /* Attendance status */
+    .attendance-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-20) var(--space-24);
+    }
+
+    /* Nav prev/next */
+    .session-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-16);
+      padding-top: var(--space-24);
+      border-top: 1px solid var(--color-divider);
+      margin-top: var(--space-16);
+    }
+    .session-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      text-decoration: none;
+      color: rgba(37,32,38,0.6);
+      font-size: 13px;
+      font-weight: 600;
+      padding: var(--space-8) var(--space-12);
+      border-radius: 6px;
+      border: 1px solid var(--color-divider);
+      background: white;
+    }
+    .session-nav-btn:hover { color: var(--color-surface-ink); border-color: rgba(37,32,38,0.3); opacity: 1; }
+    .session-nav-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    @media (max-width: 1100px) {
+      .session-layout { grid-template-columns: 1fr; }
+      .session-rail { position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Learner Portal</div>
+          </div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg>
+            <span class="sidebar__label">Curriculum</span>
+          </a>
+          <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 13px;">AS</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div>
+              <div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);">
+          <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>
+          Behind by 1 session
+        </span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search sessions, materials…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <!-- Breadcrumb -->
+        <div style="display:flex; align-items:center; gap: var(--space-8); font-size:12px; color:rgba(37,32,38,0.5); margin-bottom: var(--space-24);">
+          <a href="curriculum.html" style="color:rgba(37,32,38,0.5); text-decoration:none;">Curriculum</a>
+          <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg>
+          <span>Phase 3</span>
+          <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg>
+          <span>3.1 Semiotic Systems</span>
+          <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg>
+          <strong style="color:var(--color-surface-ink);">Session 10</strong>
+        </div>
+
+        <!-- Page header -->
+        <div class="page-header" style="margin-bottom: var(--space-32);">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Session 10 · Module 3.1 · Week 4</div>
+            <h1 class="page-header__heading">Visual Narrative Lab —<br>Identity Collage</h1>
+          </div>
+          <div class="page-header__actions">
+            <span class="status-chip status-chip--live-now"><span class="status-chip__dot"></span>Live now</span>
+            <span class="status-chip status-chip--onsite-only">Onsite only</span>
+          </div>
+        </div>
+
+        <div class="session-layout">
+          <div class="session-main">
+
+            <!-- Video embed -->
+            <div class="video-embed">
+              <div class="video-embed__bg"></div>
+              <div class="video-embed__play" role="button" aria-label="Play session recording">
+                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+              </div>
+              <div class="video-embed__label">
+                <strong>Session recording</strong>
+                Available after the live session ends
+              </div>
+              <div class="video-embed__onsite-notice">
+                <svg style="width:16px;height:16px;stroke:var(--color-surface-base);stroke-width:1.5;fill:none;" viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="8" rx="1"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>
+                This is an onsite session. Attend Studio A today 09:00–13:00.
+              </div>
+            </div>
+
+            <!-- Reading materials -->
+            <div>
+              <h2 class="t-h4" style="margin-bottom: var(--space-16);">Session materials</h2>
+
+              <a href="#" class="material-item">
+                <div class="material-icon material-icon--pdf">
+                  <svg viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M11 2v5h5"/></svg>
+                </div>
+                <div class="material-info">
+                  <div class="material-info__name">Session brief — Identity Collage</div>
+                  <div class="material-info__meta">PDF · 2 pages · 340 KB</div>
+                </div>
+                <div class="material-download">
+                  <svg viewBox="0 0 16 16"><path d="M8 3v7M5 8l3 3 3-3"/><path d="M3 13h10"/></svg>
+                </div>
+              </a>
+
+              <a href="#" class="material-item">
+                <div class="material-icon">
+                  <svg viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg>
+                </div>
+                <div class="material-info">
+                  <div class="material-info__name">Reading — Semiotic Systems Ch.1–2 (Barthes)</div>
+                  <div class="material-info__meta">PDF · 18 pages · 1.2 MB</div>
+                </div>
+                <div class="material-download">
+                  <svg viewBox="0 0 16 16"><path d="M8 3v7M5 8l3 3 3-3"/><path d="M3 13h10"/></svg>
+                </div>
+              </a>
+
+              <a href="#" class="material-item">
+                <div class="material-icon material-icon--link">
+                  <svg viewBox="0 0 18 18"><path d="M10 8a3 3 0 11-4.24 4.24L4 10.5"/><path d="M8 10a3 3 0 114.24-4.24L14 7.5"/><path d="M8 10l2-2"/></svg>
+                </div>
+                <div class="material-info">
+                  <div class="material-info__name">Reference: Pentagram's brand case studies</div>
+                  <div class="material-info__meta">External link · pentagram.com</div>
+                </div>
+                <div class="material-download">
+                  <svg viewBox="0 0 16 16"><path d="M6 4H4a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1v-2M9 3h4v4M13 3L8 8"/></svg>
+                </div>
+              </a>
+
+              <a href="#" class="material-item">
+                <div class="material-icon">
+                  <svg viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="1"/><path d="M2 7h14M7 7v9"/></svg>
+                </div>
+                <div class="material-info">
+                  <div class="material-info__name">Slide deck — Visual Narrative Frameworks</div>
+                  <div class="material-info__meta">Google Slides · 24 slides</div>
+                </div>
+                <div class="material-download">
+                  <svg viewBox="0 0 16 16"><path d="M6 4H4a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1v-2M9 3h4v4M13 3L8 8"/></svg>
+                </div>
+              </a>
+            </div>
+
+            <!-- Assignment link -->
+            <div style="background: rgba(254,29,37,0.04); border: 1px solid rgba(254,29,37,0.15); border-radius: 8px; padding: var(--space-20) var(--space-24); display:flex; align-items:center; gap: var(--space-16); flex-wrap:wrap;">
+              <div style="flex:1;">
+                <div style="font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-brand); margin-bottom: var(--space-4);">Related assignment</div>
+                <div style="font-size:14px; font-weight:700;">Assignment #3 — Semiotic Analysis</div>
+                <div style="font-size:12px; color:rgba(37,32,38,0.6); margin-top: var(--space-4);">Due Fri 14 Nov · Needs revision</div>
+              </div>
+              <a href="assignment-submit.html" class="btn btn--primary btn--sm">View assignment</a>
+            </div>
+
+            <!-- Session nav -->
+            <div class="session-nav">
+              <a href="#" class="session-nav-btn">
+                <svg viewBox="0 0 16 16"><path d="M10 4l-4 4 4 4"/></svg>
+                S9 — Cultural Mapping
+              </a>
+              <a href="#" class="session-nav-btn">
+                S11 — Semiotic Deconstruction
+                <svg viewBox="0 0 16 16"><path d="M6 4l4 4-4 4"/></svg>
+              </a>
+            </div>
+
+          </div><!-- /session-main -->
+
+          <!-- Rail -->
+          <div class="session-rail">
+
+            <!-- Live session info -->
+            <div class="live-info-card">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(242,241,240,0.45); margin-bottom: var(--space-16);">Session info</div>
+              <div class="live-info-row">
+                <svg viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="8" rx="1"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>
+                <div>
+                  <div class="live-info-row__label">Location</div>
+                  <div class="live-info-row__value">NICHE Bangkok · Studio A, Floor 3</div>
+                </div>
+              </div>
+              <div class="live-info-row">
+                <svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" rx="1"/><path d="M1 6h14"/></svg>
+                <div>
+                  <div class="live-info-row__label">Date &amp; time</div>
+                  <div class="live-info-row__value">Wed 12 Nov 2026 · 09:00–13:00</div>
+                </div>
+              </div>
+              <div class="live-info-row">
+                <svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+                <div>
+                  <div class="live-info-row__label">Facilitator</div>
+                  <div class="live-info-row__value">Karnwipa Jantara</div>
+                </div>
+              </div>
+              <div class="live-info-row">
+                <svg viewBox="0 0 16 16"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg>
+                <div>
+                  <div class="live-info-row__label">Type</div>
+                  <div class="live-info-row__value">Onsite · Hands-on lab</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Attendance status -->
+            <div class="attendance-card">
+              <h3 class="t-h4" style="margin-bottom: var(--space-16);">Attendance</h3>
+              <div style="display:flex; align-items:center; gap: var(--space-12); margin-bottom: var(--space-12);">
+                <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>Pending check-in</span>
+              </div>
+              <div style="font-size:12px; color:rgba(37,32,38,0.6); margin-bottom: var(--space-16); line-height:1.5;">
+                Check in when you arrive at Studio A. Your facilitator will mark attendance for the session.
+              </div>
+              <button class="btn btn--secondary btn--sm" style="width:100%; justify-content:center;">
+                <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M4 7l2 2 4-4"/></svg>
+                Check in now
+              </button>
+            </div>
+
+            <!-- Cohort: who's attending -->
+            <div class="card" style="padding: var(--space-20);">
+              <h3 style="font-size:13px; font-weight:700; margin-bottom: var(--space-12);">Checked in today</h3>
+              <div style="display:flex; flex-wrap:wrap; gap: var(--space-8); margin-bottom: var(--space-12);">
+                <div class="avatar avatar--sm" title="Mika">M</div>
+                <div class="avatar avatar--sm" title="Tanwarin" style="background:rgba(74,92,51,0.15);color:var(--color-accent-secondary-shade);">T</div>
+                <div class="avatar avatar--sm" title="Praew" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">P</div>
+                <div class="avatar avatar--sm" title="Korn" style="background:rgba(37,32,38,0.08);">K</div>
+                <div class="avatar avatar--sm" title="2 more" style="background:rgba(37,32,38,0.06);">+2</div>
+              </div>
+              <div style="font-size:11px; color:rgba(37,32,38,0.5);">5 of 16 cohort members checked in</div>
+            </div>
+
+          </div><!-- /rail -->
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

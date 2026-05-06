@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDPA Consent — NICHE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* ── Consent split-screen layout ── */
+    .auth-shell {
+      display: grid;
+      grid-template-columns: 1fr 580px;
+      min-height: 100vh;
+    }
+
+    /* ── Brand column ── */
+    .auth-brand {
+      background: #252026;
+      color: #f2f1f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: var(--space-64);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-brand__photo-block {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(37,32,38,0.08) 0%, rgba(37,32,38,0.88) 65%),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(255,255,255,0.01) 0px,
+          rgba(255,255,255,0.01) 1px,
+          transparent 1px,
+          transparent 28px
+        ),
+        #252026;
+    }
+
+    .auth-brand__deco {
+      position: absolute;
+      top: -0.12em;
+      right: -0.06em;
+      font-family: var(--font-display);
+      font-size: clamp(18rem, 28vw, 26rem);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(119, 145, 82, 0.06);
+      letter-spacing: -0.05em;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .auth-brand__content {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+    }
+
+    .auth-brand__eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-accent-secondary);
+      margin-bottom: var(--space-24);
+    }
+
+    .auth-brand__divider {
+      width: 32px;
+      height: 2px;
+      background: var(--color-accent-secondary);
+      margin-bottom: var(--space-32);
+    }
+
+    .auth-brand__headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: var(--space-24);
+    }
+
+    .auth-brand__headline em {
+      font-style: italic;
+      color: var(--color-accent-secondary);
+    }
+
+    .auth-brand__provocation {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(242, 241, 240, 0.6);
+      max-width: 380px;
+      margin-bottom: var(--space-40);
+    }
+
+    .auth-brand__rights {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .auth-brand__right-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-12);
+      font-size: 13px;
+      color: rgba(242, 241, 240, 0.65);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .auth-brand__right-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Form column ── */
+    .auth-form-col {
+      background: #f2f1f0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .auth-form-col__inner {
+      padding: var(--space-48) var(--space-48) var(--space-32);
+      flex: 1;
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      margin-bottom: var(--space-40);
+      text-decoration: none;
+      color: var(--color-surface-ink);
+    }
+
+    .auth-logo__mark {
+      width: 36px;
+      height: 36px;
+      background: var(--color-surface-ink);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--color-surface-base);
+      flex-shrink: 0;
+    }
+
+    .auth-logo__name {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      margin-bottom: var(--space-32);
+    }
+
+    .step-indicator__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-divider);
+    }
+
+    .step-indicator__dot.is-active {
+      background: var(--color-surface-ink);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .step-indicator__dot.is-done {
+      background: var(--color-accent-secondary-shade);
+    }
+
+    .auth-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-8);
+    }
+
+    .auth-subheading {
+      font-size: 14px;
+      color: rgba(37, 32, 38, 0.55);
+      margin-bottom: var(--space-32);
+      max-width: none;
+    }
+
+    /* ── Consent toggle rows ── */
+    .consent-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      margin-bottom: var(--space-24);
+    }
+
+    .consent-row {
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      padding: var(--space-20);
+      background: white;
+      transition: border-color var(--motion-quick) var(--ease-standard),
+                  box-shadow var(--motion-quick) var(--ease-standard);
+      cursor: pointer;
+    }
+
+    .consent-row:has(input:checked) {
+      border-color: var(--color-surface-ink);
+      box-shadow: inset 0 0 0 1px var(--color-surface-ink);
+    }
+
+    .consent-row--required:has(input:checked) {
+      border-color: var(--color-accent-secondary-shade);
+      box-shadow: inset 0 0 0 1px var(--color-accent-secondary-shade);
+    }
+
+    .consent-row__header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-16);
+    }
+
+    /* Custom toggle switch */
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-switch__track {
+      position: absolute;
+      inset: 0;
+      background: var(--color-divider);
+      border-radius: 11px;
+      transition: background var(--motion-quick) var(--ease-standard);
+      cursor: pointer;
+    }
+
+    .toggle-switch__thumb {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      top: 3px;
+      left: 3px;
+      box-shadow: 0 1px 3px rgba(37,32,38,0.2);
+      transition: transform var(--motion-quick) var(--ease-standard);
+    }
+
+    .toggle-switch input:checked + .toggle-switch__track {
+      background: var(--color-accent-secondary-shade);
+    }
+
+    .toggle-switch input:checked + .toggle-switch__track .toggle-switch__thumb {
+      transform: translateX(18px);
+    }
+
+    .toggle-switch input:focus-visible + .toggle-switch__track {
+      outline: 2px solid var(--color-accent-brand);
+      outline-offset: 2px;
+    }
+
+    .consent-row__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .consent-row__title-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      margin-bottom: var(--space-8);
+      flex-wrap: wrap;
+    }
+
+    .consent-row__title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-surface-ink);
+    }
+
+    .consent-row__desc-th {
+      font-size: 13px;
+      color: rgba(37, 32, 38, 0.65);
+      line-height: 1.6;
+      margin-bottom: var(--space-8);
+    }
+
+    .consent-row__desc-en {
+      font-size: 12px;
+      color: rgba(37, 32, 38, 0.5);
+      line-height: 1.55;
+      margin-bottom: var(--space-8);
+    }
+
+    .consent-row__policy-link {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgba(37, 32, 38, 0.4);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .consent-row__policy-link:hover {
+      color: var(--color-surface-ink);
+      opacity: 1;
+    }
+    .consent-row__policy-link::after {
+      content: ' ↗';
+    }
+
+    /* Required badge variant */
+    .badge--required {
+      background: rgba(74, 92, 51, 0.1);
+      color: var(--color-accent-secondary-shade);
+    }
+
+    .badge--optional {
+      background: rgba(37, 32, 38, 0.06);
+      color: rgba(37, 32, 38, 0.5);
+    }
+
+    .badge--deferred {
+      background: rgba(37, 32, 38, 0.04);
+      color: rgba(37, 32, 38, 0.35);
+      border: 1px dashed rgba(37, 32, 38, 0.15);
+    }
+
+    /* Cross-border transfer notice */
+    .consent-xborder-notice {
+      margin-top: var(--space-12);
+      padding: var(--space-12) var(--space-16);
+      background: rgba(37, 32, 38, 0.03);
+      border-left: 3px solid rgba(37, 32, 38, 0.15);
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+      color: rgba(37, 32, 38, 0.55);
+      line-height: 1.6;
+    }
+
+    .consent-xborder-notice strong {
+      font-weight: 700;
+      color: rgba(37, 32, 38, 0.7);
+    }
+
+    /* ── Sticky footer ── */
+    .consent-footer {
+      position: sticky;
+      bottom: 0;
+      background: #f2f1f0;
+      border-top: 1px solid var(--color-divider);
+      padding: var(--space-20) var(--space-48);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      z-index: 5;
+    }
+
+    .consent-footer__actions {
+      display: flex;
+      gap: var(--space-12);
+      align-items: center;
+    }
+
+    .btn--full { width: 100%; justify-content: center; }
+    .btn--continue { flex: 1; justify-content: center; }
+
+    .consent-footer__note {
+      font-size: 11px;
+      color: rgba(37, 32, 38, 0.45);
+      line-height: 1.6;
+      max-width: none;
+      margin: 0;
+    }
+
+    .consent-footer__note a {
+      color: rgba(37, 32, 38, 0.6);
+    }
+
+    /* Required items completion indicator */
+    .consent-progress {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      font-size: 12px;
+      color: rgba(37, 32, 38, 0.5);
+      font-weight: 600;
+    }
+
+    .consent-progress__dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .consent-progress__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-divider);
+      transition: background var(--motion-quick) var(--ease-standard);
+    }
+
+    .consent-progress__dot.is-done {
+      background: var(--color-accent-secondary-shade);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .auth-shell { grid-template-columns: 1fr; }
+      .auth-brand { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .auth-form-col__inner { padding: var(--space-32) var(--space-20) var(--space-24); }
+      .consent-footer { padding: var(--space-16) var(--space-20); }
+      .consent-footer__actions { flex-direction: column; }
+      .consent-footer__actions .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-shell">
+
+  <!-- Brand column -->
+  <div class="auth-brand" aria-hidden="true">
+    <div class="auth-brand__photo-block"></div>
+    <span class="auth-brand__deco">C</span>
+    <div class="auth-brand__content">
+      <p class="auth-brand__eyebrow">PDPA · Your rights</p>
+      <div class="auth-brand__divider"></div>
+      <h1 class="auth-brand__headline">Your data,<br>your<br><em>choice.</em><br>Always.</h1>
+      <p class="auth-brand__provocation">NICHE stores only what your learning requires. Every consent you give here is logged, versioned, and revocable in Settings at any time.</p>
+      <div class="auth-brand__rights">
+        <div class="auth-brand__right-item">
+          <svg class="auth-brand__right-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(119,145,82,0.8)" stroke-width="1.5" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>ข้อมูลของคุณเก็บบนเซิร์ฟเวอร์ในสิงคโปร์ (Thai PDPA §28 compliant)</span>
+        </div>
+        <div class="auth-brand__right-item">
+          <svg class="auth-brand__right-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(119,145,82,0.8)" stroke-width="1.5" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Right to access, portability, correction, and erasure — one click in Settings</span>
+        </div>
+        <div class="auth-brand__right-item">
+          <svg class="auth-brand__right-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(119,145,82,0.8)" stroke-width="1.5" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>ถอนความยินยอมได้ทุกเมื่อ / Withdraw consent any time without penalty</span>
+        </div>
+        <div class="auth-brand__right-item">
+          <svg class="auth-brand__right-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(119,145,82,0.8)" stroke-width="1.5" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>No ads. No third-party data sales. No surprises.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form column -->
+  <div class="auth-form-col">
+    <div class="auth-form-col__inner">
+
+      <a href="/" class="auth-logo" aria-label="NICHE home">
+        <div class="auth-logo__mark">N</div>
+        <span class="auth-logo__name">NICHE</span>
+      </a>
+
+      <!-- Step indicator -->
+      <div class="step-indicator" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="3" aria-label="Step 3 of 3: PDPA Consent">
+        <div class="step-indicator__dot is-done"></div>
+        <div class="step-indicator__dot is-done"></div>
+        <div class="step-indicator__dot is-active"></div>
+        <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:rgba(37,32,38,0.4); margin-left:4px;">Final step</span>
+      </div>
+
+      <h2 class="auth-heading">Your data, your choice.</h2>
+      <p class="auth-subheading">Review and confirm how NICHE uses your information. Items 1 and 2 are required for enrollment. All choices are logged and can be changed in Settings → PDPA.</p>
+
+      <!-- ── Consent items ── -->
+      <div class="consent-list" role="group" aria-label="PDPA consent preferences">
+
+        <!-- 1. Account creation (required) -->
+        <div class="consent-row consent-row--required" id="row-account">
+          <div class="consent-row__header">
+            <label class="toggle-switch" aria-label="Consent to account creation and data storage">
+              <input type="checkbox" id="consent-account" name="consent_account" value="1" onchange="updateConsent()" required>
+              <span class="toggle-switch__track">
+                <span class="toggle-switch__thumb"></span>
+              </span>
+            </label>
+            <div class="consent-row__body">
+              <div class="consent-row__title-row">
+                <span class="consent-row__title">Account creation &amp; data storage</span>
+                <span class="badge badge--required">Required for enrollment</span>
+              </div>
+              <p class="consent-row__desc-th">
+                NICHE จัดเก็บชื่อ อีเมล และรหัสผ่านของคุณเพื่อสร้างและรักษาบัญชีผู้ใช้งาน ข้อมูลเก็บอยู่บนเซิร์ฟเวอร์ในประเทศสิงคโปร์ (Supabase, ap-southeast-1) ตามพ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+              </p>
+              <p class="consent-row__desc-en">
+                NICHE stores your name, email address, and hashed password to create and maintain your account. Data is held in Singapore (Supabase ap-southeast-1 region) in accordance with the Thai Personal Data Protection Act B.E. 2562 (2019).
+              </p>
+              <!-- Cross-border transfer disclosure -->
+              <div class="consent-xborder-notice" role="note">
+                <strong>Cross-border transfer (PDPA §28–29):</strong> If you are enrolled in a programme that uses Disco as the learning platform (Year 1 hybrid path), your learning data (progress, assignments, discussion posts) will also be processed by Disco Inc. (United States) under a Data Processing Agreement. By accepting this item, you consent to this cross-border transfer. You may <a href="/legal/privacy#disco-dpa">review the DPA</a>.
+              </div>
+              <br>
+              <a href="/legal/privacy#account-data" class="consent-row__policy-link">View detailed policy</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Cohort progress tracking (required) -->
+        <div class="consent-row consent-row--required" id="row-progress">
+          <div class="consent-row__header">
+            <label class="toggle-switch" aria-label="Consent to cohort progress tracking and instructor visibility">
+              <input type="checkbox" id="consent-progress" name="consent_progress" value="1" onchange="updateConsent()" required>
+              <span class="toggle-switch__track">
+                <span class="toggle-switch__thumb"></span>
+              </span>
+            </label>
+            <div class="consent-row__body">
+              <div class="consent-row__title-row">
+                <span class="consent-row__title">Cohort progress tracking &amp; instructor visibility</span>
+                <span class="badge badge--required">Required for enrollment</span>
+              </div>
+              <p class="consent-row__desc-th">
+                ผู้สอนและทีม NICHE สามารถเห็นความคืบหน้า งานที่ส่ง และการมีส่วนร่วมในหลักสูตรของคุณ เพื่อให้การสนับสนุนและข้อเสนอแนะที่มีความหมาย นี่เป็นส่วนหนึ่งของโมเดลการเรียนแบบกลุ่ม (cohort-based)
+              </p>
+              <p class="consent-row__desc-en">
+                Your instructors and the NICHE team can see your progress, submitted work, and participation within your cohort. This visibility is core to the cohort-based learning model and enables meaningful instructor feedback and support.
+              </p>
+              <a href="/legal/privacy#progress-tracking" class="consent-row__policy-link">View detailed policy</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Aggregated analytics (optional) -->
+        <div class="consent-row" id="row-analytics">
+          <div class="consent-row__header">
+            <label class="toggle-switch" aria-label="Consent to cohort-aggregated analytics (optional)">
+              <input type="checkbox" id="consent-analytics" name="consent_analytics" value="1" onchange="updateConsent()">
+              <span class="toggle-switch__track">
+                <span class="toggle-switch__thumb"></span>
+              </span>
+            </label>
+            <div class="consent-row__body">
+              <div class="consent-row__title-row">
+                <span class="consent-row__title">Cohort-aggregated analytics</span>
+                <span class="badge badge--optional">Optional</span>
+              </div>
+              <p class="consent-row__desc-th">
+                ข้อมูลของคุณจะถูกรวมเข้ากับข้อมูลของเพื่อนในกลุ่มในรูปแบบไม่ระบุตัวตน เพื่อช่วย NICHE ปรับปรุงหลักสูตรและประสบการณ์การเรียนรู้ ไม่มีการระบุตัวตนคุณในข้อมูลนี้
+              </p>
+              <p class="consent-row__desc-en">
+                Your activity data is anonymised and combined with your cohort peers' data to generate programme-level insights. NICHE uses these aggregated statistics to improve curriculum design and learner experience. You are never personally identifiable in this data.
+              </p>
+              <a href="/legal/privacy#analytics" class="consent-row__policy-link">View detailed policy</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Career System / employer access (optional, deferred) -->
+        <div class="consent-row" id="row-career">
+          <div class="consent-row__header">
+            <label class="toggle-switch" aria-label="Consent to Career System data and employer portfolio access (optional, post-MVP)">
+              <input type="checkbox" id="consent-career" name="consent_career" value="1" onchange="updateConsent()">
+              <span class="toggle-switch__track">
+                <span class="toggle-switch__thumb"></span>
+              </span>
+            </label>
+            <div class="consent-row__body">
+              <div class="consent-row__title-row">
+                <span class="consent-row__title">Career System data &amp; employer portfolio access</span>
+                <span class="badge badge--optional">Optional</span>
+                <span class="badge badge--deferred">Post-MVP</span>
+              </div>
+              <p class="consent-row__desc-th">
+                เมื่อ NICHE เปิดใช้งาน Career System (หลัง MVP) ผลงานที่คุณเผยแพร่และข้อมูลใบรับรองอาจถูกแชร์กับนายจ้างที่ร่วมโครงการกับ NICHE ตามที่คุณเลือก คุณสามารถควบคุมงานแต่ละชิ้นที่เผยแพร่ได้จาก Portfolio ของคุณ
+              </p>
+              <p class="consent-row__desc-en">
+                When NICHE activates the Career System (post-MVP), published portfolio items and credential records may be visible to NICHE partner employers — but only items you explicitly publish. You retain full control over what appears in your public portfolio. This consent is captured now so no additional action is required at launch.
+              </p>
+              <a href="/legal/privacy#career-system" class="consent-row__policy-link">View detailed policy</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end consent-list -->
+
+    </div>
+    <!-- end auth-form-col__inner -->
+
+    <!-- ── Sticky footer ── -->
+    <div class="consent-footer">
+
+      <div class="consent-footer__actions">
+        <div class="consent-progress" aria-live="polite" aria-atomic="true" id="consent-progress-indicator">
+          <span class="consent-progress__dots">
+            <span class="consent-progress__dot" id="prog-dot-1"></span>
+            <span class="consent-progress__dot" id="prog-dot-2"></span>
+          </span>
+          <span id="consent-progress-text">Both required items needed to continue</span>
+        </div>
+      </div>
+
+      <div class="consent-footer__actions">
+        <button
+          class="btn btn--primary btn--continue"
+          id="btn-continue"
+          type="button"
+          disabled
+          onclick="submitConsent()"
+          aria-disabled="true"
+        >
+          I'll continue &rarr;
+        </button>
+        <button
+          class="btn btn--ghost"
+          type="button"
+          onclick="saveDraft()"
+          aria-label="Save consent draft and complete later"
+        >
+          I'll do this later
+        </button>
+      </div>
+
+      <p class="consent-footer__note">
+        You can change these any time in <strong>Settings &rarr; PDPA</strong>.
+        Withdrawal of item&nbsp;2 will pause your cohort enrollment.
+        NICHE stores data in Singapore (PDPA §28–29 lawful basis: contractual necessity + explicit consent).
+        <a href="/legal/privacy">Full Privacy Notice</a>
+        &nbsp;&middot;&nbsp;
+        <a href="mailto:dpo@niche.ac.th">Contact DPO</a>
+      </p>
+
+    </div>
+
+  </div>
+  <!-- end auth-form-col -->
+
+</div>
+
+<!-- Demo banner -->
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo &middot; Auth</div>
+
+<script>
+  function updateConsent() {
+    const c1 = document.getElementById('consent-account').checked;
+    const c2 = document.getElementById('consent-progress').checked;
+    const btn = document.getElementById('btn-continue');
+    const dot1 = document.getElementById('prog-dot-1');
+    const dot2 = document.getElementById('prog-dot-2');
+    const progressText = document.getElementById('consent-progress-text');
+
+    dot1.classList.toggle('is-done', c1);
+    dot2.classList.toggle('is-done', c2);
+
+    const allRequired = c1 && c2;
+    btn.disabled = !allRequired;
+    btn.setAttribute('aria-disabled', !allRequired);
+
+    if (allRequired) {
+      progressText.textContent = 'Required items confirmed — ready to continue';
+    } else if (c1) {
+      progressText.textContent = 'Item 2 (progress tracking) still needed';
+    } else if (c2) {
+      progressText.textContent = 'Item 1 (account creation) still needed';
+    } else {
+      progressText.textContent = 'Both required items needed to continue';
+    }
+
+    // Visual feedback on required rows
+    document.getElementById('row-account').style.opacity = '';
+    document.getElementById('row-progress').style.opacity = '';
+  }
+
+  function submitConsent() {
+    const c1 = document.getElementById('consent-account').checked;
+    const c2 = document.getElementById('consent-progress').checked;
+    if (!c1 || !c2) return;
+
+    const payload = {
+      consent_account:   c1,
+      consent_progress:  c2,
+      consent_analytics: document.getElementById('consent-analytics').checked,
+      consent_career:    document.getElementById('consent-career').checked,
+      policy_version:    '2026-05-01',
+      timestamp:         new Date().toISOString()
+    };
+
+    // In production: POST to /api/consent with CSRF token
+    console.log('Consent payload (would POST to /api/consent):', payload);
+    window.location.href = '/dashboard';
+  }
+
+  function saveDraft() {
+    // Save partial consent state and redirect
+    const payload = {
+      consent_account:   document.getElementById('consent-account').checked,
+      consent_progress:  document.getElementById('consent-progress').checked,
+      consent_analytics: document.getElementById('consent-analytics').checked,
+      consent_career:    document.getElementById('consent-career').checked,
+      status:            'draft',
+      policy_version:    '2026-05-01',
+      timestamp:         new Date().toISOString()
+    };
+    console.log('Draft consent (would POST to /api/consent/draft):', payload);
+    // Redirect to a holding page or sign out
+    window.location.href = '/auth/consent-pending';
+  }
+
+  // Click anywhere on consent row to toggle
+  document.querySelectorAll('.consent-row').forEach(row => {
+    row.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A' || e.target.tagName === 'INPUT') return;
+      const checkbox = this.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        updateConsent();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

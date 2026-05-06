@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .curriculum-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+      min-height: calc(100vh - var(--topbar-height));
+      margin: calc(-1 * var(--space-32)) calc(-1 * var(--space-48));
+    }
+
+    /* Left: tree pane */
+    .curriculum-tree {
+      border-right: 1px solid var(--color-divider);
+      background: white;
+      overflow-y: auto;
+      height: calc(100vh - var(--topbar-height));
+      position: sticky;
+      top: 0;
+    }
+    .curriculum-tree__header {
+      padding: var(--space-24) var(--space-24) var(--space-16);
+      border-bottom: 1px solid var(--color-divider);
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+    }
+    .curriculum-tree__program-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+    .curriculum-tree__meta {
+      font-size: 11px;
+      color: rgba(37,32,38,0.5);
+    }
+
+    /* Phase group */
+    .phase-group { border-bottom: 1px solid var(--color-divider); }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-16) var(--space-24) var(--space-12);
+      cursor: pointer;
+      user-select: none;
+    }
+    .phase-number {
+      width: 24px; height: 24px;
+      border-radius: 4px;
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      font-size: 11px;
+      font-weight: 800;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .phase-number--active { background: var(--color-accent-brand); }
+    .phase-header__title { font-size: 13px; font-weight: 700; flex: 1; }
+    .phase-header__caret {
+      width: 14px; height: 14px;
+      stroke: rgba(37,32,38,0.4); stroke-width: 1.5; fill: none;
+      transition: transform var(--motion-quick) var(--ease-standard);
+    }
+    .phase-group.is-open .phase-header__caret { transform: rotate(180deg); }
+
+    /* Module row */
+    .module-row {
+      padding: var(--space-8) var(--space-24) var(--space-8) var(--space-60);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+    .module-row:hover { background: rgba(37,32,38,0.03); }
+    .module-row.is-active { background: rgba(254,29,37,0.04); }
+    .module-row__title { font-size: 13px; font-weight: 600; flex: 1; }
+    .module-row__count { font-size: 11px; color: rgba(37,32,38,0.4); }
+
+    /* Session row */
+    .session-row {
+      padding: var(--space-8) var(--space-24) var(--space-8) var(--space-80);
+      display: flex;
+      align-items: center;
+      gap: var(--space-10);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .session-row:hover { background: rgba(37,32,38,0.02); }
+    .session-row.is-current { background: rgba(254,29,37,0.04); }
+    .session-row__num {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(37,32,38,0.35);
+      min-width: 20px;
+    }
+    .session-row__title { font-size: 12px; flex: 1; line-height: 1.4; }
+    .session-row.is-current .session-row__title { font-weight: 600; color: var(--color-accent-brand); }
+    .session-row__type {
+      width: 14px; height: 14px;
+      stroke: rgba(37,32,38,0.35); stroke-width: 1.5; fill: none;
+      flex-shrink: 0;
+    }
+
+    /* Right: overview pane */
+    .curriculum-overview {
+      padding: var(--space-48);
+      background: var(--color-surface-base);
+    }
+    .module-overview-header {
+      margin-bottom: var(--space-32);
+      padding-bottom: var(--space-32);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .module-overview-header__eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      margin-bottom: var(--space-8);
+    }
+    .module-overview-header__title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-12);
+    }
+    .module-overview-header__desc {
+      font-size: 14px;
+      color: rgba(37,32,38,0.65);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+    .module-meta-chips {
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+      margin-top: var(--space-16);
+    }
+
+    /* Session cards grid */
+    .sessions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+    .session-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: var(--space-20) var(--space-24);
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color var(--motion-quick) var(--ease-standard),
+                  box-shadow var(--motion-quick) var(--ease-standard);
+    }
+    .session-card:hover {
+      border-color: rgba(37,32,38,0.2);
+      box-shadow: var(--shadow-subtle);
+    }
+    .session-card.is-current { border-color: var(--color-accent-brand); border-width: 1.5px; }
+    .session-card__num {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: rgba(37,32,38,0.2);
+      min-width: 32px;
+      text-align: right;
+    }
+    .session-card.is-current .session-card__num { color: var(--color-accent-brand); }
+    .session-card__body { flex: 1; min-width: 0; }
+    .session-card__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .session-card__sub { font-size: 12px; color: rgba(37,32,38,0.55); }
+    .session-card__right { display: flex; align-items: center; gap: var(--space-12); }
+
+    @media (max-width: 1000px) {
+      .curriculum-layout { grid-template-columns: 1fr; margin: 0; }
+      .curriculum-tree { height: auto; position: static; max-height: 300px; }
+      .curriculum-overview { padding: var(--space-24); }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Learner Portal</div>
+          </div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+            <span class="sidebar__label">My Cohort</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg>
+            <span class="sidebar__label">Curriculum</span>
+          </a>
+          <a href="schedule.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+          <a href="assignment-submit.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg>
+            <span class="sidebar__label">Assignments</span>
+            <span class="sidebar__item-badge">2</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+            <span class="sidebar__label">Portfolio</span>
+          </a>
+          <a href="resume.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg>
+            <span class="sidebar__label">Resume</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg>
+            <span class="sidebar__label">Certificates</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span class="sidebar__label">Profile &amp; Settings</span>
+          </a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 13px;">AS</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Aira Sukcharoen</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">Cohort 1 · Bangkok</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Cohort 1 · Module 4/12
+        </div>
+        <span class="pace pace--behind" style="margin-left: var(--space-8);">
+          <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>
+          Behind by 1 session
+        </span>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search sessions, materials…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
+            <span class="topbar__icon-btn-badge"></span>
+          </button>
+          <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 12px; cursor: pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main" style="padding: 0;">
+        <div class="curriculum-layout">
+
+          <!-- Tree pane -->
+          <div class="curriculum-tree">
+            <div class="curriculum-tree__header">
+              <div class="curriculum-tree__program-name">Creative Identity &amp; Storytelling</div>
+              <div class="curriculum-tree__meta">Bootcamp · 3 months · 36 sessions</div>
+              <div style="margin-top: var(--space-12);">
+                <div class="progress-row">
+                  <div class="progress" style="flex:1;"><div class="progress__fill progress__fill--brand" style="width:25%"></div></div>
+                  <span style="font-size:11px; font-weight:700; color:rgba(37,32,38,0.55);">9 / 36</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 1 — complete -->
+            <div class="phase-group">
+              <div class="phase-header">
+                <div class="phase-number">1</div>
+                <div class="phase-header__title">Foundation of Identity</div>
+                <span class="status-chip status-chip--complete" style="font-size:10px; padding:2px 6px;">Done</span>
+                <svg class="phase-header__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+            </div>
+
+            <!-- Phase 2 — complete -->
+            <div class="phase-group">
+              <div class="phase-header">
+                <div class="phase-number">2</div>
+                <div class="phase-header__title">Research &amp; Discovery</div>
+                <span class="status-chip status-chip--complete" style="font-size:10px; padding:2px 6px;">Done</span>
+                <svg class="phase-header__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+            </div>
+
+            <!-- Phase 3 — active (open) -->
+            <div class="phase-group is-open">
+              <div class="phase-header">
+                <div class="phase-number phase-number--active">3</div>
+                <div class="phase-header__title">Visual Narrative</div>
+                <span class="status-chip status-chip--current" style="font-size:10px; padding:2px 6px;">In progress</span>
+                <svg class="phase-header__caret" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4"/></svg>
+              </div>
+
+              <!-- Module 3.1 -->
+              <div class="module-row is-active">
+                <svg style="width:12px;height:12px;stroke:var(--color-accent-brand);stroke-width:2;fill:none;" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg>
+                <div class="module-row__title">3.1 — Semiotic Systems</div>
+                <div class="module-row__count">3 sessions</div>
+              </div>
+              <a href="session.html" class="session-row is-current">
+                <div class="session-row__num">S10</div>
+                <div class="session-row__title">Visual Narrative Lab — Identity Collage</div>
+                <svg class="session-row__type" viewBox="0 0 14 14" style="stroke:var(--color-accent-brand);"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M1 5h12"/></svg>
+              </a>
+              <a href="#" class="session-row">
+                <div class="session-row__num">S11</div>
+                <div class="session-row__title">Semiotic Deconstruction Workshop</div>
+                <svg class="session-row__type" viewBox="0 0 14 14"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M1 5h12"/></svg>
+              </a>
+              <a href="#" class="session-row">
+                <div class="session-row__num">S12</div>
+                <div class="session-row__title">Async: Reading — Semiotic Systems Ch.3</div>
+                <svg class="session-row__type" viewBox="0 0 14 14"><path d="M2 2h10a1 1 0 011 1v7a1 1 0 01-1 1H2a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M3 5h8M3 8h5"/></svg>
+              </a>
+
+              <!-- Module 3.2 -->
+              <div class="module-row">
+                <svg style="width:12px;height:12px;stroke:rgba(37,32,38,0.3);stroke-width:2;fill:none;" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg>
+                <div class="module-row__title">3.2 — Narrative Construction</div>
+                <div class="module-row__count">3 sessions</div>
+              </div>
+
+              <!-- Module 3.3 -->
+              <div class="module-row">
+                <svg style="width:12px;height:12px;stroke:rgba(37,32,38,0.3);stroke-width:2;fill:none;" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg>
+                <div class="module-row__title">3.3 — Brand Manifesto</div>
+                <div class="module-row__count">3 sessions</div>
+              </div>
+            </div>
+
+            <!-- Phase 4–12 locked -->
+            <div class="phase-group">
+              <div class="phase-header" style="opacity:0.45;">
+                <div class="phase-number">4</div>
+                <div class="phase-header__title">Positioning &amp; Voice</div>
+                <span class="status-chip status-chip--locked" style="font-size:10px; padding:2px 6px;">Locked</span>
+              </div>
+            </div>
+            <div class="phase-group">
+              <div class="phase-header" style="opacity:0.35;">
+                <div class="phase-number">5–12</div>
+                <div class="phase-header__title">Remaining phases</div>
+                <span class="status-chip status-chip--locked" style="font-size:10px; padding:2px 6px;">Locked</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Overview pane -->
+          <div class="curriculum-overview">
+            <div class="module-overview-header">
+              <div class="module-overview-header__eyebrow">Phase 3 · Module 3.1 · Week 4</div>
+              <div class="module-overview-header__title">Semiotic Systems</div>
+              <div class="module-overview-header__desc">Explore how signs, symbols, and visual language construct meaning. You'll deconstruct brand identities through a semiotic lens and begin building your own visual vocabulary.</div>
+              <div class="module-meta-chips">
+                <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>In progress</span>
+                <span class="badge badge--neutral">3 sessions</span>
+                <span class="badge badge--neutral">1 assignment</span>
+                <span class="pillar-tag pillar-tag--creativity" style="font-size:11px;">Creativity</span>
+              </div>
+            </div>
+
+            <!-- Session listing -->
+            <h2 class="t-h4" style="margin-bottom: var(--space-16);">Sessions in this module</h2>
+            <div class="sessions-grid">
+
+              <a href="session.html" class="session-card is-current">
+                <div class="session-card__num">10</div>
+                <div class="session-card__body">
+                  <div class="session-card__title">Visual Narrative Lab — Identity Collage</div>
+                  <div class="session-card__sub">Onsite · Studio A · Wed 12 Nov · 09:00–13:00</div>
+                </div>
+                <div class="session-card__right">
+                  <span class="status-chip status-chip--live-now"><span class="status-chip__dot"></span>Live now</span>
+                  <span class="status-chip status-chip--onsite-only">Onsite</span>
+                  <svg style="width:16px;height:16px;stroke:rgba(37,32,38,0.3);stroke-width:1.5;fill:none;" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4"/></svg>
+                </div>
+              </a>
+
+              <div class="session-card" style="opacity:0.6; cursor: default;">
+                <div class="session-card__num">11</div>
+                <div class="session-card__body">
+                  <div class="session-card__title">Semiotic Deconstruction Workshop</div>
+                  <div class="session-card__sub">Online · Live · Fri 14 Nov · 18:00–20:00</div>
+                </div>
+                <div class="session-card__right">
+                  <span class="status-chip status-chip--locked">Locked</span>
+                </div>
+              </div>
+
+              <div class="session-card" style="opacity:0.6; cursor: default;">
+                <div class="session-card__num">12</div>
+                <div class="session-card__body">
+                  <div class="session-card__title">Reading — Semiotic Systems Ch.3</div>
+                  <div class="session-card__sub">Async · ~45 min · Available after Session 11</div>
+                </div>
+                <div class="session-card__right">
+                  <span class="status-chip status-chip--locked">Locked</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Assignment callout -->
+            <div style="margin-top: var(--space-32); background: white; border: 1px solid var(--color-divider); border-radius: 8px; padding: var(--space-24);">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-16); flex-wrap:wrap;">
+                <div>
+                  <div style="font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-brand); margin-bottom: var(--space-8);">Module assignment</div>
+                  <div class="t-h4" style="margin-bottom: var(--space-8);">Assignment #3 — Semiotic Analysis</div>
+                  <div style="font-size:13px; color:rgba(37,32,38,0.65);">Deconstruct a brand of your choice using semiotic theory. 800–1200 words + visual board.</div>
+                  <div style="margin-top: var(--space-12); display:flex; align-items:center; gap: var(--space-12);">
+                    <span class="badge badge--warning">Due Fri 14 Nov</span>
+                    <span class="status-chip status-chip--needs-revision">Needs revision</span>
+                  </div>
+                </div>
+                <a href="assignment-submit.html" class="btn btn--primary">View &amp; submit</a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

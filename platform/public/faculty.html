@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty — NICHE</title>
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <style>
+    .public-nav { background: var(--color-surface-base); }
+    .public-nav__brand img { height: 28px; width: auto; }
+
+    /* MASTHEAD */
+    .faculty-masthead {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-96) var(--space-32) var(--space-80);
+    }
+    .faculty-masthead__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .faculty-masthead__headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 0.97;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-16);
+    }
+    .faculty-masthead__sub {
+      font-size: var(--type-body-l-size);
+      color: rgba(242,241,240,0.55);
+      max-width: 540px;
+    }
+
+    /* FACULTY GRID */
+    .faculty-section {
+      padding: var(--space-80) var(--space-32);
+      background: var(--color-surface-base);
+    }
+    .faculty-section__inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-24);
+    }
+    .faculty-card {
+      border: 1px solid var(--color-divider);
+      background: white;
+      padding: var(--space-32);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      transition: border-color var(--motion-base) var(--ease-standard),
+                  background var(--motion-base) var(--ease-standard),
+                  transform var(--motion-quick) var(--ease-entrance);
+    }
+    .faculty-card:hover {
+      border-color: var(--color-surface-ink);
+      transform: translateY(-2px);
+    }
+    .faculty-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .faculty-avatar--ink {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+    .faculty-avatar--red {
+      background: var(--color-accent-brand);
+      color: var(--color-surface-base);
+    }
+    .faculty-avatar--moss {
+      background: var(--color-accent-secondary-shade);
+      color: var(--color-surface-base);
+    }
+    .faculty-avatar--muted {
+      background: var(--color-surface-muted);
+      color: var(--color-surface-ink);
+    }
+    .faculty-card__name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .faculty-card__role {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(37,32,38,0.55);
+    }
+    .faculty-card__program {
+      display: inline-block;
+    }
+    .faculty-card__bio {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(37,32,38,0.7);
+      flex: 1;
+    }
+    .faculty-card__stat {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding-top: var(--space-16);
+      border-top: 1px solid var(--color-divider);
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(37,32,38,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .faculty-card__stat-num {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-surface-ink);
+    }
+
+    /* STATEMENT STRIP */
+    .faculty-statement {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-64) var(--space-32);
+      text-align: center;
+    }
+    .faculty-statement__inner {
+      max-width: 720px;
+      margin-inline: auto;
+    }
+    .faculty-statement__quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: var(--space-24);
+    }
+    .faculty-statement__sub {
+      font-size: 14px;
+      color: rgba(242,241,240,0.45);
+    }
+
+    /* FOOTER */
+    .public-footer {
+      background: var(--color-surface-ink);
+      color: rgba(242,241,240,0.55);
+      padding: var(--space-48) var(--space-32);
+      text-align: center;
+    }
+    .public-footer a { color: rgba(242,241,240,0.55); text-decoration: none; font-size: 13px; }
+    .public-footer a:hover { color: var(--color-surface-base); opacity: 1; }
+
+    @media (max-width: 1024px) {
+      .faculty-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .faculty-grid { grid-template-columns: 1fr; }
+      .faculty-masthead { padding: var(--space-64) var(--space-24) var(--space-48); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="public-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="public-nav__brand">
+      <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
+    </a>
+    <ul class="public-nav__menu">
+      <li><a href="programs.html">Programs</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="faculty.html" style="color: var(--color-surface-ink); font-weight: 700;">Faculty</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+    <div class="public-nav__cta">
+      <a href="apply.html" class="btn btn--primary btn--sm">Apply — Cohort 1</a>
+    </div>
+  </nav>
+
+  <div class="faculty-masthead">
+    <div class="faculty-masthead__inner">
+      <span class="t-eyebrow" style="color: var(--color-accent-brand); margin-bottom: var(--space-16); display: block;">Faculty</span>
+      <h1 class="faculty-masthead__headline">People who<br>actually do things.</h1>
+      <p class="faculty-masthead__sub">Every mentor at NICHE has an active practice. No one teaches here because they ran out of things to do — they teach because they have something real to pass on.</p>
+    </div>
+  </div>
+
+  <section class="faculty-section">
+    <div class="faculty-section__inner">
+      <div class="faculty-grid">
+
+        <!-- 1 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--ink">KN</div>
+          <div>
+            <h2 class="faculty-card__name">Kasama Niyomkul</h2>
+            <p class="faculty-card__role">Content systems &amp; AI workflows</p>
+            <span class="pillar-tag pillar-tag--creativity faculty-card__program t-eyebrow">Creativity</span>
+          </div>
+          <p class="faculty-card__bio">Built content engines for three Southeast Asian media companies before going independent. Now runs a 200,000-subscriber operation solo, using AI infrastructure she designed herself. Teaches the AI × Content Engine Studio.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">14</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--red">PT</div>
+          <div>
+            <h2 class="faculty-card__name">Prachaya Thongsuk</h2>
+            <p class="faculty-card__role">Hospitality operations &amp; concept</p>
+            <span class="pillar-tag pillar-tag--humanity faculty-card__program t-eyebrow">Humanity</span>
+          </div>
+          <p class="faculty-card__bio">Opened and operated four boutique hospitality concepts across Bangkok and Chiang Mai. Former F&amp;B director at a 5-star group; left to build independent properties. Leads New Hospitality.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">18</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--moss">JT</div>
+          <div>
+            <h2 class="faculty-card__name">James Tan</h2>
+            <p class="faculty-card__role">AI tooling &amp; product design</p>
+            <span class="pillar-tag pillar-tag--creativity faculty-card__program t-eyebrow">Creativity</span>
+          </div>
+          <p class="faculty-card__bio">Former product lead at a generative AI startup in Singapore. Has trained 400+ creators to build with AI tools without losing their voice. Runs workshops on AI workflow design for independent operators.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">9</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--muted">NW</div>
+          <div>
+            <h2 class="faculty-card__name">Napatsorn Watthanakul</h2>
+            <p class="faculty-card__role">Food business &amp; supply chain</p>
+            <span class="pillar-tag pillar-tag--humanity faculty-card__program t-eyebrow">Humanity</span>
+          </div>
+          <p class="faculty-card__bio">Co-founded two food ventures that scaled to regional distribution before the age of 30. Now advises food founders across Southeast Asia on model viability and supply chain. Leads Food Business 3.0.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">11</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--ink">RM</div>
+          <div>
+            <h2 class="faculty-card__name">Rafael Morales</h2>
+            <p class="faculty-card__role">Venture building &amp; early-stage strategy</p>
+            <span class="pillar-tag pillar-tag--entrepreneurship faculty-card__program t-eyebrow">Entrepreneurship</span>
+          </div>
+          <p class="faculty-card__bio">Built and exited a B2B SaaS in the Philippine market. Current angel investor across SEA with a focus on AI-native businesses. Teaches First Venture Bootcamp and co-leads AI-native Business Builder.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">12</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--red">SK</div>
+          <div>
+            <h2 class="faculty-card__name">Siriporn Klongdee</h2>
+            <p class="faculty-card__role">Creative identity &amp; brand strategy</p>
+            <span class="pillar-tag pillar-tag--creativity faculty-card__program t-eyebrow">Creativity</span>
+          </div>
+          <p class="faculty-card__bio">Brand strategist who has worked with independent designers and makers across Thailand and Japan. Specializes in helping creative people articulate what makes their work theirs. Leads Creative Identity &amp; Storytelling.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">16</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--moss">WP</div>
+          <div>
+            <h2 class="faculty-card__name">Warin Pattanapong</h2>
+            <p class="faculty-card__role">SME automation &amp; operations</p>
+            <span class="pillar-tag pillar-tag--entrepreneurship faculty-card__program t-eyebrow">Entrepreneurship</span>
+          </div>
+          <p class="faculty-card__bio">Systems architect who has automated operations for 40+ Thai SMEs across retail, logistics, and food service. Built his own operations consultancy from zero. Leads SME Automation Lab.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">10</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--muted">AC</div>
+          <div>
+            <h2 class="faculty-card__name">Araya Chuasakul</h2>
+            <p class="faculty-card__role">Event production &amp; experience design</p>
+            <span class="pillar-tag pillar-tag--humanity faculty-card__program t-eyebrow">Humanity</span>
+          </div>
+          <p class="faculty-card__bio">Produced 200+ events ranging from intimate private dinners to 10,000-person festivals. Runs an independent event production company based in Bangkok. Leads Event &amp; Experience Design.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">13</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--ink">DL</div>
+          <div>
+            <h2 class="faculty-card__name">David Lim</h2>
+            <p class="faculty-card__role">Sales, negotiation &amp; dealmaking</p>
+            <span class="pillar-tag pillar-tag--entrepreneurship faculty-card__program t-eyebrow">Entrepreneurship</span>
+          </div>
+          <p class="faculty-card__bio">Closed over $40M in B2B deals across Singapore, Thailand, and Malaysia before going independent as a sales trainer. Works exclusively with founders and independents — not corporate teams. Leads Sales &amp; Dealmaking.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">17</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 10 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--red">MK</div>
+          <div>
+            <h2 class="faculty-card__name">Manatsawin Khamchoo</h2>
+            <p class="faculty-card__role">Product &amp; experience design</p>
+            <span class="pillar-tag pillar-tag--creativity faculty-card__program t-eyebrow">Creativity</span>
+          </div>
+          <p class="faculty-card__bio">Former UX lead at a Bangkok super-app; left to run an independent product design practice. Has shipped products used by 3M+ people. Leads Product &amp; Experience Design Studio.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">11</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 11 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--moss">LP</div>
+          <div>
+            <h2 class="faculty-card__name">Lalita Poonperm</h2>
+            <p class="faculty-card__role">Community building &amp; localization</p>
+            <span class="pillar-tag pillar-tag--humanity faculty-card__program t-eyebrow">Humanity</span>
+          </div>
+          <p class="faculty-card__bio">Built three community platforms across Thailand that collectively reached 500,000 members. Consults on community strategy for brands looking to build in Southeast Asian markets. Leads Community &amp; Localization.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">8</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+        <!-- 12 -->
+        <div class="faculty-card">
+          <div class="faculty-avatar faculty-avatar--muted">NO</div>
+          <div>
+            <h2 class="faculty-card__name">Nattapon Ongkosit</h2>
+            <p class="faculty-card__role">Craft business &amp; maker economics</p>
+            <span class="pillar-tag pillar-tag--creativity faculty-card__program t-eyebrow">Creativity</span>
+          </div>
+          <p class="faculty-card__bio">Turned a small ceramic practice into a commercially successful independent label distributed across 12 countries. Teaches the economics of craft with zero romanticism. Leads The Business of Craft.</p>
+          <div class="faculty-card__stat">
+            <span class="faculty-card__stat-num">15</span>
+            <span>years in field</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="faculty-statement">
+    <div class="faculty-statement__inner">
+      <p class="faculty-statement__quote">"We don't hire teachers who know about the field. We hire practitioners who can teach."</p>
+      <p class="faculty-statement__sub">Every faculty member maintains an active practice during the program. They aren't here between jobs. They're here because they want to.</p>
+    </div>
+  </div>
+
+  <footer class="public-footer">
+    <a href="index.html">NICHE</a> &nbsp;&mdash;&nbsp;
+    <a href="programs.html">Programs</a> &nbsp;&mdash;&nbsp;
+    <a href="about.html">About</a> &nbsp;&mdash;&nbsp;
+    <a href="apply.html">Apply</a>
+    <p style="margin-top: var(--space-16); font-size: 11px; color: rgba(242,241,240,0.3);">&copy; 2026 NICHE · Bangkok, Thailand</p>
+  </footer>
+
+  <div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Public</div>
+
+</body>
+</html>

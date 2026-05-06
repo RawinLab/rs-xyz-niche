@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcement Composer — NICHE Instructor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .composer-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: var(--space-32);
+      align-items: start;
+    }
+    @media (max-width: 1024px) { .composer-layout { grid-template-columns: 1fr; } }
+
+    /* Composer card */
+    .composer-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .composer-card__section {
+      padding: var(--space-20) var(--space-24);
+      border-bottom: 1px solid rgba(37,32,38,0.06);
+    }
+    .composer-card__section:last-child { border-bottom: none; }
+    .composer-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(37,32,38,0.4);
+      margin-bottom: var(--space-12);
+    }
+
+    /* WYSIWYG toolbar (compact) */
+    .composer-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: var(--space-8) var(--space-12);
+      background: rgba(37,32,38,0.02);
+      border-bottom: 1px solid rgba(37,32,38,0.06);
+    }
+    .composer-toolbar-btn {
+      width: 28px; height: 28px;
+      display: grid; place-items: center;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-radius: 3px;
+      color: rgba(37,32,38,0.55);
+      font-size: 12px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      transition: background var(--motion-micro) var(--ease-standard);
+    }
+    .composer-toolbar-btn:hover { background: rgba(37,32,38,0.07); color: var(--color-surface-ink); }
+    .composer-toolbar-sep { width: 1px; height: 16px; background: var(--color-divider); margin: 0 3px; flex-shrink: 0; }
+
+    /* Composer editable area */
+    .composer-body {
+      min-height: 180px;
+      padding: var(--space-20) var(--space-24);
+      font-size: 14px;
+      line-height: 1.65;
+      outline: none;
+      color: rgba(37,32,38,0.85);
+    }
+    .composer-body:empty::before {
+      content: attr(data-placeholder);
+      color: rgba(37,32,38,0.3);
+    }
+
+    /* Audience pills */
+    .audience-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      align-items: center;
+    }
+    .audience-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all var(--motion-quick) var(--ease-standard);
+    }
+    .audience-pill--cohort {
+      background: rgba(37,32,38,0.08);
+      color: var(--color-surface-ink);
+      border-color: rgba(37,32,38,0.15);
+    }
+    .audience-pill--atrisk {
+      background: rgba(254,29,37,0.1);
+      color: var(--color-accent-brand);
+      border-color: rgba(254,29,37,0.2);
+    }
+    .audience-pill--individual {
+      background: rgba(74,92,51,0.1);
+      color: var(--color-accent-secondary-shade);
+      border-color: rgba(74,92,51,0.2);
+    }
+    .audience-pill__remove {
+      display: grid; place-items: center;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.25;
+      flex-shrink: 0;
+    }
+    .audience-pill:hover .audience-pill__remove { opacity: 0.55; }
+    .audience-pill__remove svg { stroke: white; }
+    .audience-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(37,32,38,0.4);
+      border: 1.5px dashed rgba(37,32,38,0.2);
+      border-radius: 14px;
+      background: none;
+      cursor: pointer;
+      transition: all var(--motion-quick) var(--ease-standard);
+    }
+    .audience-add-btn:hover { border-color: var(--color-surface-ink); color: var(--color-surface-ink); }
+
+    .audience-preview {
+      margin-top: var(--space-12);
+      font-size: 12px;
+      color: rgba(37,32,38,0.5);
+    }
+    .audience-preview strong { color: var(--color-surface-ink); }
+    .audience-preview a { color: var(--color-accent-brand); font-weight: 700; text-decoration: none; }
+
+    /* Channel checkboxes */
+    .channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-12) var(--space-16);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color var(--motion-micro) var(--ease-standard);
+    }
+    .channel-item:hover { border-color: rgba(37,32,38,0.3); }
+    .channel-item--checked { border-color: var(--color-surface-ink); }
+    .channel-item--disabled { opacity: 0.5; cursor: not-allowed; }
+    .channel-item__icon {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .channel-item__icon--inapp { background: rgba(37,32,38,0.08); color: var(--color-surface-ink); }
+    .channel-item__icon--email { background: rgba(74,92,51,0.12); color: var(--color-accent-secondary-shade); }
+    .channel-item__icon--line { background: rgba(37,32,38,0.06); color: rgba(37,32,38,0.35); }
+    .channel-item__info { flex: 1; }
+    .channel-item__name { font-size: 13px; font-weight: 700; }
+    .channel-item__sub { font-size: 11px; color: rgba(37,32,38,0.45); }
+
+    /* Schedule radio */
+    .schedule-radio-group {
+      display: flex;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+    }
+    .schedule-radio-option {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-12) var(--space-16);
+      border: 1.5px solid var(--color-divider);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color var(--motion-micro) var(--ease-standard);
+    }
+    .schedule-radio-option.is-selected {
+      border-color: var(--color-surface-ink);
+      background: rgba(37,32,38,0.03);
+    }
+    .schedule-radio-option input[type="radio"] { accent-color: var(--color-surface-ink); }
+    .schedule-radio-option__label { font-size: 13px; font-weight: 700; }
+    .schedule-radio-option__sub { font-size: 11px; color: rgba(37,32,38,0.45); }
+
+    .schedule-datetime-row {
+      display: flex;
+      gap: var(--space-12);
+      margin-top: var(--space-12);
+      padding: var(--space-16);
+      background: rgba(37,32,38,0.03);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+    }
+    .schedule-datetime-row input {
+      border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      padding: var(--space-8) var(--space-12);
+      font-family: var(--font-body);
+      font-size: 13px;
+      background: white;
+    }
+
+    /* Sent history panel */
+    .history-panel {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .history-panel__header {
+      padding: var(--space-16) var(--space-20);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .history-panel__title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .history-item {
+      padding: var(--space-14, 14px) var(--space-20);
+      border-bottom: 1px solid rgba(37,32,38,0.05);
+      cursor: pointer;
+      transition: background var(--motion-micro) var(--ease-standard);
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-item:hover { background: rgba(37,32,38,0.02); }
+    .history-item__title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .history-item__meta {
+      font-size: 11px;
+      color: rgba(37,32,38,0.45);
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+    .history-item__reach {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--color-accent-secondary-shade);
+      background: rgba(74,92,51,0.1);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Platform</div>
+          </div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="cohort-detail.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span class="sidebar__label">My Cohorts</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Teaching</div>
+          <a href="content-authoring.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span class="sidebar__label">Content</span>
+          </a>
+          <a href="grading-queue.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="sidebar__label">Grading</span>
+            <span class="sidebar__item-badge">7</span>
+          </a>
+          <a href="announcement-composer.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="sidebar__label">Announcements</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Calendar</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="sidebar__label">Profile</span>
+          </a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;">AW</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:var(--color-shell-text);">Achara Wongchai</div>
+              <div style="font-size:11px;color:var(--color-shell-text-mute);">Instructor</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Teaching: Cohort 1 — Creative ID&amp;ST
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" placeholder="Search announcements…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
+            <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
+            <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Cohort 1 · Creative ID&amp;ST</div>
+            <h1 class="page-header__heading t-h1">Announcements</h1>
+            <div class="page-header__sub">Send messages to your cohort or specific learners</div>
+          </div>
+        </div>
+
+        <div class="composer-layout">
+          <!-- Left: Composer -->
+          <div>
+            <div class="composer-card">
+
+              <!-- Subject -->
+              <div class="composer-card__section" style="padding:var(--space-16) var(--space-24);">
+                <input
+                  type="text"
+                  placeholder="Announcement subject…"
+                  value="Session 5.2 notes + reminder for tonight's office hours"
+                  style="width:100%;border:none;outline:none;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-surface-ink);background:transparent;"
+                  aria-label="Announcement subject"
+                >
+              </div>
+
+              <!-- WYSIWYG toolbar -->
+              <div class="composer-toolbar" role="toolbar" aria-label="Formatting">
+                <button class="composer-toolbar-btn" aria-label="Bold"><strong>B</strong></button>
+                <button class="composer-toolbar-btn" aria-label="Italic"><em>I</em></button>
+                <button class="composer-toolbar-btn" aria-label="Link">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </button>
+                <div class="composer-toolbar-sep"></div>
+                <button class="composer-toolbar-btn" aria-label="Bullet list">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                </button>
+                <button class="composer-toolbar-btn" aria-label="Heading">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h16"/></svg>
+                </button>
+                <div class="composer-toolbar-sep"></div>
+                <button class="composer-toolbar-btn" aria-label="Insert image">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </button>
+              </div>
+
+              <!-- Editor body -->
+              <div
+                class="composer-body"
+                contenteditable="true"
+                data-placeholder="Write your announcement…"
+                role="textbox"
+                aria-multiline="true"
+                aria-label="Announcement body"
+              >
+                <p>Hi everyone,</p>
+                <p>A few notes from today's onsite session — I've uploaded the typography reference PDF and the case study slides to <strong>Module 5.2</strong> on the platform. Please review them before tonight's office hours.</p>
+                <p>Tonight's Zoom office hours run <strong>19:00–20:00</strong>. Bring your typeface pairing explorations — we'll workshop them together. Link: niche.ac/zoom/cohort1</p>
+                <p>See you tonight,<br>Achara</p>
+              </div>
+
+              <!-- Audience -->
+              <div class="composer-card__section">
+                <div class="composer-section-label">Audience</div>
+                <div class="audience-pills">
+                  <div class="audience-pill audience-pill--cohort">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    Cohort: BKK-Design-01
+                    <div class="audience-pill__remove" aria-label="Remove cohort audience">
+                      <svg width="8" height="8" viewBox="0 0 24 24" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </div>
+                  </div>
+                  <div class="audience-pill audience-pill--atrisk">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>
+                    Status: at-risk
+                    <div class="audience-pill__remove" aria-label="Remove at-risk filter">
+                      <svg width="8" height="8" viewBox="0 0 24 24" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </div>
+                  </div>
+                  <div class="audience-pill audience-pill--individual">
+                    <div class="avatar avatar--sm" style="background:rgba(74,92,51,0.2);color:var(--color-accent-secondary-shade);width:16px;height:16px;font-size:8px;">AS</div>
+                    Aira Sukcharoen
+                    <div class="audience-pill__remove" aria-label="Remove individual">
+                      <svg width="8" height="8" viewBox="0 0 24 24" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </div>
+                  </div>
+                  <button class="audience-add-btn" aria-label="Add audience filter">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add segment
+                  </button>
+                </div>
+                <div class="audience-preview">
+                  Estimated reach: <strong>18 learners</strong> ·
+                  <a href="#" aria-label="Preview matched audience list">Preview audience list →</a>
+                </div>
+              </div>
+
+              <!-- Channels -->
+              <div class="composer-card__section">
+                <div class="composer-section-label">Channels</div>
+                <div class="channel-list">
+                  <label class="channel-item channel-item--checked">
+                    <input type="checkbox" checked aria-label="In-app notifications" style="accent-color:var(--color-surface-ink);">
+                    <div class="channel-item__icon channel-item__icon--inapp">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </div>
+                    <div class="channel-item__info">
+                      <div class="channel-item__name">In-app</div>
+                      <div class="channel-item__sub">Bell notification + Dashboard feed</div>
+                    </div>
+                    <span class="badge badge--success">Active</span>
+                  </label>
+
+                  <label class="channel-item channel-item--checked">
+                    <input type="checkbox" checked aria-label="Email" style="accent-color:var(--color-surface-ink);">
+                    <div class="channel-item__icon channel-item__icon--email">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <div class="channel-item__info">
+                      <div class="channel-item__name">Email</div>
+                      <div class="channel-item__sub">Sent via platform email · Resend</div>
+                    </div>
+                    <span class="badge badge--success">Active</span>
+                  </label>
+
+                  <div class="channel-item channel-item--disabled" aria-disabled="true">
+                    <input type="checkbox" disabled aria-label="Line OA (coming soon)">
+                    <div class="channel-item__icon channel-item__icon--line">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="channel-item__info">
+                      <div class="channel-item__name">Line OA</div>
+                      <div class="channel-item__sub">Direct Line message</div>
+                    </div>
+                    <span class="badge badge--neutral">Coming Soon</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Schedule -->
+              <div class="composer-card__section">
+                <div class="composer-section-label">Delivery</div>
+                <div class="schedule-radio-group" role="radiogroup" aria-label="Delivery timing">
+                  <label class="schedule-radio-option is-selected">
+                    <input type="radio" name="schedule" value="now" checked style="accent-color:var(--color-surface-ink);">
+                    <div>
+                      <div class="schedule-radio-option__label">Send Now</div>
+                      <div class="schedule-radio-option__sub">Nov 19, 2026 · 11:08 AM (Bangkok)</div>
+                    </div>
+                  </label>
+                  <label class="schedule-radio-option">
+                    <input type="radio" name="schedule" value="schedule" style="accent-color:var(--color-surface-ink);">
+                    <div>
+                      <div class="schedule-radio-option__label">Schedule</div>
+                      <div class="schedule-radio-option__sub">Pick a date &amp; time</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="schedule-datetime-row" style="display:none;" id="schedule-fields">
+                  <div class="field" style="margin:0;flex:1;">
+                    <label class="field__label" style="font-size:10px;">Date</label>
+                    <input type="date" value="2026-11-20" style="border:1px solid var(--color-divider);border-radius:4px;padding:var(--space-8) var(--space-12);font-family:var(--font-body);font-size:13px;">
+                  </div>
+                  <div class="field" style="margin:0;flex:1;">
+                    <label class="field__label" style="font-size:10px;">Time (Bangkok)</label>
+                    <input type="time" value="09:00" style="border:1px solid var(--color-divider);border-radius:4px;padding:var(--space-8) var(--space-12);font-family:var(--font-body);font-size:13px;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="composer-card__section" style="display:flex;gap:var(--space-12);justify-content:flex-end;align-items:center;">
+                <button class="btn btn--ghost btn--sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  Preview
+                </button>
+                <button class="btn btn--secondary btn--sm">Save Draft</button>
+                <button class="btn btn--primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Send to 18 Learners
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Sent history -->
+          <div>
+            <div class="history-panel">
+              <div class="history-panel__header">
+                <div class="history-panel__title">Sent History</div>
+                <span class="badge badge--neutral">7 total</span>
+              </div>
+
+              <div class="history-item">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
+                  <div class="history-item__title">Welcome to Cohort 1!</div>
+                  <span class="history-item__reach">18 reached</span>
+                </div>
+                <div class="history-item__meta">
+                  <span>Nov 11, 2026</span>
+                  <span>In-app + Email</span>
+                  <span>All cohort</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
+                  <div class="history-item__title">Session 2 recording now available</div>
+                  <span class="history-item__reach">18 reached</span>
+                </div>
+                <div class="history-item__meta">
+                  <span>Nov 13, 2026</span>
+                  <span>In-app</span>
+                  <span>All cohort</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
+                  <div class="history-item__title">Gentle reminder: Module 3 deadline</div>
+                  <span class="history-item__reach" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">2 reached</span>
+                </div>
+                <div class="history-item__meta">
+                  <span>Nov 15, 2026</span>
+                  <span>In-app + Email</span>
+                  <span style="color:var(--color-accent-brand);">At-risk only</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
+                  <div class="history-item__title">Moodboard workshop prep — read before Fri</div>
+                  <span class="history-item__reach">18 reached</span>
+                </div>
+                <div class="history-item__meta">
+                  <span>Nov 16, 2026</span>
+                  <span>In-app + Email</span>
+                  <span>All cohort</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
+                  <div class="history-item__title">Personal check-in — let's catch up</div>
+                  <span class="history-item__reach" style="background:rgba(74,92,51,0.12);color:var(--color-accent-secondary-shade);">1 reached</span>
+                </div>
+                <div class="history-item__meta">
+                  <span>Nov 17, 2026</span>
+                  <span>In-app</span>
+                  <span>Aira Sukcharoen</span>
+                </div>
+              </div>
+
+              <div style="padding:var(--space-12) var(--space-20);text-align:center;border-top:1px solid rgba(37,32,38,0.05);">
+                <a href="#" style="font-size:12px;color:rgba(37,32,38,0.4);text-decoration:none;font-weight:600;">View all →</a>
+              </div>
+            </div>
+
+            <!-- Quick stats -->
+            <div class="card" style="margin-top:var(--space-16);padding:var(--space-16);">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(37,32,38,0.4);margin-bottom:var(--space-12);">This Month</div>
+              <div style="display:flex;gap:var(--space-24);">
+                <div>
+                  <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;">7</div>
+                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Sent</div>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;color:var(--color-accent-secondary-shade);">94%</div>
+                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Open rate</div>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;">3</div>
+                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Targeted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Instructor</div>
+
+<script>
+  // Schedule radio toggle
+  document.querySelectorAll('input[name="schedule"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var fields = document.getElementById('schedule-fields');
+      fields.style.display = this.value === 'schedule' ? 'flex' : 'none';
+      document.querySelectorAll('.schedule-radio-option').forEach(function(opt) {
+        opt.classList.remove('is-selected');
+      });
+      this.closest('.schedule-radio-option').classList.add('is-selected');
+    });
+  });
+</script>
+</body>
+</html>

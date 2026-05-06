@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile &amp; Settings — NICHE Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-48);
+      align-items: start;
+    }
+    /* Settings nav */
+    .settings-nav { display: flex; flex-direction: column; gap: 2px; position: sticky; top: calc(var(--topbar-height) + var(--space-32)); }
+    .settings-nav__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-10);
+      padding: var(--space-8) var(--space-12);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(37,32,38,0.6);
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none; background: transparent; font-family: var(--font-body); text-align: left; width: 100%;
+    }
+    .settings-nav__item:hover { background: rgba(37,32,38,0.05); color: var(--color-surface-ink); }
+    .settings-nav__item.is-active { background: var(--color-surface-ink); color: var(--color-surface-base); font-weight: 600; }
+    .settings-nav__item svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; flex-shrink: 0; }
+    .settings-nav__group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(37,32,38,0.4); padding: var(--space-16) var(--space-12) var(--space-8); }
+
+    /* Settings content sections */
+    .settings-section {
+      display: none;
+      flex-direction: column;
+      gap: var(--space-32);
+    }
+    .settings-section.is-active { display: flex; }
+
+    /* Settings card */
+    .settings-card {
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .settings-card__header {
+      padding: var(--space-20) var(--space-24);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .settings-card__title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .settings-card__desc { font-size: 12px; color: rgba(37,32,38,0.55); }
+    .settings-card__body { padding: var(--space-24); display: flex; flex-direction: column; gap: var(--space-16); }
+    .settings-card__footer {
+      padding: var(--space-16) var(--space-24);
+      border-top: 1px solid var(--color-divider);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-12);
+      background: rgba(37,32,38,0.01);
+    }
+
+    /* Avatar upload */
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      gap: var(--space-24);
+    }
+    .avatar-upload__preview {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--color-accent-brand);
+      color: white;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      display: grid; place-items: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* PDPA consent rows */
+    .consent-item {
+      padding: var(--space-16) var(--space-20);
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-16);
+    }
+    .consent-item + .consent-item { margin-top: var(--space-8); }
+    .consent-item__toggle {
+      position: relative;
+      width: 40px; height: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .consent-item__toggle input { opacity: 0; width: 0; height: 0; }
+    .consent-item__slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(37,32,38,0.15);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background var(--motion-quick) var(--ease-standard);
+    }
+    .consent-item__slider::before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: white;
+      top: 3px; left: 3px;
+      transition: transform var(--motion-quick) var(--ease-standard);
+      box-shadow: 0 1px 3px rgba(37,32,38,0.2);
+    }
+    .consent-item__toggle input:checked + .consent-item__slider { background: var(--color-accent-secondary); }
+    .consent-item__toggle input:checked + .consent-item__slider::before { transform: translateX(18px); }
+    .consent-item__body { flex: 1; }
+    .consent-item__title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .consent-item__desc { font-size: 12px; color: rgba(37,32,38,0.6); line-height: 1.5; }
+    .consent-item__legal { font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4); }
+
+    /* Payment history table */
+    .payment-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      padding: var(--space-14) var(--space-20);
+      border-bottom: 1px solid rgba(37,32,38,0.05);
+      font-size: 13px;
+    }
+    .payment-row:last-child { border-bottom: none; }
+    .payment-row__date { color: rgba(37,32,38,0.5); min-width: 100px; font-size: 12px; }
+    .payment-row__desc { flex: 1; font-weight: 600; }
+    .payment-row__amount { font-family: var(--font-display); font-weight: 700; min-width: 100px; text-align: right; }
+
+    /* Certificate row */
+    .cert-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      padding: var(--space-16) var(--space-20);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .cert-row:last-child { border-bottom: none; }
+    .cert-icon { width: 36px; height: 36px; background: rgba(37,32,38,0.06); border-radius: 6px; display: grid; place-items: center; flex-shrink: 0; }
+    .cert-icon svg { width: 18px; height: 18px; stroke: rgba(37,32,38,0.5); stroke-width: 1.5; fill: none; }
+    .cert-info { flex: 1; }
+    .cert-info__name { font-size: 13px; font-weight: 700; }
+    .cert-info__meta { font-size: 11px; color: rgba(37,32,38,0.5); }
+
+    /* Danger zone */
+    .danger-zone {
+      background: rgba(254,29,37,0.03);
+      border: 1px solid rgba(254,29,37,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .danger-zone__header {
+      padding: var(--space-20) var(--space-24);
+      border-bottom: 1px solid rgba(254,29,37,0.1);
+    }
+    .danger-zone__title { font-size: 14px; font-weight: 700; color: var(--color-accent-brand); }
+    .danger-zone__desc { font-size: 12px; color: rgba(37,32,38,0.65); margin-top: 4px; }
+    .danger-zone__body { padding: var(--space-24); }
+
+    /* Locale switcher */
+    .locale-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-14) var(--space-20);
+      border: 2px solid var(--color-divider);
+      border-radius: 8px;
+      cursor: pointer;
+      background: white;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1;
+      transition: border-color var(--motion-quick) var(--ease-standard);
+    }
+    .locale-btn.is-selected { border-color: var(--color-surface-ink); }
+    .locale-btn__flag { font-size: 20px; }
+
+    @media (max-width: 900px) {
+      .settings-layout { grid-template-columns: 1fr; }
+      .settings-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand"><div class="sidebar__brand-mark">N</div><div><div class="sidebar__brand-name">NICHE</div><div class="sidebar__brand-suffix">Learner Portal</div></div></a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg><span class="sidebar__label">Dashboard</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg><span class="sidebar__label">My Cohort</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Learning</div>
+          <a href="curriculum.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg><span class="sidebar__label">Curriculum</span></a>
+          <a href="schedule.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg><span class="sidebar__label">Schedule</span></a>
+          <a href="assignment-submit.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg><span class="sidebar__label">Assignments</span><span class="sidebar__item-badge">2</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Career</div>
+          <a href="portfolio.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg><span class="sidebar__label">Portfolio</span></a>
+          <a href="resume.html" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg><span class="sidebar__label">Resume</span></a>
+          <a href="#" class="sidebar__item"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg><span class="sidebar__label">Certificates</span></a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="profile.html" class="sidebar__item is-active"><svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg><span class="sidebar__label">Profile &amp; Settings</span></a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:13px;">AS</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Aira Sukcharoen</div><div style="font-size:11px;color:var(--color-shell-text-mute);">Cohort 1 · Bangkok</div></div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip"><div class="topbar__cohort-chip-dot"></div>Cohort 1 · Module 4/12</div>
+        <span class="pace pace--behind" style="margin-left:var(--space-8);"><svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg>Behind by 1 session</span>
+        <div class="topbar__search"><svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg><input type="search" placeholder="Search…" aria-label="Search"></div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications"><svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg><span class="topbar__icon-btn-badge"></span></button>
+          <div class="avatar" style="background:var(--color-accent-brand);color:white;font-size:12px;cursor:pointer;">AS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header" style="margin-bottom: var(--space-32);">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Account</div>
+            <h1 class="page-header__heading">Profile &amp; Settings</h1>
+          </div>
+        </div>
+
+        <div class="settings-layout">
+
+          <!-- Settings nav -->
+          <nav class="settings-nav">
+            <div class="settings-nav__group-label">Account</div>
+            <button class="settings-nav__item is-active" onclick="showSection('account', this)">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+              Account info
+            </button>
+            <button class="settings-nav__item" onclick="showSection('locale', this)">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 2c-2 3-2 9 0 12M2 8h12"/></svg>
+              Language &amp; locale
+            </button>
+            <button class="settings-nav__item" onclick="showSection('pdpa', this)">
+              <svg viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>
+              Privacy &amp; PDPA
+            </button>
+            <div class="settings-nav__group-label">Billing</div>
+            <button class="settings-nav__item" onclick="showSection('payments', this)">
+              <svg viewBox="0 0 16 16"><rect x="1" y="4" width="14" height="9" rx="1"/><path d="M1 7h14"/></svg>
+              Payment history
+            </button>
+            <button class="settings-nav__item" onclick="showSection('certs', this)">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>
+              Certificates
+            </button>
+            <div class="settings-nav__group-label">Danger zone</div>
+            <button class="settings-nav__item" onclick="showSection('danger', this)" style="color: var(--color-accent-brand);">
+              <svg viewBox="0 0 16 16" style="stroke:var(--color-accent-brand);"><path d="M8 2L2 14h12L8 2z"/><path d="M8 7v4M8 12.5v.5"/></svg>
+              Deactivate account
+            </button>
+          </nav>
+
+          <!-- Settings content -->
+          <div>
+
+            <!-- Account info -->
+            <div class="settings-section is-active" id="section-account">
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Profile information</div>
+                  <div class="settings-card__desc">Your public name and contact details.</div>
+                </div>
+                <div class="settings-card__body">
+                  <div class="avatar-upload">
+                    <div class="avatar-upload__preview">AS</div>
+                    <div>
+                      <button class="btn btn--ghost btn--sm">Upload photo</button>
+                      <div style="font-size:11px; color:rgba(37,32,38,0.5); margin-top: var(--space-8);">JPG or PNG, max 2 MB</div>
+                    </div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-16);">
+                    <div class="field" style="margin-bottom:0;">
+                      <label class="field__label" for="first-name">First name</label>
+                      <input class="input" id="first-name" type="text" value="Aira">
+                    </div>
+                    <div class="field" style="margin-bottom:0;">
+                      <label class="field__label" for="last-name">Last name</label>
+                      <input class="input" id="last-name" type="text" value="Sukcharoen">
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" for="email">Email address</label>
+                    <input class="input" id="email" type="email" value="aira.sukcharoen@email.com">
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" for="phone">Phone number</label>
+                    <div class="field__hint">Used for course notifications and urgent cohort updates.</div>
+                    <input class="input" id="phone" type="tel" value="+66 81 234 5678">
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" for="city">City</label>
+                    <input class="input" id="city" type="text" value="Bangkok">
+                  </div>
+                </div>
+                <div class="settings-card__footer">
+                  <button class="btn btn--ghost">Cancel</button>
+                  <button class="btn btn--primary">Save changes</button>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Password</div>
+                  <div class="settings-card__desc">Change your login password.</div>
+                </div>
+                <div class="settings-card__body">
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" for="current-pw">Current password</label>
+                    <input class="input" id="current-pw" type="password" placeholder="Enter current password">
+                  </div>
+                  <div class="field" style="margin-bottom:0;">
+                    <label class="field__label" for="new-pw">New password</label>
+                    <input class="input" id="new-pw" type="password" placeholder="Min. 8 characters">
+                  </div>
+                </div>
+                <div class="settings-card__footer">
+                  <button class="btn btn--primary">Update password</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Language & Locale -->
+            <div class="settings-section" id="section-locale">
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Language &amp; locale</div>
+                  <div class="settings-card__desc">The platform UI language. Content language is set per program.</div>
+                </div>
+                <div class="settings-card__body">
+                  <div style="display:flex; gap:var(--space-12);">
+                    <button class="locale-btn is-selected">
+                      <span class="locale-btn__flag">🇬🇧</span>
+                      <div>
+                        <div style="font-size:13px; font-weight:700;">English</div>
+                        <div style="font-size:11px; font-weight:400; color:rgba(37,32,38,0.5);">Default</div>
+                      </div>
+                    </button>
+                    <button class="locale-btn">
+                      <span class="locale-btn__flag">🇹🇭</span>
+                      <div>
+                        <div style="font-size:13px; font-weight:700;">ภาษาไทย</div>
+                        <div style="font-size:11px; font-weight:400; color:rgba(37,32,38,0.5);">Coming soon</div>
+                      </div>
+                    </button>
+                  </div>
+                  <div style="background: rgba(37,32,38,0.04); border-radius:6px; padding:var(--space-12) var(--space-16); font-size:12px; color:rgba(37,32,38,0.6);">
+                    Thai UI is in development and will be available by Q2 2027. Content from your facilitator may be in Thai regardless of this setting.
+                  </div>
+                </div>
+                <div class="settings-card__footer">
+                  <button class="btn btn--primary">Save preference</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Privacy & PDPA -->
+            <div class="settings-section" id="section-pdpa">
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Privacy &amp; PDPA Consent</div>
+                  <div class="settings-card__desc">Manage your data consent under Thailand's Personal Data Protection Act (PDPA B.E. 2562). Data is stored on servers in Singapore.</div>
+                </div>
+                <div class="settings-card__body">
+
+                  <div class="consent-item">
+                    <label class="consent-item__toggle">
+                      <input type="checkbox" checked>
+                      <span class="consent-item__slider"></span>
+                    </label>
+                    <div class="consent-item__body">
+                      <div class="consent-item__title">Program delivery</div>
+                      <div class="consent-item__desc">Required to operate your account and deliver the program: roster, attendance, assignment grades, schedule.</div>
+                      <div class="consent-item__legal">Required · Cannot be withdrawn while enrolled</div>
+                    </div>
+                  </div>
+
+                  <div class="consent-item">
+                    <label class="consent-item__toggle">
+                      <input type="checkbox" checked>
+                      <span class="consent-item__slider"></span>
+                    </label>
+                    <div class="consent-item__body">
+                      <div class="consent-item__title">Portfolio &amp; public profile</div>
+                      <div class="consent-item__desc">Allows NICHE to host and display your portfolio items and public profile URL.</div>
+                      <div class="consent-item__legal">Optional · You can change visibility per item on your Portfolio page</div>
+                    </div>
+                  </div>
+
+                  <div class="consent-item">
+                    <label class="consent-item__toggle">
+                      <input type="checkbox" checked>
+                      <span class="consent-item__slider"></span>
+                    </label>
+                    <div class="consent-item__body">
+                      <div class="consent-item__title">Marketing communications</div>
+                      <div class="consent-item__desc">Occasional updates about NICHE programs, alumni events, and career opportunities.</div>
+                      <div class="consent-item__legal">Optional · Withdraw any time</div>
+                    </div>
+                  </div>
+
+                  <div class="consent-item">
+                    <label class="consent-item__toggle">
+                      <input type="checkbox">
+                      <span class="consent-item__slider"></span>
+                    </label>
+                    <div class="consent-item__body">
+                      <div class="consent-item__title">Employer profile visibility</div>
+                      <div class="consent-item__desc">When enabled, employer partners can view your profile and portfolio as part of NICHE's career placement service.</div>
+                      <div class="consent-item__legal">Optional · Employer portal not yet live (scheduled Q3 2027)</div>
+                    </div>
+                  </div>
+
+                  <div class="consent-item">
+                    <label class="consent-item__toggle">
+                      <input type="checkbox" checked>
+                      <span class="consent-item__slider"></span>
+                    </label>
+                    <div class="consent-item__body">
+                      <div class="consent-item__title">Analytics &amp; product improvement</div>
+                      <div class="consent-item__desc">Anonymised usage data to improve the platform experience for all learners.</div>
+                      <div class="consent-item__legal">Optional · Data is anonymised before analysis</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="settings-card__footer">
+                  <div style="flex:1; font-size:11px; color:rgba(37,32,38,0.5);">Last updated: 1 Nov 2026 · <a href="#" style="color:var(--color-surface-ink);">View full privacy policy</a></div>
+                  <button class="btn btn--primary">Save preferences</button>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Data requests</div>
+                  <div class="settings-card__desc">Under PDPA, you have rights to access, correct, and delete your personal data.</div>
+                </div>
+                <div class="settings-card__body">
+                  <div style="display:flex; gap:var(--space-12); flex-wrap:wrap;">
+                    <button class="btn btn--ghost btn--sm">
+                      <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M6 2v6M3 6l3 3 3-3"/><path d="M1 10h10"/></svg>
+                      Export my data
+                    </button>
+                    <button class="btn btn--ghost btn--sm">Request data correction</button>
+                    <button class="btn btn--destructive btn--sm">Request deletion</button>
+                  </div>
+                  <div style="font-size:11px; color:rgba(37,32,38,0.5); line-height:1.5;">Requests are processed within 30 days as required by PDPA. For urgent matters, contact privacy@niche.institute.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment history -->
+            <div class="settings-section" id="section-payments">
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Payment history</div>
+                  <div class="settings-card__desc">Your enrollment payments for Cohort 1.</div>
+                </div>
+                <div>
+                  <div class="payment-row" style="background:rgba(37,32,38,0.02); border-bottom:1px solid var(--color-divider);">
+                    <div class="payment-row__date" style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(37,32,38,0.4);">Date</div>
+                    <div class="payment-row__desc" style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(37,32,38,0.4);">Description</div>
+                    <div class="payment-row__amount" style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(37,32,38,0.4);">Amount</div>
+                    <div style="min-width:80px; text-align:right; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(37,32,38,0.4);">Status</div>
+                  </div>
+                  <div class="payment-row">
+                    <div class="payment-row__date">1 Nov 2026</div>
+                    <div class="payment-row__desc">Cohort 1 — Creative Identity &amp; Storytelling · Bootcamp enrollment</div>
+                    <div class="payment-row__amount">฿45,000</div>
+                    <div style="min-width:80px; text-align:right;"><span class="status-chip status-chip--paid" style="font-size:10px; padding:2px 8px;">Paid</span></div>
+                  </div>
+                </div>
+                <div class="settings-card__footer">
+                  <button class="btn btn--ghost btn--sm">
+                    <svg style="width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 12 12"><path d="M6 2v6M3 6l3 3 3-3"/><path d="M1 10h10"/></svg>
+                    Download receipt
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Certificates -->
+            <div class="settings-section" id="section-certs">
+              <div class="settings-card">
+                <div class="settings-card__header">
+                  <div class="settings-card__title">Certificate downloads</div>
+                  <div class="settings-card__desc">Certificates are issued automatically upon program completion.</div>
+                </div>
+                <div>
+                  <div class="cert-row" style="opacity:0.5;">
+                    <div class="cert-icon"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M6 9l2 2 4-4"/></svg></div>
+                    <div class="cert-info">
+                      <div class="cert-info__name">Creative Identity &amp; Storytelling — Completion</div>
+                      <div class="cert-info__meta">Bootcamp · Cohort 1 · Not yet issued (complete all 36 sessions)</div>
+                    </div>
+                    <button class="btn btn--ghost btn--sm" disabled style="opacity:0.5;">Download PDF</button>
+                  </div>
+                </div>
+                <div style="padding:var(--space-24); font-size:12px; color:rgba(37,32,38,0.5);">
+                  You've completed 9 of 36 sessions. Certificates are issued within 5 business days of program completion.
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger zone -->
+            <div class="settings-section" id="section-danger">
+              <div class="danger-zone">
+                <div class="danger-zone__header">
+                  <div class="danger-zone__title">Deactivate account</div>
+                  <div class="danger-zone__desc">This action is irreversible. Read carefully before proceeding.</div>
+                </div>
+                <div class="danger-zone__body">
+                  <div style="font-size:13px; line-height:1.7; color:rgba(37,32,38,0.75); margin-bottom: var(--space-24);">
+                    Deactivating your account will:<br>
+                    <ul style="margin-top: var(--space-8);">
+                      <li>Remove your access to all program materials and sessions</li>
+                      <li>Unpublish your public portfolio profile</li>
+                      <li>Retain your data for 3 years per PDPA requirements (unless you request deletion separately)</li>
+                      <li>Not automatically issue a refund — contact admin@niche.institute for enrollment fee queries</li>
+                    </ul>
+                  </div>
+                  <div class="field" style="margin-bottom: var(--space-16);">
+                    <label class="field__label" for="confirm-deactivate">Type your email to confirm</label>
+                    <input class="input" id="confirm-deactivate" type="text" placeholder="aira.sukcharoen@email.com">
+                  </div>
+                  <button class="btn" style="background:var(--color-accent-brand);color:white;">Deactivate my account</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('is-active'));
+  document.querySelectorAll('.settings-nav__item').forEach(b => b.classList.remove('is-active'));
+  document.getElementById('section-' + id).classList.add('is-active');
+  btn.classList.add('is-active');
+}
+</script>
+</body>
+</html>

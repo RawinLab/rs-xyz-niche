@@ -1,0 +1,167 @@
+/* ============================================================
+   NICHE Brand Book — Design Tokens
+   New Institute of Creativity, Humanity & Entrepreneurship
+   ============================================================ */
+
+:root {
+
+  /* ----------------------------------------------------------
+     COLOR — Surface
+     ---------------------------------------------------------- */
+  --color-surface-base:        #f2f1f0;   /* page background */
+  --color-surface-ink:         #252026;   /* primary text, dark fills */
+  --color-surface-muted:       #cccecd;   /* dividers, disabled — NO text */
+
+  /* ----------------------------------------------------------
+     COLOR — Accent
+     ---------------------------------------------------------- */
+  --color-accent-brand:        #fe1d25;   /* display, CTAs, section numbers — large text only */
+  --color-accent-secondary:    #779152;   /* program signage — body on ink only */
+  --color-accent-secondary-shade: #4a5c33; /* accessible green for body on light bg */
+  --color-accent-secondary-tint:  #b4c49a; /* decorative only — NO text */
+
+  /* ----------------------------------------------------------
+     COLOR — Semantic aliases
+     ---------------------------------------------------------- */
+  --color-page-bg:             var(--color-surface-base);
+  --color-page-text:           var(--color-surface-ink);
+  --color-divider:             var(--color-surface-muted);
+  --color-do:                  var(--color-accent-secondary);
+  --color-dont:                var(--color-surface-muted);
+  --color-todo-bg:             #fff8e1;
+  --color-todo-border:         #f0c040;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — Families
+     ---------------------------------------------------------- */
+  --font-display:   'Fraunces', 'DM Serif Display', Georgia, serif;
+  --font-body:      'Bai Jamjuree', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — Scale (12 tokens)
+     ---------------------------------------------------------- */
+  --type-display-xl-size:    9rem;       /* 144px */
+  --type-display-xl-weight:  800;
+  --type-display-xl-lh:      0.92;
+  --type-display-xl-ls:      -0.02em;
+
+  --type-display-size:       5.5rem;     /* 88px */
+  --type-display-weight:     700;
+  --type-display-lh:         0.97;
+  --type-display-ls:         -0.02em;
+
+  --type-h1-size:            3.5rem;     /* 56px */
+  --type-h1-weight:          600;
+  --type-h1-lh:              1.05;
+  --type-h1-ls:              -0.01em;
+
+  --type-h2-size:            2.25rem;    /* 36px */
+  --type-h2-weight:          700;
+  --type-h2-lh:              1.1;
+  --type-h2-ls:              0;
+
+  --type-h3-size:            1.5rem;     /* 24px */
+  --type-h3-weight:          600;
+  --type-h3-lh:              1.2;
+  --type-h3-ls:              0;
+
+  --type-h4-size:            1.125rem;   /* 18px */
+  --type-h4-weight:          600;
+  --type-h4-lh:              1.3;
+  --type-h4-ls:              0;
+
+  --type-eyebrow-size:       0.75rem;    /* 12px */
+  --type-eyebrow-weight:     700;
+  --type-eyebrow-lh:         1.4;
+  --type-eyebrow-ls:         0.12em;
+
+  --type-body-l-size:        1.125rem;   /* 18px */
+  --type-body-l-weight:      400;
+  --type-body-l-lh:          1.65;
+  --type-body-l-ls:          0;
+
+  --type-body-m-size:        1rem;       /* 16px */
+  --type-body-m-weight:      400;
+  --type-body-m-lh:          1.6;
+  --type-body-m-ls:          0;
+
+  --type-body-s-size:        0.875rem;   /* 14px */
+  --type-body-s-weight:      400;
+  --type-body-s-lh:          1.55;
+  --type-body-s-ls:          0;
+
+  --type-caption-size:       0.75rem;    /* 12px */
+  --type-caption-weight:     300;
+  --type-caption-lh:         1.4;
+  --type-caption-ls:         0.04em;
+
+  --type-button-size:        0.875rem;   /* 14px */
+  --type-button-weight:      700;
+  --type-button-lh:          1.0;
+  --type-button-ls:          0.08em;
+
+  /* ----------------------------------------------------------
+     SPACING — Base-8 scale
+     ---------------------------------------------------------- */
+  --space-2:    0.125rem;   /*  2px */
+  --space-4:    0.25rem;    /*  4px */
+  --space-8:    0.5rem;     /*  8px */
+  --space-12:   0.75rem;    /* 12px */
+  --space-16:   1rem;       /* 16px */
+  --space-24:   1.5rem;     /* 24px */
+  --space-32:   2rem;       /* 32px */
+  --space-48:   3rem;       /* 48px */
+  --space-64:   4rem;       /* 64px */
+  --space-80:   5rem;       /* 80px */
+  --space-96:   6rem;       /* 96px */
+  --space-128:  8rem;       /* 128px */
+  --space-160:  10rem;      /* 160px */
+  --space-192:  12rem;      /* 192px */
+
+  /* ----------------------------------------------------------
+     LAYOUT
+     ---------------------------------------------------------- */
+  --max-width-text:     680px;
+  --max-width-wide:     1200px;
+  --max-width-full:     1440px;
+  --gutter:             clamp(1.5rem, 5vw, 5rem);
+  --section-padding-y:  clamp(4rem, 10vw, 8rem);
+
+  /* ----------------------------------------------------------
+     MOTION — 5 tokens (IBM Carbon authority)
+     ---------------------------------------------------------- */
+  --motion-micro:   80ms;    /* icon state, checkbox, hover fill */
+  --motion-quick:   150ms;   /* button press, tooltip, tag hover */
+  --motion-base:    280ms;   /* card entrance, drawer, modal */
+  --motion-slow:    500ms;   /* page transitions, hero text reveal */
+  --motion-logo:    900ms;   /* logo reveal staged sequence */
+
+  --ease-entrance:  cubic-bezier(0, 0, 0.3, 1);
+  --ease-exit:      cubic-bezier(0.4, 0.14, 1, 1);
+  --ease-standard:  cubic-bezier(0.2, 0, 0.38, 0.9);
+
+  /* ----------------------------------------------------------
+     BORDER
+     ---------------------------------------------------------- */
+  --border-thin:   1px solid var(--color-divider);
+  --border-medium: 2px solid var(--color-surface-ink);
+
+  /* ----------------------------------------------------------
+     SHADOW
+     ---------------------------------------------------------- */
+  --shadow-subtle: 0 1px 3px rgba(37, 32, 38, 0.08);
+  --shadow-card:   0 4px 16px rgba(37, 32, 38, 0.12);
+}
+
+/* ----------------------------------------------------------
+   Reduced motion overrides
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-micro:  0ms;
+    --motion-quick:  0ms;
+    --motion-base:   0ms;
+    --motion-slow:   0ms;
+    --motion-logo:   0ms;
+  }
+}

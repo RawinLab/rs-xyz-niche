@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cohort Detail — NICHE Instructor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    .cohort-hero {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-32) var(--space-48);
+      border-bottom: 1px solid rgba(242,241,240,0.08);
+    }
+    .cohort-hero__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-24);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-20);
+    }
+    .cohort-hero__name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      margin-bottom: var(--space-8);
+    }
+    .cohort-hero__meta-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      font-size: 13px;
+      color: rgba(242,241,240,0.65);
+      flex-wrap: wrap;
+    }
+    .cohort-hero__meta-divider { opacity: 0.3; }
+    .cohort-hero__capacity {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      padding: var(--space-16) var(--space-24);
+      background: rgba(242,241,240,0.05);
+      border: 1px solid rgba(242,241,240,0.1);
+      border-radius: 8px;
+    }
+    .cohort-hero__cap-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(242,241,240,0.5); margin-bottom: 4px; }
+    .cohort-hero__cap-value { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1; }
+    .cohort-hero__actions {
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+
+    /* Tabs adjusted for dark context above */
+    .cohort-tabs {
+      background: var(--color-surface-ink);
+      padding: 0 var(--space-48);
+      border-bottom: 1px solid rgba(242,241,240,0.08);
+    }
+    .cohort-tabs .tabs {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .cohort-tabs .tabs__item {
+      color: rgba(242,241,240,0.5);
+      padding: var(--space-16) var(--space-16);
+      font-size: 13px;
+    }
+    .cohort-tabs .tabs__item.is-active {
+      color: var(--color-surface-base);
+      border-bottom-color: var(--color-accent-brand);
+    }
+    .cohort-tabs .tabs__count {
+      background: rgba(242,241,240,0.1);
+      color: rgba(242,241,240,0.6);
+    }
+
+    /* Roster filters bar */
+    .roster-filters {
+      display: flex;
+      gap: var(--space-8);
+      align-items: center;
+      padding: var(--space-16);
+      border-bottom: 1px solid var(--color-divider);
+      flex-wrap: wrap;
+      background: rgba(37,32,38,0.02);
+    }
+    .filter-select {
+      border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: var(--font-body);
+      background: white;
+      cursor: pointer;
+    }
+    .filter-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      font-size: 12px;
+      background: white;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+    .filter-toggle--active {
+      background: rgba(254,29,37,0.08);
+      border-color: rgba(254,29,37,0.3);
+      color: var(--color-accent-brand);
+      font-weight: 700;
+    }
+
+    /* Bulk actions toolbar */
+    .bulk-toolbar {
+      display: flex;
+      gap: var(--space-8);
+      align-items: center;
+      padding: var(--space-12) var(--space-16);
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      font-size: 13px;
+    }
+    .bulk-toolbar__count {
+      font-weight: 700;
+      margin-right: var(--space-8);
+    }
+    .bulk-toolbar__sep { opacity: 0.2; }
+
+    /* At-risk tooltip trigger */
+    .at-risk-flag {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: help;
+    }
+    .at-risk-flag__tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      font-size: 11px;
+      line-height: 1.5;
+      padding: var(--space-8) var(--space-12);
+      border-radius: 4px;
+      white-space: nowrap;
+      box-shadow: var(--shadow-card);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--motion-quick) var(--ease-standard);
+      z-index: 20;
+      min-width: 280px;
+      white-space: normal;
+    }
+    .at-risk-flag:hover .at-risk-flag__tooltip { opacity: 1; }
+
+    /* Actions dropdown */
+    .actions-menu {
+      position: relative;
+      display: inline-block;
+    }
+    .actions-menu__btn {
+      width: 28px; height: 28px;
+      display: grid; place-items: center;
+      border: 1px solid var(--color-divider);
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      color: rgba(37,32,38,0.5);
+    }
+    .actions-menu__btn:hover { background: rgba(37,32,38,0.04); color: var(--color-surface-ink); }
+    .actions-menu__dropdown {
+      position: absolute;
+      right: 0; top: calc(100% + 4px);
+      background: white;
+      border: 1px solid var(--color-divider);
+      border-radius: 6px;
+      box-shadow: var(--shadow-card);
+      min-width: 180px;
+      z-index: 30;
+      display: none;
+    }
+    .actions-menu:hover .actions-menu__dropdown,
+    .actions-menu__btn:focus + .actions-menu__dropdown { display: block; }
+    .actions-menu__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-8) var(--space-16);
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--color-surface-ink);
+      transition: background var(--motion-micro) var(--ease-standard);
+    }
+    .actions-menu__item:hover { background: rgba(37,32,38,0.04); }
+    .actions-menu__item--danger { color: var(--color-accent-brand); }
+    .actions-menu__divider { height: 1px; background: var(--color-divider); margin: 4px 0; }
+
+    .progress-cell { min-width: 160px; }
+    .last-active--stale { color: var(--color-accent-brand); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="#" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Platform</div>
+          </div>
+        </a>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Overview</div>
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="cohort-detail.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="sidebar__label">My Cohorts</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Teaching</div>
+          <a href="content-authoring.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span class="sidebar__label">Content</span>
+          </a>
+          <a href="grading-queue.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="sidebar__label">Grading</span>
+            <span class="sidebar__item-badge">7</span>
+          </a>
+          <a href="announcement-composer.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="sidebar__label">Announcements</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Calendar</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="sidebar__label">Schedule</span>
+          </a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Account</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="sidebar__label">Profile</span>
+          </a>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41"/></svg>
+            <span class="sidebar__label">Settings</span>
+          </a>
+        </div>
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;">AW</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:var(--color-shell-text);">Achara Wongchai</div>
+              <div style="font-size:11px;color:var(--color-shell-text-mute);">Instructor</div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          Teaching: Cohort 1 — Creative ID&amp;ST
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" placeholder="Search learners…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+            <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
+            <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
+            <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <!-- Cohort Hero -->
+      <div class="cohort-hero">
+        <div class="cohort-hero__top">
+          <div>
+            <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);">
+              <span class="pillar-tag pillar-tag--creativity" style="background:rgba(254,29,37,0.2);color:#ff6b70;">Creativity</span>
+              <span class="status-chip status-chip--current">Active</span>
+            </div>
+            <div class="cohort-hero__name">Cohort 1 — Creative Identity &amp; Storytelling</div>
+            <div class="cohort-hero__meta-row">
+              <span>Bootcamp</span>
+              <span class="cohort-hero__meta-divider">|</span>
+              <span>Nov 11 – Nov 30, 2026</span>
+              <span class="cohort-hero__meta-divider">|</span>
+              <span>Instructor: Achara Wongchai</span>
+            </div>
+          </div>
+          <div class="cohort-hero__capacity">
+            <div>
+              <div class="cohort-hero__cap-label">Enrolled</div>
+              <div class="cohort-hero__cap-value">18 <span style="font-size:16px;opacity:0.4;">/ 24</span></div>
+              <div style="margin-top:var(--space-8);">
+                <div class="capacity__bar" style="width:140px;">
+                  <div class="capacity__fill" style="width:75%;background:var(--color-accent-secondary);"></div>
+                </div>
+              </div>
+              <div style="font-size:11px;color:rgba(242,241,240,0.5);margin-top:4px;">75% capacity · 6 seats open</div>
+            </div>
+          </div>
+        </div>
+        <div class="cohort-hero__actions">
+          <a href="announcement-composer.html" class="btn btn--ghost-on-dark btn--sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Announce
+          </a>
+          <button class="btn btn--ghost-on-dark btn--sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Roster
+          </button>
+          <button class="btn btn--ghost-on-dark btn--sm">Edit Cohort</button>
+        </div>
+      </div>
+
+      <!-- Tabs (dark bg) -->
+      <div class="cohort-tabs">
+        <div class="tabs">
+          <button class="tabs__item is-active" role="tab">
+            Roster <span class="tabs__count">18</span>
+          </button>
+          <button class="tabs__item" role="tab">Analytics</button>
+          <button class="tabs__item" role="tab">Schedule</button>
+          <button class="tabs__item" role="tab">Communications</button>
+        </div>
+      </div>
+
+      <!-- Roster Tab Content -->
+      <div style="padding: var(--space-32) var(--space-48);">
+
+        <!-- Bulk actions (visible when rows selected) -->
+        <div class="bulk-toolbar" style="border-radius:6px;margin-bottom:var(--space-16);">
+          <span class="bulk-toolbar__count">2 selected</span>
+          <span class="bulk-toolbar__sep">|</span>
+          <button class="btn btn--ghost-on-dark btn--sm">Send Message</button>
+          <button class="btn btn--ghost-on-dark btn--sm">Mark At-Risk</button>
+          <button class="btn btn--ghost-on-dark btn--sm">Schedule 1-on-1</button>
+          <button class="btn btn--ghost-on-dark btn--sm">Export</button>
+          <button style="margin-left:auto;background:none;border:none;color:rgba(242,241,240,0.5);font-size:12px;cursor:pointer;">Clear selection</button>
+        </div>
+
+        <div class="data-table">
+          <!-- Filters -->
+          <div class="roster-filters">
+            <input type="search" class="data-table__search" placeholder="Search by name or email…" style="max-width:240px;" aria-label="Search roster">
+            <select class="filter-select" aria-label="Filter by status">
+              <option>Status: All</option>
+              <option>Enrolled</option>
+              <option>Waitlisted</option>
+              <option>Dropped</option>
+              <option>Completed</option>
+            </select>
+            <select class="filter-select" aria-label="Filter by module">
+              <option>Module: All</option>
+              <option>Module 1 — Foundation</option>
+              <option>Module 2 — Research</option>
+              <option>Module 3 — Identity</option>
+            </select>
+            <button class="filter-toggle filter-toggle--active" aria-pressed="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              At-risk only (2)
+            </button>
+            <button class="btn btn--primary btn--sm" style="margin-left:auto;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Learner
+            </button>
+          </div>
+
+          <!-- Table -->
+          <div style="overflow-x:auto;">
+            <table role="grid" aria-label="Cohort roster">
+              <thead>
+                <tr>
+                  <th style="width:32px;"><input type="checkbox" aria-label="Select all"></th>
+                  <th>Learner</th>
+                  <th>Email</th>
+                  <th>Progress</th>
+                  <th>Attendance</th>
+                  <th>Last Active</th>
+                  <th>Assignments</th>
+                  <th>At-Risk</th>
+                  <th style="width:40px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Row 1: At-risk -->
+                <tr style="background:rgba(254,29,37,0.02);">
+                  <td><input type="checkbox" checked aria-label="Select Aira Sukcharoen"></td>
+                  <td>
+                    <div class="cell-user">
+                      <div class="avatar" style="background:rgba(254,29,37,0.15);color:var(--color-accent-brand);">AS</div>
+                      <div>
+                        <div style="font-weight:700;">Aira Sukcharoen</div>
+                        <div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="color:rgba(37,32,38,0.55);font-size:12px;">aira.s@email.com</td>
+                  <td class="progress-cell">
+                    <div class="progress-row">
+                      <div class="progress" style="width:100px;">
+                        <div class="progress__fill progress__fill--brand" style="width:52%;"></div>
+                      </div>
+                      <span class="progress-row__label">52% · 6/12 mod</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="progress" style="width:40px;height:4px;">
+                        <div class="progress__fill" style="width:72%;"></div>
+                      </div>
+                      <span style="font-size:12px;">72%</span>
+                    </div>
+                  </td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">3 days ago</span></td>
+                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td>
+                    <div class="at-risk-flag">
+                      <span class="status-chip status-chip--needs-revision" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        At-Risk
+                      </span>
+                      <div class="at-risk-flag__tooltip">
+                        <strong style="display:block;margin-bottom:4px;">At-Risk Criteria Met</strong>
+                        Behind by 2 sessions · 1 overdue submission<br>
+                        Completion 52% (cohort median 64%)<br>
+                        Attendance 72% (below 80% threshold)
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="actions-menu">
+                      <button class="actions-menu__btn" aria-label="Actions for Aira Sukcharoen" aria-haspopup="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                      </button>
+                      <div class="actions-menu__dropdown">
+                        <a href="#" class="actions-menu__item">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                          Message
+                        </a>
+                        <a href="#" class="actions-menu__item">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>
+                          Mark At-Risk
+                        </a>
+                        <a href="#" class="actions-menu__item">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                          Schedule 1-on-1
+                        </a>
+                        <div class="actions-menu__divider"></div>
+                        <a href="#" class="actions-menu__item">Export</a>
+                        <a href="#" class="actions-menu__item actions-menu__item--danger">Remove from Cohort</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 2: At-risk -->
+                <tr style="background:rgba(254,29,37,0.02);">
+                  <td><input type="checkbox" checked aria-label="Select Krit Mehra"></td>
+                  <td>
+                    <div class="cell-user">
+                      <div class="avatar" style="background:rgba(254,29,37,0.15);color:var(--color-accent-brand);">KM</div>
+                      <div>
+                        <div style="font-weight:700;">Krit Mehra</div>
+                        <div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="color:rgba(37,32,38,0.55);font-size:12px;">krit.m@email.com</td>
+                  <td class="progress-cell">
+                    <div class="progress-row">
+                      <div class="progress" style="width:100px;">
+                        <div class="progress__fill progress__fill--brand" style="width:47%;"></div>
+                      </div>
+                      <span class="progress-row__label">47% · 5/12 mod</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="progress" style="width:40px;height:4px;">
+                        <div class="progress__fill progress__fill--brand" style="width:61%;"></div>
+                      </div>
+                      <span style="font-size:12px;color:var(--color-accent-brand);">61%</span>
+                    </div>
+                  </td>
+                  <td><span class="last-active--stale">9 days ago</span></td>
+                  <td><span style="font-size:12px;color:var(--color-accent-brand);">3/6 ⚠</span></td>
+                  <td>
+                    <div class="at-risk-flag">
+                      <span class="status-chip status-chip--needs-revision" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        At-Risk
+                      </span>
+                      <div class="at-risk-flag__tooltip">
+                        <strong style="display:block;margin-bottom:4px;">At-Risk Criteria Met</strong>
+                        9 days no login · 2 overdue submissions<br>
+                        Completion 47% (cohort median 64%)<br>
+                        Attendance 61% (below 80% threshold)
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="actions-menu">
+                      <button class="actions-menu__btn" aria-label="Actions for Krit Mehra">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                      </button>
+                      <div class="actions-menu__dropdown">
+                        <a href="#" class="actions-menu__item">Message</a>
+                        <a href="#" class="actions-menu__item">Mark At-Risk</a>
+                        <a href="#" class="actions-menu__item">Schedule 1-on-1</a>
+                        <div class="actions-menu__divider"></div>
+                        <a href="#" class="actions-menu__item">Export</a>
+                        <a href="#" class="actions-menu__item actions-menu__item--danger">Remove from Cohort</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Normal rows -->
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Nattacha Boonma"></td>
+                  <td><div class="cell-user"><div class="avatar">NB</div><div><div style="font-weight:700;">Nattacha Boonma</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">nattacha.b@email.com</td>
+                  <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill progress__fill--moss" style="width:83%;"></div></div><span class="progress-row__label">83% · 10/12</span></div></td>
+                  <td><span style="font-size:12px;">96%</span></td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">2h ago</span></td>
+                  <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">6/6 ✓</span></td>
+                  <td>—</td>
+                  <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><a href="#" class="actions-menu__item">Mark At-Risk</a><a href="#" class="actions-menu__item">Schedule 1-on-1</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
+                </tr>
+
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Pasin Rattanachot"></td>
+                  <td><div class="cell-user"><div class="avatar">PR</div><div><div style="font-weight:700;">Pasin Rattanachot</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">pasin.r@email.com</td>
+                  <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:67%;"></div></div><span class="progress-row__label">67% · 8/12</span></div></td>
+                  <td><span style="font-size:12px;">87%</span></td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">1 day ago</span></td>
+                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td>—</td>
+                  <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><a href="#" class="actions-menu__item">Mark At-Risk</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
+                </tr>
+
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Wanlaya Khunying"></td>
+                  <td><div class="cell-user"><div class="avatar" style="background:rgba(74,92,51,0.15);color:var(--color-accent-secondary-shade);">WK</div><div><div style="font-weight:700;">Wanlaya Khunying</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">wanlaya.k@email.com</td>
+                  <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill progress__fill--moss" style="width:92%;"></div></div><span class="progress-row__label">92% · 11/12</span></div></td>
+                  <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">98%</span></td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">5h ago</span></td>
+                  <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">6/6 ✓</span></td>
+                  <td>—</td>
+                  <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
+                </tr>
+
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Chalisa Nakorn"></td>
+                  <td><div class="cell-user"><div class="avatar">CN</div><div><div style="font-weight:700;">Chalisa Nakorn</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">chalisa.n@email.com</td>
+                  <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:75%;"></div></div><span class="progress-row__label">75% · 9/12</span></div></td>
+                  <td><span style="font-size:12px;">83%</span></td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">Yesterday</span></td>
+                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td>—</td>
+                  <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
+                </tr>
+
+                <!-- Placeholder rows to fill out the table -->
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="cell-user"><div class="avatar">ST</div><div><div style="font-weight:700;">Supakan Thongdee</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">supakan.t@email.com</td>
+                  <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:58%;"></div></div><span class="progress-row__label">58% · 7/12</span></div></td>
+                  <td><span style="font-size:12px;">79%</span></td>
+                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">6h ago</span></td>
+                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td>—</td>
+                  <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table footer -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-12) var(--space-16);border-top:1px solid var(--color-divider);font-size:12px;color:rgba(37,32,38,0.55);">
+            <span>Showing 7 of 18 learners · 2 at-risk</span>
+            <div style="display:flex;gap:var(--space-8);">
+              <button class="btn btn--ghost btn--sm">← Prev</button>
+              <button class="btn btn--ghost btn--sm">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Instructor</div>
+</body>
+</html>
