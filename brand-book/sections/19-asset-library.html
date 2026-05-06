@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§19 Asset Library &amp; File Naming — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 19</span>
+      <div class="book-sidebar__title">Asset Library &amp; File Naming</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#file-naming-convention">File naming convention</a></li>
+        <li><a href="#logo-package-structure">Logo package structure</a></li>
+        <li><a href="#figma-source-structure">Figma source structure</a></li>
+        <li><a href="#photo-library">Photo library</a></li>
+        <li><a href="#font-license-files">Font license files</a></li>
+        <li><a href="#todo">Pending Input</a></li>
+
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 19</span>
+          <h1 class="section-hero__title">Asset Library &amp; File Naming</h1>
+          <p class="section-hero__lead">Where files live, what they're called, and how to find them.</p>
+        </div>
+      </header>
+
+
+      <section id="file-naming-convention" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Overview</span>
+          <h2>File naming convention</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">Pattern: [brand]-[asset-type]-[variant]-[color]-[version].[ext]. Example: niche-logo-opt02-on-dark-v1.svg. No spaces. No special characters. Use hyphens. Version numbers always.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="logo-package-structure" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Logo package structure</span>
+          <h2>Logo package structure</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">logos/wordmark/opt01/, logos/wordmark/opt02/, logos/wordmark/opt03/, logos/submark/. Each folder contains: .svg, .pdf, .eps, .png@2x. On-dark and on-light variants in separate files.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="figma-source-structure" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Figma source structure</span>
+          <h2>Figma source structure</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">One Figma file per section: NICHE-Brand-System (components + tokens), NICHE-Mockups-Print, NICHE-Mockups-Digital-Social, NICHE-Templates-Courses. Share via Figma Community or team workspace — not as exported .fig files.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="photo-library" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Photo library</span>
+          <h2>Photo library</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">photos/mode01-faculty/, photos/mode02-lifestyle/, photos/mode03-workdocs/. Tagged by program: photos/mode02-lifestyle/creativity/. All delivered RAW + graded TIFF + web JPEG in separate folders.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="font-license-files" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Font license files</span>
+          <h2>Font license files</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">fonts/bai-jamjuree/LICENSE-OFL.txt alongside the font files. When GT Sectra is licensed: fonts/gt-sectra/LICENSE-GRILLI.txt. Never distribute font files without the license file.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+
+      <section id="todo" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Pending Content</span>
+          <h2>Brand owner input required.</h2>
+        </div>
+
+        <aside class="todo">
+          <p><strong>Asset hosting platform:</strong> Where will brand assets be hosted for vendor/partner access? Options: Frontify, Google Drive, Notion with attachments, custom brand portal. Decision required before November 2026.</p>
+        </aside>
+
+        <aside class="todo">
+          <p><strong>Version control:</strong> How will superseded assets be archived vs. removed? Define a deprecation process: mark files DEPRECATED in filename before deleting.</p>
+        </aside>
+
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="18-partnership-co-branding.html" class="section-nav__prev">Partnership &amp; Co-Branding</a>
+        <a href="20-governance.html" class="section-nav__next">Governance &amp; Version Log</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>

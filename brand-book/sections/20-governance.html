@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§20 Governance &amp; Version Log — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 20</span>
+      <div class="book-sidebar__title">Governance &amp; Version Log</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#brand-steward-role">Brand steward role</a></li>
+        <li><a href="#approval-process">Approval process</a></li>
+        <li><a href="#change-request-template">Change request template</a></li>
+        <li><a href="#review-cadence">Review cadence</a></li>
+        <li><a href="#todo">Pending Input</a></li>
+
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 20</span>
+          <h1 class="section-hero__title">Governance &amp; Version Log</h1>
+          <p class="section-hero__lead">Who maintains the brand, how it evolves, and when it gets reviewed.</p>
+        </div>
+      </header>
+
+
+      <section id="brand-steward-role" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Overview</span>
+          <h2>Brand steward role</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">One named person holds final authority over brand decisions. Not a committee. Committees produce compromise — brands need conviction. The brand steward approves: new templates, partner lockups, campaign deviations, color additions, and any changes to the logo system.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="approval-process" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Approval process</span>
+          <h2>Approval process</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">New brand application: request → brief → design → steward review (48h SLA) → approved/revise → published. Emergency approvals (same-day): brand steward only, logged in version notes.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="change-request-template" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Change request template</span>
+          <h2>Change request template</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">Any proposed change to this document must include: what is changing, why, what problem it solves, what it breaks, and who requested it. Changes that compromise the accessibility audit (§16) require additional justification.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="review-cadence" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Review cadence</span>
+          <h2>Review cadence</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">Annual review: every November, one month before the next cohort open. Review covers: type license status, color system, new touchpoints from the past year, and accessibility re-audit.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+
+      <section id="todo" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Pending Content</span>
+          <h2>Brand owner input required.</h2>
+        </div>
+
+        <aside class="todo">
+          <p><strong>Brand steward appointment:</strong> Name the NICHE brand steward before November 2026 launch. Include contact information in this document for vendor and partner use.</p>
+        </aside>
+
+        <aside class="todo">
+          <p><strong>Version log initialization:</strong> Document v1.0 as the baseline. Date: [to be set on official launch]. Subsequent versions follow semantic versioning: v1.1 (minor additions), v1.x (significant updates), v2.0 (major rebrand or reposition).</p>
+        </aside>
+
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="19-asset-library.html" class="section-nav__prev">Asset Library</a>
+        <a href="index.html" class="section-nav__next">Back to Index</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
