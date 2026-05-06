@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§6 Typography — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    /* Type specimen */
+    .specimen-hero {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-80) var(--gutter);
+      overflow: hidden;
+    }
+
+    .specimen-fraunces {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 12vw, 9rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.025em;
+      color: var(--color-surface-base);
+    }
+
+    .specimen-bai {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      line-height: 1.6;
+      color: rgba(242,241,240,0.6);
+      margin-top: var(--space-32);
+      max-width: 520px;
+    }
+
+    /* Type scale rows */
+    .scale-demo {
+      margin-block: var(--space-48);
+    }
+
+    .scale-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: var(--space-24);
+      align-items: baseline;
+      padding: var(--space-32) 0;
+      border-bottom: var(--border-thin);
+    }
+    .scale-row:last-child { border-bottom: none; }
+
+    .scale-row__meta {
+      text-align: right;
+    }
+
+    .scale-row__token {
+      font-family: 'SF Mono', monospace;
+      font-size: 10px;
+      color: var(--color-accent-brand);
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: var(--space-4);
+    }
+
+    .scale-row__spec {
+      font-size: 10px;
+      color: rgba(37,32,38,0.4);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .scale-row { grid-template-columns: 1fr; }
+      .scale-row__meta { text-align: left; }
+    }
+
+    /* Character set */
+    .charset-demo {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      line-height: 1.8;
+      letter-spacing: 0.02em;
+      color: rgba(37,32,38,0.75);
+      word-spacing: 0.2em;
+    }
+
+    /* Thai sample */
+    .thai-sample {
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: var(--color-surface-ink);
+    }
+
+    /* Font comparison table */
+    .font-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 640px) { .font-compare { grid-template-columns: 1fr; } }
+
+    .font-compare-cell {
+      padding: var(--space-48) var(--space-40);
+      min-height: 240px;
+    }
+
+    .font-compare-cell--display {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+
+    .font-compare-cell--body {
+      background: var(--color-surface-base);
+      border: var(--border-thin);
+      color: var(--color-surface-ink);
+    }
+
+    .font-label {
+      font-family: var(--font-body);
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-24);
+      display: block;
+    }
+
+    /* Pairing demo */
+    .pairing-demo {
+      background: var(--color-surface-base);
+      border: var(--border-thin);
+      padding: var(--space-64);
+      margin-block: var(--space-48);
+    }
+
+    .pairing-demo h3 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-24);
+    }
+
+    .pairing-demo p {
+      font-family: var(--font-body);
+      font-size: var(--type-body-l-size);
+      line-height: var(--type-body-l-lh);
+      color: rgba(37,32,38,0.7);
+      max-width: 560px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 06</span>
+      <div class="book-sidebar__title">Typography</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#pairing">The Pairing</a></li>
+        <li><a href="#display">Fraunces — Display</a></li>
+        <li><a href="#body">Bai Jamjuree — Body/UI</a></li>
+        <li><a href="#scale">Type Scale (12 tokens)</a></li>
+        <li><a href="#thai">Thai + Latin</a></li>
+        <li><a href="#pairing-demo">Live Pairing Demo</a></li>
+        <li><a href="#rules">Usage Rules</a></li>
+        <li><a href="#upgrade">GT Sectra Upgrade Path</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 06</span>
+          <h1 class="section-hero__title">Typography</h1>
+          <p class="section-hero__lead">
+            Two typefaces. One editorial, one functional.
+            Together they carry every word NICHE publishes.
+          </p>
+        </div>
+      </header>
+
+      <!-- Specimen -->
+      <div class="specimen-hero reveal-on-scroll" aria-label="Fraunces type specimen">
+        <div class="container">
+          <div class="specimen-fraunces" aria-hidden="true">Find<br>your<br>niche.</div>
+          <p class="specimen-bai">
+            Fraunces — the display voice. Optical axis variable, warm but precise.
+            Correct register for "Are you learning wrong way?" at 120px.
+          </p>
+        </div>
+      </div>
+
+      <!-- Pairing intro -->
+      <section id="pairing" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">The Type Pairing</span>
+          <h2>Editorial warmth meets functional precision.</h2>
+          <p>
+            Fraunces handles the moments that demand presence — hero headlines, pull quotes,
+            section titles. Bai Jamjuree handles everything else: body copy, UI labels,
+            data tables, captions, Thai and Latin simultaneously.
+            They don't compete. They take turns.
+          </p>
+        </div>
+
+        <div class="font-compare reveal-on-scroll">
+          <div class="font-compare-cell font-compare-cell--display">
+            <span class="font-label" style="color: var(--color-accent-brand);">Display — Fraunces</span>
+            <div style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--color-surface-base);">
+              Are you learning<br>wrong way?
+            </div>
+            <div style="margin-top: var(--space-24); font-family: var(--font-body); font-size: var(--type-caption-size); color: rgba(242,241,240,0.4); letter-spacing: 0.08em; text-transform: uppercase;">
+              Free · Google Fonts · SIL OFL · GT Sectra substitute
+            </div>
+          </div>
+          <div class="font-compare-cell font-compare-cell--body">
+            <span class="font-label" style="color: var(--color-accent-secondary-shade);">Body/UI — Bai Jamjuree</span>
+            <div style="font-family: var(--font-body); font-size: 1.125rem; line-height: 1.65; color: var(--color-surface-ink);">
+              Most schools teach trends. We teach judgment.
+              The difference is not curriculum — it is orientation.
+            </div>
+            <div style="margin-top: var(--space-24); font-family: var(--font-body); font-size: var(--type-caption-size); color: rgba(37,32,38,0.35); letter-spacing: 0.08em; text-transform: uppercase;">
+              Free · Google Fonts · SIL OFL · Thai + Latin · by Cadson Demak
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Fraunces -->
+      <section id="display" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Display Typeface</span>
+          <h2>Fraunces</h2>
+          <p>
+            A "wonky" optical-size variable serif with a warm personality and surprising
+            sharpness at large sizes. Designed by Undercase Type for Google Fonts.
+            Approved substitute for GT Sectra Display until the Grilli Type commercial
+            license is acquired (see §6 Upgrade Path).
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface-ink); padding: var(--space-64) var(--gutter); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-32);">
+            <div>
+              <div style="font-family: var(--font-display); font-size: 5rem; font-weight: 300; color: var(--color-surface-base); line-height: 1;">Aa</div>
+              <div style="font-family: var(--font-body); font-size: var(--type-caption-size); color: rgba(242,241,240,0.4); margin-top: var(--space-8); letter-spacing: 0.08em; text-transform: uppercase;">Light 300</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-display); font-size: 5rem; font-weight: 700; color: var(--color-surface-base); line-height: 1;">Aa</div>
+              <div style="font-family: var(--font-body); font-size: var(--type-caption-size); color: rgba(242,241,240,0.4); margin-top: var(--space-8); letter-spacing: 0.08em; text-transform: uppercase;">Bold 700</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-display); font-size: 5rem; font-weight: 800; font-style: italic; color: var(--color-accent-brand); line-height: 1;">Aa</div>
+              <div style="font-family: var(--font-body); font-size: var(--type-caption-size); color: rgba(242,241,240,0.4); margin-top: var(--space-8); letter-spacing: 0.08em; text-transform: uppercase;">ExtraBold Italic 800</div>
+            </div>
+          </div>
+
+          <div style="margin-top: var(--space-48); border-top: 1px solid rgba(242,241,240,0.1); padding-top: var(--space-48);">
+            <div style="font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 0.97; letter-spacing: -0.02em; color: var(--color-surface-base);">
+              ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+              abcdefghijklmnopqrstuvwxyz<br>
+              0123456789 !@#&amp;*()
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Family</span>
+            <span class="spec-table__value">Fraunces</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Designer</span>
+            <span class="spec-table__value">Phaedra Charles, Flavia Zimbardi — Undercase Type</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">License</span>
+            <span class="spec-table__value">SIL Open Font License 1.1 — free for commercial use</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Variable axes</span>
+            <span class="spec-table__value">Weight, Optical Size, "Wonk" — all available via CSS font-variation-settings</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Approved weights</span>
+            <span class="spec-table__value">300 (Light) · 400 (Regular) · 600 (SemiBold) · 700 (Bold) · 800 (ExtraBold)</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Approved uses</span>
+            <span class="spec-table__value">Hero headlines · section titles · pull quotes · cover page. Not for body text or UI labels.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Source</span>
+            <span class="spec-table__value">fonts.google.com/specimen/Fraunces</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Bai Jamjuree -->
+      <section id="body" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Body / UI Typeface</span>
+          <h2>Bai Jamjuree</h2>
+          <p>
+            Dual-script Thai + Latin in one file. Eurostyle-meets-superellipse — quiet,
+            slightly technical, locally authored. Eliminates Thai font-fallback pain.
+            Why not Poppins? Because Poppins is on every Thai creative-school site.
+            Bai Jamjuree reads as more considered.
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface-base); border: var(--border-thin); padding: var(--space-64) var(--gutter); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-16);">
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 200; line-height: 1;">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">200</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 300; line-height: 1;">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">300</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 400; line-height: 1;">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">400</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 500; line-height: 1;">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">500</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 600; line-height: 1;">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">600</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 700; line-height: 1; color: var(--color-surface-ink);">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">700</div>
+            </div>
+            <div>
+              <div style="font-family: var(--font-body); font-size: 2.5rem; font-weight: 400; font-style: italic; line-height: 1; color: rgba(37,32,38,0.5);">Aa</div>
+              <div style="font-size: 10px; color: rgba(37,32,38,0.4); margin-top: var(--space-4);">Italic</div>
+            </div>
+          </div>
+
+          <div class="charset-demo" style="margin-top: var(--space-48); border-top: var(--border-thin); padding-top: var(--space-32);">
+            A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
+            a b c d e f g h i j k l m n o p q r s t u v w x y z<br>
+            0 1 2 3 4 5 6 7 8 9 — / @ # &amp; ( ) % ° ' "
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Family</span>
+            <span class="spec-table__value">Bai Jamjuree</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Designer</span>
+            <span class="spec-table__value">Cadson Demak — Bangkok, Thailand</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">License</span>
+            <span class="spec-table__value">SIL Open Font License 1.1 — free for commercial use, web embedding included</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Scripts</span>
+            <span class="spec-table__value">Latin + Thai — both in a single file, no fallback required</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Approved weights</span>
+            <span class="spec-table__value">200 · 300 · 400 · 500 · 600 · 700 · Italic 400</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Primary weight (body)</span>
+            <span class="spec-table__value">400 Regular at 18px / 1.65 line-height</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Source</span>
+            <span class="spec-table__value">fonts.google.com/specimen/Bai+Jamjuree</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Type scale -->
+      <section id="scale" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Type Scale — 12 Tokens</span>
+          <h2>Every size has a name. Names encode roles.</h2>
+          <p>Never specify a pixel value directly in code. Reference the token.
+          When the scale changes, one edit propagates everywhere.</p>
+        </div>
+
+        <div class="scale-demo reveal-on-scroll">
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/display-xl</span>
+              <span class="scale-row__spec">Fraunces 800<br>144px / 9rem<br>lh 0.92 · ls −0.02em</span>
+            </div>
+            <div style="font-family: var(--font-display); font-size: clamp(3rem, 8vw, 9rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.02em;" aria-label="Display XL specimen">Find</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/display</span>
+              <span class="scale-row__spec">Fraunces 700<br>88px / 5.5rem<br>lh 0.97 · ls −0.02em</span>
+            </div>
+            <div style="font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 700; line-height: 0.97; letter-spacing: -0.02em;" aria-label="Display specimen">your niche.</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/h1</span>
+              <span class="scale-row__spec">Fraunces 600<br>56px / 3.5rem<br>lh 1.05 · ls −0.01em</span>
+            </div>
+            <div style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.01em;" aria-label="H1 specimen">Are you learning wrong way?</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/h2</span>
+              <span class="scale-row__spec">Bai Jamjuree 700<br>36px / 2.25rem<br>lh 1.1 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.1;" aria-label="H2 specimen">All Eyes on Independents</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/h3</span>
+              <span class="scale-row__spec">Bai Jamjuree 600<br>24px / 1.5rem<br>lh 1.2 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; line-height: 1.2;" aria-label="H3 specimen">New Institute of Creativity, Humanity &amp; Entrepreneurship</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/h4</span>
+              <span class="scale-row__spec">Bai Jamjuree 600<br>18px / 1.125rem<br>lh 1.3 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 1.125rem; font-weight: 600; line-height: 1.3;" aria-label="H4 specimen">AI x Content Engine Studio</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/eyebrow</span>
+              <span class="scale-row__spec">Bai Jamjuree 700<br>12px / 0.75rem<br>lh 1.4 · ls 0.12em · UPPERCASE</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase;" aria-label="Eyebrow specimen">Brand Foundation — Section 01</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/body-l</span>
+              <span class="scale-row__spec">Bai Jamjuree 400<br>18px / 1.125rem<br>lh 1.65 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 1.125rem; font-weight: 400; line-height: 1.65;" aria-label="Body large specimen">
+              Most schools teach trends. We teach judgment. The difference is not curriculum — it is orientation. NICHE sides with the independent, the maker, the creator who works from conviction.
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/body-m</span>
+              <span class="scale-row__spec">Bai Jamjuree 400<br>16px / 1rem<br>lh 1.6 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 1rem; font-weight: 400; line-height: 1.6;" aria-label="Body medium specimen">
+              Find your niche. These three words are the brand's entire positioning. Everything else — the programs, the photography, the events — is evidence for those three words.
+            </div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/body-s</span>
+              <span class="scale-row__spec">Bai Jamjuree 400<br>14px / 0.875rem<br>lh 1.55 · ls 0</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.875rem; font-weight: 400; line-height: 1.55;" aria-label="Body small specimen">Design and Craft Course · subject 01 · 11–30 November 2026 · www.niche.com</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/caption</span>
+              <span class="scale-row__spec">Bai Jamjuree 300<br>12px / 0.75rem<br>lh 1.4 · ls 0.04em</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.75rem; font-weight: 300; line-height: 1.4; letter-spacing: 0.04em;" aria-label="Caption specimen">Image: workshop session, November 2026. Photography by [TBC]. @niche.official</div>
+          </div>
+
+          <div class="scale-row">
+            <div class="scale-row__meta">
+              <span class="scale-row__token">type/button</span>
+              <span class="scale-row__spec">Bai Jamjuree 700<br>14px / 0.875rem<br>lh 1.0 · ls 0.08em · UPPERCASE</span>
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; line-height: 1.0; letter-spacing: 0.08em; text-transform: uppercase;" aria-label="Button type specimen">Apply Now — Program 2026</div>
+          </div>
+
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Thai + Latin -->
+      <section id="thai" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Thai + Latin</span>
+          <h2>One font file. Zero fallback anxiety.</h2>
+          <p>
+            Bai Jamjuree covers both Latin and Thai in a single font file.
+            No need to specify a separate Thai font in your CSS stack.
+            Both scripts use consistent weight and proportion,
+            making bilingual layouts coherent without manual alignment.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="background: var(--color-surface-ink); padding: var(--space-48) var(--space-32);">
+            <div style="font-family: var(--font-body); font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-24);">Latin</div>
+            <div style="font-family: var(--font-body); font-size: 1.5rem; font-weight: 400; line-height: 1.65; color: var(--color-surface-base);">
+              Find your niche.<br>Are you learning wrong way?<br>All Eyes on Independents.
+            </div>
+            <div style="font-family: var(--font-body); font-size: 1.125rem; font-weight: 700; line-height: 1.4; color: rgba(242,241,240,0.7); margin-top: var(--space-24);">
+              New Institute of Creativity,<br>Humanity &amp; Entrepreneurship
+            </div>
+          </div>
+          <div style="background: var(--color-surface-ink); padding: var(--space-48) var(--space-32);">
+            <div style="font-family: var(--font-body); font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-24);">Thai — Bai Jamjuree</div>
+            <div class="thai-sample" style="color: var(--color-surface-base); background: transparent;">
+              หา niche ของคุณ<br>
+              คุณกำลังเรียนผิดวิธีหรือเปล่า?<br>
+              นักสร้างสรรค์อิสระทุกคน
+            </div>
+            <div style="font-family: var(--font-body); font-size: var(--type-body-s-size); color: rgba(242,241,240,0.4); margin-top: var(--space-24); line-height: 1.5;">
+              Thai script is supported natively by Bai Jamjuree — same weight, same baseline.
+              No secondary font declaration required.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Live pairing demo -->
+      <section id="pairing-demo" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Live Pairing Demo</span>
+          <h2>How the two typefaces work together.</h2>
+        </div>
+
+        <div class="pairing-demo reveal-on-scroll">
+          <div style="font-family: var(--font-body); font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-16);">Program Overview — Creativity Pillar</div>
+          <h3>The photography program<br>that teaches you to sell.</h3>
+          <p>
+            Most programs teach technique. This one starts with the question nobody asks:
+            who is buying your work, and why? Over 4 weeks, you build a portfolio priced
+            to sell, a client brief template, and the judgment to say no to the wrong projects.
+          </p>
+          <div style="display: flex; gap: var(--space-16); margin-top: var(--space-32); flex-wrap: wrap;">
+            <div style="font-family: var(--font-body); font-size: var(--type-button-size); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: var(--space-12) var(--space-24); background: var(--color-surface-ink); color: var(--color-surface-base);">Apply — Program 2026</div>
+            <div style="font-family: var(--font-body); font-size: var(--type-body-s-size); color: rgba(37,32,38,0.5); display: flex; align-items: center;">11–30 November 2026 · Bangkok</div>
+          </div>
+        </div>
+
+        <div class="pairing-demo" style="background: var(--color-surface-ink); color: var(--color-surface-base);" class="reveal-on-scroll">
+          <div style="font-family: var(--font-body); font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-16);">Brand Book — Section 03</div>
+          <h3 style="color: var(--color-surface-base);">Every violation listed<br>here has happened.</h3>
+          <p style="color: rgba(242,241,240,0.6);">
+            The tilted N is not a styling choice — it is a mnemonic.
+            It makes NICHE recognizable before the full wordmark registers.
+            Rotating the logo cancels this. Stretching it cancels this.
+            Recreating it in Helvetica cancels this.
+          </p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Usage rules -->
+      <section id="rules" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Usage Rules</span>
+          <h2>Don't improvise the type system.</h2>
+        </div>
+
+        <div class="do-dont reveal-on-scroll">
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Use Fraunces only for display: hero headlines, section intros, pull quotes, cover. At 24px and above.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Use Fraunces for body copy, UI labels, navigation, or captions. Below 24px it becomes illegible at body density.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Reference CSS custom property tokens in all code: <code>--font-display</code>, <code>--font-body</code>, <code>--type-body-l-size</code>, etc.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Set font sizes in px directly in component CSS. Use the tokens. This is how the system stays coherent across breakpoints.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Use weight 700 for eyebrow labels, headings, and strong emphasis. Weight 400 for running body text. Weight 300 for captions only.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Mix Fraunces and Bai Jamjuree in the same heading. One head = one typeface. Fraunces for the largest, Bai for sub-headers at h2 and below.</div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- GT Sectra upgrade path -->
+      <section id="upgrade" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Upgrade Path</span>
+          <h2>GT Sectra Display — when the budget allows.</h2>
+          <p>
+            Fraunces is the approved substitute until the commercial license is acquired.
+            Fraunces and GT Sectra are not interchangeable in feel — Sectra has a scalpel
+            angularity that Fraunces doesn't reproduce. When licensed, update the
+            <code>--font-display</code> CSS variable. Nothing else in the codebase changes.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="padding: var(--space-32); border: var(--border-thin);">
+            <div style="font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-secondary-shade); margin-bottom: var(--space-16);">Now — Fraunces (free)</div>
+            <ul style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.7); line-height: 1.7; padding-left: var(--space-20);">
+              <li>SIL OFL — free commercial</li>
+              <li>Google Fonts — CDN available</li>
+              <li>Variable font — weight + optical size</li>
+              <li>Warm, humanist, personality-forward</li>
+              <li>Approved for all NICHE usage</li>
+            </ul>
+          </div>
+          <div style="padding: var(--space-32); background: var(--color-surface-ink); color: var(--color-surface-base);">
+            <div style="font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-16);">Target — GT Sectra Display (licensed)</div>
+            <ul style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); line-height: 1.7; padding-left: var(--space-20);">
+              <li>Commercial license — Grilli Type</li>
+              <li>Designed for Reportagen magazine</li>
+              <li>Calligraphic warmth × scalpel angularity</li>
+              <li>30 styles across Display / Fine / Text</li>
+              <li>Count seats accurately before licensing</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="todo">
+          <p>
+            License GT Sectra Display from grillitype.com. Desktop license: CHF 119–399 depending on seats.
+            Web license: based on monthly pageviews. Count seats before purchasing.
+            Once licensed: update <code>--font-display</code> in tokens.css, update the @import
+            in the Google Fonts link tag, verify rendering across OS (macOS, Windows, Android, iOS).
+          </p>
+        </aside>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="05-color.html" class="section-nav__prev">Color Palette</a>
+        <a href="07-photography.html" class="section-nav__next">Photography Direction</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
