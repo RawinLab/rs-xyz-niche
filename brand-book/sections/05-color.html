@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§5 Color Palette — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    /* Large swatch display */
+    .swatch-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 0;
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 900px) { .swatch-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .swatch-row { grid-template-columns: 1fr; } }
+
+    .big-swatch {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: var(--space-24);
+      position: relative;
+    }
+
+    .big-swatch__hex {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      display: block;
+      margin-bottom: var(--space-4);
+      cursor: pointer;
+    }
+
+    .big-swatch__name {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+
+    .big-swatch__token {
+      font-family: 'SF Mono', monospace;
+      font-size: 10px;
+      opacity: 0.55;
+    }
+
+    /* Semantic token row */
+    .token-list {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      gap: 0;
+    }
+
+    .token-row {
+      display: contents;
+    }
+
+    .token-row > * {
+      padding: var(--space-12) var(--space-16);
+      border-bottom: var(--border-thin);
+      vertical-align: middle;
+      display: flex;
+      align-items: center;
+    }
+
+    .token-row__chip {
+      width: 28px;
+      height: 28px;
+      border-radius: 2px;
+      border: 1px solid rgba(37,32,38,0.1);
+      flex-shrink: 0;
+      margin-right: var(--space-12);
+    }
+
+    .token-name {
+      font-family: 'SF Mono', monospace;
+      font-size: var(--type-caption-size);
+      color: var(--color-accent-brand);
+    }
+
+    /* Green expansion */
+    .green-scale {
+      display: flex;
+      height: 80px;
+      margin-block: var(--space-32);
+    }
+    .green-scale div {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-8);
+    }
+    .green-scale span {
+      font-family: 'SF Mono', monospace;
+      font-size: 10px;
+    }
+
+    /* Usage rule pill */
+    .usage-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .usage-pill--never { background: rgba(254,29,37,0.12); color: #b30000; }
+    .usage-pill--ok    { background: rgba(119,145,82,0.15); color: var(--color-accent-secondary-shade); }
+    .usage-pill--large { background: rgba(204,206,205,0.3); color: rgba(37,32,38,0.6); }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 05</span>
+      <div class="book-sidebar__title">Color Palette</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#swatches">The 5 Colors</a></li>
+        <li><a href="#wcag-audit">WCAG Contrast Audit</a></li>
+        <li><a href="#usage-rules">Hard Rules</a></li>
+        <li><a href="#green-scale">Green Scale</a></li>
+        <li><a href="#semantic-tokens">Semantic Tokens</a></li>
+        <li><a href="#dark-mode">Dark Mode Alternates</a></li>
+        <li><a href="#cmyk-values">CMYK / Pantone</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 05</span>
+          <h1 class="section-hero__title">Color Palette</h1>
+          <p class="section-hero__lead">
+            Five colors. The tension between near-black, vivid red, and muted green is the identity.
+            A sixth color dilutes it. Don't add one.
+          </p>
+        </div>
+      </header>
+
+      <!-- The 5 swatches -->
+      <section id="swatches" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">The 5 Brand Colors</span>
+          <h2>No more. No less.</h2>
+          <p>Click any hex value to copy it.</p>
+        </div>
+
+        <div class="swatch-row reveal-on-scroll">
+          <!-- Near-black -->
+          <div class="big-swatch" style="background: #252026;" aria-label="Near-black #252026">
+            <span class="big-swatch__hex swatch__hex" style="color: rgba(242,241,240,0.7);" title="Click to copy">#252026</span>
+            <span class="big-swatch__name" style="color: var(--color-surface-base);">Near-black</span>
+            <span class="big-swatch__token" style="color: rgba(242,241,240,0.4);">color/surface/ink</span>
+          </div>
+          <!-- Off-white -->
+          <div class="big-swatch" style="background: #f2f1f0; border: var(--border-thin);" aria-label="Off-white #f2f1f0">
+            <span class="big-swatch__hex swatch__hex" style="color: rgba(37,32,38,0.55);" title="Click to copy">#f2f1f0</span>
+            <span class="big-swatch__name" style="color: var(--color-surface-ink);">Off-white</span>
+            <span class="big-swatch__token" style="color: rgba(37,32,38,0.35);">color/surface/base</span>
+          </div>
+          <!-- Warm gray -->
+          <div class="big-swatch" style="background: #cccecd;" aria-label="Warm gray #cccecd">
+            <span class="big-swatch__hex swatch__hex" style="color: rgba(37,32,38,0.6);" title="Click to copy">#cccecd</span>
+            <span class="big-swatch__name" style="color: rgba(37,32,38,0.7);">Warm gray</span>
+            <span class="big-swatch__token" style="color: rgba(37,32,38,0.35);">color/surface/muted</span>
+          </div>
+          <!-- Vivid red -->
+          <div class="big-swatch" style="background: #fe1d25;" aria-label="Vivid red #fe1d25">
+            <span class="big-swatch__hex swatch__hex" style="color: rgba(242,241,240,0.8);" title="Click to copy">#fe1d25</span>
+            <span class="big-swatch__name" style="color: var(--color-surface-base);">Vivid red</span>
+            <span class="big-swatch__token" style="color: rgba(242,241,240,0.45);">color/accent/brand</span>
+          </div>
+          <!-- Moss green -->
+          <div class="big-swatch" style="background: #779152;" aria-label="Moss green #779152">
+            <span class="big-swatch__hex swatch__hex" style="color: rgba(242,241,240,0.75);" title="Click to copy">#779152</span>
+            <span class="big-swatch__name" style="color: var(--color-surface-base);">Moss green</span>
+            <span class="big-swatch__token" style="color: rgba(242,241,240,0.4);">color/accent/secondary</span>
+          </div>
+        </div>
+
+        <!-- Color values table -->
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Color</th>
+              <th>Hex</th>
+              <th>RGB</th>
+              <th>CMYK (approx)</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 28px; height: 28px; background: #252026; border-radius: 2px; flex-shrink: 0;"></div>
+                  Near-black
+                </div>
+              </td>
+              <td><code>#252026</code></td>
+              <td><code>37, 32, 38</code></td>
+              <td><code>0, 14, 0, 85</code></td>
+              <td>Dominant surface, primary text</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 28px; height: 28px; background: #f2f1f0; border: 1px solid #ddd; border-radius: 2px; flex-shrink: 0;"></div>
+                  Off-white
+                </div>
+              </td>
+              <td><code>#f2f1f0</code></td>
+              <td><code>242, 241, 240</code></td>
+              <td><code>0, 0, 1, 5</code></td>
+              <td>Page background, reversed text</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 28px; height: 28px; background: #cccecd; border-radius: 2px; flex-shrink: 0;"></div>
+                  Warm gray
+                </div>
+              </td>
+              <td><code>#cccecd</code></td>
+              <td><code>204, 206, 205</code></td>
+              <td><code>1, 0, 0, 20</code></td>
+              <td>Dividers, disabled states — NO text</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 28px; height: 28px; background: #fe1d25; border-radius: 2px; flex-shrink: 0;"></div>
+                  Vivid red
+                </div>
+              </td>
+              <td><code>#fe1d25</code></td>
+              <td><code>254, 29, 37</code></td>
+              <td><code>0, 89, 85, 0</code></td>
+              <td>Display only — ≥18pt regular or ≥14pt bold</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 28px; height: 28px; background: #779152; border-radius: 2px; flex-shrink: 0;"></div>
+                  Moss green
+                </div>
+              </td>
+              <td><code>#779152</code></td>
+              <td><code>119, 145, 82</code></td>
+              <td><code>18, 0, 43, 43</code></td>
+              <td>Body only on #252026; large only on #f2f1f0</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- WCAG audit -->
+      <section id="wcag-audit" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">WCAG 2.2 AA Contrast Audit</span>
+          <h2>83.6% of sites fail this. NICHE won't.</h2>
+          <p>
+            Every approved text-on-background combination is audited below.
+            AA Normal = 4.5:1 ratio. AA Large = 3:1 ratio (18pt+ regular or 14pt+ bold).
+            Red failures mean this combination is <strong>prohibited for body text</strong>.
+          </p>
+        </div>
+
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Foreground</th>
+              <th>Background</th>
+              <th>Ratio</th>
+              <th>AA Normal</th>
+              <th>AA Large</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;"></div> #f2f1f0
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#252026;"></div> #252026
+                </div>
+              </td>
+              <td><strong>14.18:1</strong></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td style="color: var(--color-accent-secondary-shade); font-weight: 700;">Body text approved</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#252026;border-color:#999;"></div> #252026
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;border-color:#ccc;"></div> #f2f1f0
+                </div>
+              </td>
+              <td><strong>14.18:1</strong></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td style="color: var(--color-accent-secondary-shade); font-weight: 700;">Body text approved</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#cccecd;"></div> #cccecd
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#252026;"></div> #252026
+                </div>
+              </td>
+              <td><strong>10.11:1</strong></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Dividers, captions OK</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#fe1d25;"></div> #fe1d25
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#252026;"></div> #252026
+                </div>
+              </td>
+              <td><strong>4.12:1</strong></td>
+              <td><span class="spec-pill spec-pill--fail">Fail</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Large display only (≥18pt)</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#fe1d25;"></div> #fe1d25
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;border-color:#ccc;"></div> #f2f1f0
+                </div>
+              </td>
+              <td><strong>3.44:1</strong></td>
+              <td><span class="spec-pill spec-pill--fail">Fail</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Display only — never body, never links</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#779152;"></div> #779152
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#252026;"></div> #252026
+                </div>
+              </td>
+              <td><strong>4.54:1</strong></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Body text on dark approved (barely — monitor)</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#779152;"></div> #779152
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;border-color:#ccc;"></div> #f2f1f0
+                </div>
+              </td>
+              <td><strong>3.13:1</strong></td>
+              <td><span class="spec-pill spec-pill--fail">Fail</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Large display only on light bg</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#cccecd;"></div> #cccecd
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;border-color:#ccc;"></div> #f2f1f0
+                </div>
+              </td>
+              <td><strong>1.40:1</strong></td>
+              <td><span class="spec-pill spec-pill--fail">Fail</span></td>
+              <td><span class="spec-pill spec-pill--fail">Fail</span></td>
+              <td style="color: var(--color-accent-brand); font-weight: 700;">PROHIBITED — never text on text</td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#4a5c33;"></div> #4a5c33
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="contrast-chip" style="background:#f2f1f0;border-color:#ccc;"></div> #f2f1f0
+                </div>
+              </td>
+              <td><strong>7.2:1</strong></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td><span class="spec-pill spec-pill--pass">Pass</span></td>
+              <td>Body text on light approved (accessible green shade)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(254,29,37,0.06); border-left: 4px solid var(--color-accent-brand); padding: var(--space-24) var(--space-32); margin-top: var(--space-32);" class="reveal-on-scroll">
+          <p style="font-size: var(--type-body-s-size); color: var(--color-surface-ink); max-width: 100%;">
+            <strong>WebAIM 2024:</strong> 83.6% of home pages have detectable WCAG contrast failures.
+            NICHE's red (#fe1d25) and warm gray (#cccecd) both fail body-text contrast on light backgrounds.
+            This is documented and enforced — not ignored. Design systems that document known failures
+            prevent them. Systems that don't document failures repeat them.
+          </p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Hard usage rules -->
+      <section id="usage-rules" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Hard Rules</span>
+          <h2>Three prohibitions. No exceptions.</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-2); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="background: var(--color-surface-ink); padding: var(--space-48) var(--space-32); color: var(--color-surface-base);">
+            <div style="width: 48px; height: 48px; background: #fe1d25; border-radius: 2px; margin-bottom: var(--space-24);"></div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-16);">Red — display only</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.6); line-height: 1.6; max-width: 100%;">
+              #fe1d25 is for display text only — ≥18pt regular or ≥14pt bold.
+              Never use as a hyperlink color on light backgrounds.
+              Never use for body text at any size.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-ink); padding: var(--space-48) var(--space-32); color: var(--color-surface-base);">
+            <div style="width: 48px; height: 48px; background: #cccecd; border-radius: 2px; margin-bottom: var(--space-24);"></div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-16);">Warm gray — decorative only</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.6); line-height: 1.6; max-width: 100%;">
+              #cccecd is for dividers, disabled states, and decorative backgrounds.
+              Never use as text color on any background.
+              Never use as a background for text elements.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-ink); padding: var(--space-48) var(--space-32); color: var(--color-surface-base);">
+            <div style="width: 48px; height: 48px; background: #779152; border-radius: 2px; margin-bottom: var(--space-24);"></div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-16);">Green — dark background only for body</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.6); line-height: 1.6; max-width: 100%;">
+              #779152 as body text is only approved on #252026. On #f2f1f0, use for large
+              display only. For body text on light — use #4a5c33 (accessible shade).
+            </p>
+          </div>
+        </div>
+
+        <div class="do-dont reveal-on-scroll">
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">
+              Use red for section numbers, eyebrow labels, pull-quote accents, CTAs.
+              Let it punctuate — never let it flood.
+            </div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">
+              Use red as a hyperlink color, as body copy color, or as a paragraph
+              background on any white/off-white surface.
+            </div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">
+              Use #4a5c33 (accessible green shade) for any body copy that must appear
+              on #f2f1f0 in green. It passes 7.2:1 — more than enough headroom.
+            </div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">
+              Use the warm gray (#cccecd) as placeholder text or secondary text.
+              It reads as broken UI. Use rgba(37,32,38,0.5) for muted text instead.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Green scale expansion -->
+      <section id="green-scale" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Green Tint / Shade Expansion</span>
+          <h2>Three stops. Program tags need headroom.</h2>
+          <p>
+            The base green (#779152) doesn't survive body text on light backgrounds.
+            The scale below gives program tags, category chips, and accessible link states
+            the contrast they need without introducing a new hue.
+          </p>
+        </div>
+
+        <div class="green-scale reveal-on-scroll" aria-label="Green color scale from tint to shade">
+          <div style="background: #b4c49a;">
+            <span style="color: rgba(37,32,38,0.6); font-size: 10px; font-family: 'SF Mono',monospace;">#b4c49a<br>Tint</span>
+          </div>
+          <div style="background: #779152;">
+            <span style="color: rgba(242,241,240,0.8); font-size: 10px; font-family: 'SF Mono',monospace;">#779152<br>Base</span>
+          </div>
+          <div style="background: #4a5c33;">
+            <span style="color: rgba(242,241,240,0.8); font-size: 10px; font-family: 'SF Mono',monospace;">#4a5c33<br>Shade</span>
+          </div>
+        </div>
+
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Hex</th>
+              <th>On #f2f1f0</th>
+              <th>On #252026</th>
+              <th>Use for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>color/accent/secondary-tint</code></td>
+              <td><code>#b4c49a</code></td>
+              <td><span class="spec-pill spec-pill--fail">1.61:1 Fail</span></td>
+              <td><span class="spec-pill spec-pill--pass">5.9:1 Pass</span></td>
+              <td>Decorative backgrounds, tag fills on dark</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary</code></td>
+              <td><code>#779152</code></td>
+              <td><span class="spec-pill spec-pill--fail">3.13:1 Fail</span></td>
+              <td><span class="spec-pill spec-pill--pass">4.54:1 Pass</span></td>
+              <td>Large display on light; body on dark</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary-shade</code></td>
+              <td><code>#4a5c33</code></td>
+              <td><span class="spec-pill spec-pill--pass">7.2:1 Pass</span></td>
+              <td><span class="spec-pill spec-pill--warn">1.97:1 Warn</span></td>
+              <td>Body text on light; link states on light</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Semantic tokens -->
+      <section id="semantic-tokens" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Semantic Tokens</span>
+          <h2>Don't reference raw hex in code.</h2>
+          <p>
+            Tokens encode role, not value. When the value changes for dark mode or a
+            seasonal variant, the token name doesn't change — only its value does.
+            Reference tokens in all CSS, Figma, and Tailwind config.
+          </p>
+        </div>
+
+        <table class="contrast-table reveal-on-scroll" style="margin-top: var(--space-32);">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Value</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>color/surface/base</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ddd;border-radius:2px;flex-shrink:0;"></div><code>#f2f1f0</code></div></td>
+              <td>Page background</td>
+            </tr>
+            <tr>
+              <td><code>color/surface/ink</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border-radius:2px;flex-shrink:0;"></div><code>#252026</code></div></td>
+              <td>Primary text, dark fills</td>
+            </tr>
+            <tr>
+              <td><code>color/surface/muted</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#cccecd;border-radius:2px;flex-shrink:0;"></div><code>#cccecd</code></div></td>
+              <td>Dividers, disabled — NO text</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/brand</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#fe1d25;border-radius:2px;flex-shrink:0;"></div><code>#fe1d25</code></div></td>
+              <td>Display, CTAs, icons — large text only</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#779152;border-radius:2px;flex-shrink:0;"></div><code>#779152</code></div></td>
+              <td>Program signage — body on ink only</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary-shade</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#4a5c33;border-radius:2px;flex-shrink:0;"></div><code>#4a5c33</code></div></td>
+              <td>Accessible green for body on light bg</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary-tint</code></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#b4c49a;border-radius:2px;flex-shrink:0;"></div><code>#b4c49a</code></div></td>
+              <td>Decorative only — NO text</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Dark mode alternates -->
+      <section id="dark-mode" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Dark Mode Token Alternates</span>
+          <h2>The brand was authored light-first. Dark mode is explicit.</h2>
+          <p>
+            #252026 does not auto-translate to system dark mode without contrast loss.
+            WCAG requires 4.5:1 body text regardless of mode. These alternates must be
+            defined in Figma Variables and CSS custom properties before any dark-mode
+            web build launches.
+          </p>
+        </div>
+
+        <aside class="todo">
+          <p>
+            Dark-mode token values require a final decision from the brand owner:
+            Should the dark background be #252026 (the brand near-black) or pure #111?
+            Should the dark surface text be #f2f1f0 or #ffffff?
+            All token alternates below are provisional pending that decision.
+            Confirm, then author the <code>@media (prefers-color-scheme: dark)</code>
+            block in tokens.css.
+          </p>
+        </aside>
+
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Light value</th>
+              <th>Dark mode alternate (provisional)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>color/surface/base</code></td>
+              <td><code>#f2f1f0</code></td>
+              <td><code>#1a1a1c</code> (deeper than brand ink for visual depth)</td>
+            </tr>
+            <tr>
+              <td><code>color/surface/ink</code></td>
+              <td><code>#252026</code></td>
+              <td><code>#f2f1f0</code> (reversed)</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/brand</code></td>
+              <td><code>#fe1d25</code></td>
+              <td><code>#fe1d25</code> (unchanged — verify 4.12:1 on dark bg is acceptable for display-only use)</td>
+            </tr>
+            <tr>
+              <td><code>color/accent/secondary</code></td>
+              <td><code>#779152</code></td>
+              <td><code>#779152</code> (4.54:1 on #252026 — holds; use #b4c49a for display on very dark)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- CMYK / Pantone -->
+      <section id="cmyk-values" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Print Color Specs</span>
+          <h2>CMYK and Pantone references for print vendors.</h2>
+        </div>
+
+        <aside class="todo">
+          <p>
+            Pantone references require confirmation against physical Pantone swatchbooks —
+            the values below are starting approximations only. Confirm with your print partner
+            before the first production run. For spot-color jobs, the near-black should ideally
+            use a custom mix (not process black) to preserve the slight warm-purple undertone of #252026.
+            The red should be confirmed against Pantone 485 C or 2347 C on coated stock.
+          </p>
+        </aside>
+
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Color</th>
+              <th>CMYK (offset, coated)</th>
+              <th>Pantone (C) — approximate</th>
+              <th>Screen (sRGB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Near-black</td>
+              <td>C0 M14 Y0 K85</td>
+              <td>Black 6 C (warm) — confirm</td>
+              <td>#252026</td>
+            </tr>
+            <tr>
+              <td>Off-white</td>
+              <td>C0 M0 Y1 K5</td>
+              <td>9120 C — confirm</td>
+              <td>#f2f1f0</td>
+            </tr>
+            <tr>
+              <td>Warm gray</td>
+              <td>C1 M0 Y0 K20</td>
+              <td>Cool Gray 2 C — confirm</td>
+              <td>#cccecd</td>
+            </tr>
+            <tr>
+              <td>Vivid red</td>
+              <td>C0 M89 Y85 K0</td>
+              <td>Pantone 485 C — confirm</td>
+              <td>#fe1d25</td>
+            </tr>
+            <tr>
+              <td>Moss green</td>
+              <td>C18 M0 Y43 K43</td>
+              <td>7496 C — confirm</td>
+              <td>#779152</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="04-pillar-program-lockups.html" class="section-nav__prev">Pillar &amp; Program Lock-Ups</a>
+        <a href="06-typography.html" class="section-nav__next">Typography</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
