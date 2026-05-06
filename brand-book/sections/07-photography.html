@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§7 Photography Direction — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    .photo-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 768px) { .photo-mode-grid { grid-template-columns: 1fr; } }
+
+    .photo-mode-card {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-40) var(--space-32);
+    }
+
+    .photo-mode-num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 700;
+      color: rgba(242,241,240,0.1);
+      display: block;
+      margin-bottom: var(--space-16);
+      line-height: 1;
+    }
+
+    .photo-mode-name {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      display: block;
+      margin-bottom: var(--space-8);
+    }
+
+    .photo-mode-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: var(--space-16);
+    }
+
+    .photo-mode-desc {
+      font-size: var(--type-body-s-size);
+      color: rgba(242,241,240,0.6);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 07</span>
+      <div class="book-sidebar__title">Photography</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#references">Reference Mood Board</a></li>
+        <li><a href="#three-modes">Three Shooting Modes</a></li>
+        <li><a href="#do-dont">Do / Don't</a></li>
+        <li><a href="#recipe">Lightroom Recipe</a></li>
+        <li><a href="#brief">Photographer Brief</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 07</span>
+          <h1 class="section-hero__title">Photography Direction</h1>
+          <p class="section-hero__lead">
+            No stock photos of diverse teams collaborating. Hands mid-task.
+            Workspace cluttered but intentional. People in flow, never posing.
+          </p>
+        </div>
+      </header>
+
+      <!-- Reference mood board -->
+      <section id="references" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Reference Mood Board</span>
+          <h2>These images already exist. Study them.</h2>
+          <p>
+            The following pages from the original brand PDF represent the intended photography
+            direction. They are not perfect examples — they are the starting point.
+            All future photography should match or exceed this quality of intention.
+          </p>
+        </div>
+
+        <div class="image-plate reveal-on-scroll">
+          <img
+            src="../assets/pdf-pages/page-11.png"
+            alt="NICHE outdoor billboard: 'Find your niche' with hands working on documents — natural window light, warm matte grade, subject mid-task"
+          >
+          <div class="image-plate__caption">
+            Page 11 — Billboard. Hands annotating. Natural window light. Warm-natural color grade.
+            Clear negative space upper-right for type overlay. This is the target register.
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);" class="reveal-on-scroll">
+          <div class="image-plate" style="margin: 0;">
+            <img
+              src="../assets/pdf-pages/page-09.png"
+              alt="NICHE program list document and outdoor billboard 'Find your niche' in green — candid, environmental"
+            >
+            <div class="image-plate__caption">Page 9 — Program document + green billboard. Environmental scale.</div>
+          </div>
+          <div class="image-plate" style="margin: 0;">
+            <img
+              src="../assets/pdf-pages/page-10.png"
+              alt="NICHE bus-stop billboard 'All Eyes on Independents' and smaller post-mounted signage"
+            >
+            <div class="image-plate__caption">Page 10 — Signage system. Note: these are architectural context shots, not people photography.</div>
+          </div>
+        </div>
+
+        <div class="image-plate reveal-on-scroll">
+          <img
+            src="../assets/pdf-pages/page-12.png"
+            alt="NICHE outdoor poster system: three panels — red NICHE solid, 'Find your niche' with workshop photography, 'Find your Niche / 11-30 November 2026' with sketcher"
+          >
+          <div class="image-plate__caption">
+            Page 12 — Poster system. Left panel: pure brand red, no photography.
+            Center: workshop environment, candid. Right: close-detail with date. Three distinct modes.
+          </div>
+        </div>
+
+        <div class="image-plate reveal-on-scroll">
+          <img
+            src="../assets/pdf-pages/page-13.png"
+            alt="NICHE outdoor billboard with OPT 03 wordmark, photography of workspace, and 'Are you learning wrong way?' headline"
+          >
+          <div class="image-plate__caption">
+            Page 13 — Billboard. Photography occupies full bleed. Type is the layer on top —
+            never obscures the subject's hands or working area.
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Three shooting modes -->
+      <section id="three-modes" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Three Shooting Modes</span>
+          <h2>One brief can't cover 12 programs. Three modes can.</h2>
+          <p>
+            NICHE's photography system separates into three modes based on function.
+            Brief your photographer by mode. Different modes may be mixed within a campaign
+            but not within a single layout.
+          </p>
+        </div>
+
+        <div class="photo-mode-grid reveal-on-scroll">
+          <div class="photo-mode-card">
+            <span class="photo-mode-num">01</span>
+            <span class="photo-mode-name">Mode 1</span>
+            <div class="photo-mode-title">Editorial Faculty</div>
+            <p class="photo-mode-desc">
+              Faculty member in their workspace, deep in a task they actually do.
+              Environmental context. Loose + wide framing. Hard window light or
+              single overhead. No posed eye contact. The person is not performing.
+            </p>
+            <div style="margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid rgba(242,241,240,0.1);">
+              <div style="font-size: 10px; color: rgba(242,241,240,0.4); line-height: 1.6;">
+                For: program page headers · brochure inside spreads · LinkedIn instructor profile
+              </div>
+            </div>
+          </div>
+
+          <div class="photo-mode-card">
+            <span class="photo-mode-num">02</span>
+            <span class="photo-mode-name">Mode 2</span>
+            <div class="photo-mode-title">Lifestyle Studio</div>
+            <p class="photo-mode-desc">
+              Close-detail cropping: hands holding tools, annotating, measuring,
+              sketching. Physical artifacts in frame. Slightly overexposed matte
+              grade to match the off-white brand palette. Warm but not filtered.
+            </p>
+            <div style="margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid rgba(242,241,240,0.1);">
+              <div style="font-size: 10px; color: rgba(242,241,240,0.4); line-height: 1.6;">
+                For: IG posts · billboard overlays · program card thumbnails · hero sections
+              </div>
+            </div>
+          </div>
+
+          <div class="photo-mode-card">
+            <span class="photo-mode-num">03</span>
+            <span class="photo-mode-name">Mode 3</span>
+            <div class="photo-mode-title">Student Work Documentation</div>
+            <p class="photo-mode-desc">
+              Flat-lay or 45° overhead of the work product itself — sketchbooks,
+              mockups, printed sheets, screen recordings. Neutral background (off-white
+              or dark). This is evidence photography, not atmosphere photography.
+            </p>
+            <div style="margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid rgba(242,241,240,0.1);">
+              <div style="font-size: 10px; color: rgba(242,241,240,0.4); line-height: 1.6;">
+                For: alumni showcase · portfolio reviews · course outcome pages
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Ratio mix</span>
+            <span class="spec-table__value">Mode 1 : Mode 2 : Mode 3 = 2 : 2 : 1 across any campaign. Never all-mode-3 (too cold).</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Aspect ratios</span>
+            <span class="spec-table__value">2:3 (portrait, IG story / tall billboard) · 16:9 (landscape, OOH / hero) · 1:1 (IG post / avatar)</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Minimum resolution</span>
+            <span class="spec-table__value">5000px longest edge for billboard use. 2000px for digital. Shoot RAW always.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Negative space rule</span>
+            <span class="spec-table__value">Ensure upper-third or left-third has 20% clear sky/wall/surface for type overlay. Brief photographer at shoot, not in post.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Do / Don't -->
+      <section id="do-dont" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Do / Don't</span>
+          <h2>References to study. Patterns to avoid.</h2>
+          <p>
+            Closest published references: Bloomberg Businessweek (personal POV photographers,
+            tension in image-text harmony) and Hyper Island (unpolished candid process shots,
+            not aspirational product photography). Avoid every bootcamp photography trope.
+          </p>
+        </div>
+
+        <div class="do-dont reveal-on-scroll">
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Natural window light or single hard source. The light has direction and intention.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Desaturated moody dark filters. Overused by every Bangkok bootcamp. Makes NICHE look derivative.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Subjects mid-task: hands annotating, laptop beside coffee, in flow. Nobody looks at the camera.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Diversity-stock grids of people collaborating around a table, all visibly excited about content on a whiteboard.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Include physical making artifacts: sketchbooks, sticky notes, printed mockups, color swatches.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Render-only hero images without human presence. NICHE is about human creativity — show humans.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Slightly overexposed matte grade — keeps the off-white #f2f1f0 skin alive in image tones. Warm +200K shift.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Warm orange Instagram filters — clash with cool near-black and moss green. The reds flare out of system.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">Mix close-detail (tools, textures) with environmental (workspace, room) at 2:1 within a campaign.</div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">Motion blur for drama. Motion language handles kinetics. Stills are anchored — they earn attention through content, not technique.</div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Lightroom recipe -->
+      <section id="recipe" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Color Grade Recipe</span>
+          <h2>Lightroom / Camera Raw. Repeatable. Consistent.</h2>
+          <p>
+            This is the starting point for every NICHE image grade.
+            Apply as a Lightroom preset named "NICHE-v1". Never deliver images
+            without this base grade applied — consistency across dozens of sessions
+            depends on it.
+          </p>
+        </div>
+
+        <div class="recipe-grid reveal-on-scroll">
+          <div class="recipe-item">
+            <div class="recipe-item__param">Exposure</div>
+            <div class="recipe-item__value recipe-item__value--pos">+0.30</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Highlights</div>
+            <div class="recipe-item__value recipe-item__value--neg">−35</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Shadows</div>
+            <div class="recipe-item__value recipe-item__value--pos">+15</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Blacks</div>
+            <div class="recipe-item__value recipe-item__value--pos">+20</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Whites</div>
+            <div class="recipe-item__value recipe-item__value--neg">−10</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Temperature</div>
+            <div class="recipe-item__value recipe-item__value--pos">+200K</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Vibrance</div>
+            <div class="recipe-item__value recipe-item__value--neg">−10</div>
+          </div>
+          <div class="recipe-item">
+            <div class="recipe-item__param">Tone Curve</div>
+            <div class="recipe-item__value" style="font-size: 0.875rem;">Lift blacks to 15/255</div>
+          </div>
+        </div>
+
+        <div style="background: var(--color-surface-ink); padding: var(--space-32); margin-top: var(--space-24);" class="reveal-on-scroll">
+          <div style="font-family: var(--font-body); font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-16);">What this recipe does</div>
+          <ul style="list-style: none; padding: 0;">
+            <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">
+              <strong style="color: var(--color-surface-base);">Exposure +0.30:</strong> Lifts the midtones to match the off-white #f2f1f0 brand surface — images integrate with page rather than fighting it.
+            </li>
+            <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">
+              <strong style="color: var(--color-surface-base);">Blacks +20 (matte lift):</strong> Creates the matte aesthetic. Black points never crush to pure black — film-like softness without visible filtering.
+            </li>
+            <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">
+              <strong style="color: var(--color-surface-base);">Temperature +200K:</strong> Warm shift that matches the warm-neutral brand palette. Keeps skin tones alive without going orange.
+            </li>
+            <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0;">
+              <strong style="color: var(--color-surface-base);">Vibrance −10:</strong> Keeps reds from flaring out of the brand system. The brand's own red (#fe1d25) is the only aggressive red in NICHE imagery.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Photographer brief -->
+      <section id="brief" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Photographer Brief Template</span>
+          <h2>30 hero shots. 12 programs. One grade.</h2>
+        </div>
+
+        <aside class="todo">
+          <p>
+            Commission photography to the direction above before the November 2026 cohort launch.
+            Target: 30 hero shots covering all 12 programs.
+            Brief template below — fill in program-specific details before sending.
+          </p>
+        </aside>
+
+        <pre style="margin-top: var(--space-32);" class="reveal-on-scroll"><code>NICHE Photography Brief — [Program Name]
+
+Shoot date: [TBC]
+Location: [studio / outdoor / venue TBC]
+Mode: [Mode 1 Editorial / Mode 2 Lifestyle / Mode 3 Work Documentation]
+
+What we need:
+- 5–10 hero shots per program at 5000px+ RAW
+- Subjects: [faculty name TBC] + [enrolled cohort members TBC]
+- Negative space: upper-third or left-third clear for type overlay
+
+Subject behavior:
+- Mid-task at all times — no eye contact with camera
+- Physical artifacts visible: [sketchbooks / laptop / tools / [program-specific]]
+- One environmental (room context) + four close-detail per session
+
+Light:
+- Natural window light preferred. If artificial: single hard source, one direction.
+- No on-camera flash. No ring lights. No 3-point studio setup.
+
+Grade:
+- Deliver: RAW + uncropped
+- NICHE-v1 Lightroom preset applied before delivery (preset provided)
+- Color check: reds should not exceed #fe1d25 saturation
+
+Output formats:
+- 2:3 portrait (IG story / billboard vertical)
+- 16:9 landscape (hero / OOH)
+- 1:1 square (IG post / card thumbnail)</code></pre>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="06-typography.html" class="section-nav__prev">Typography</a>
+        <a href="08-voice-tone.html" class="section-nav__next">Voice &amp; Tone</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
