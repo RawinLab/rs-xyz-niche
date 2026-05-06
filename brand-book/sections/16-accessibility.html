@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§16 Accessibility Standards — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    .wcag-level {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 2px;
+    }
+    .wcag-a   { background: rgba(119,145,82,0.1); color: var(--color-accent-secondary-shade); }
+    .wcag-aa  { background: rgba(119,145,82,0.2); color: var(--color-accent-secondary-shade); border: 1px solid var(--color-accent-secondary-shade); }
+    .wcag-aaa { background: rgba(74,92,51,0.2);   color: #2d4020; border: 1px solid #2d4020; }
+    .wcag-fail { background: rgba(254,29,37,0.1); color: #b30000; border: 1px solid rgba(254,29,37,0.3); }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 16</span>
+      <div class="book-sidebar__title">Accessibility</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#why">Why This Section Exists</a></li>
+        <li><a href="#wcag-table">WCAG 2.2 Full Audit</a></li>
+        <li><a href="#reduced-motion">Reduced Motion Code</a></li>
+        <li><a href="#alt-text">Alt-Text Writing Guide</a></li>
+        <li><a href="#ig-alt">IG Alt-Text Instructions</a></li>
+        <li><a href="#focus">Focus States</a></li>
+        <li><a href="#semantic">Semantic HTML Guide</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 16</span>
+          <h1 class="section-hero__title">Accessibility Standards</h1>
+          <p class="section-hero__lead">
+            WCAG 2.2 AA. Not as an aspiration — as a minimum.
+            The brand book itself must meet the standards it documents.
+          </p>
+        </div>
+      </header>
+
+      <!-- Why -->
+      <section id="why" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Why This Section Exists</span>
+          <h2>83.6% of sites fail. NICHE won't be in that group.</h2>
+          <p>
+            Per WebAIM 2024, 83.6% of home pages have detectable WCAG failures.
+            The single most common failure type is insufficient color contrast.
+            NICHE's red (#fe1d25) and warm gray (#cccecd) both fail body-text
+            contrast thresholds — documented here so they cannot be misused.
+          </p>
+          <p style="margin-top: var(--space-16);">
+            Accessibility is not a legal compliance exercise for NICHE — it is brand alignment.
+            A school for independents and makers that excludes users with low vision,
+            motor impairments, or photosensitivity is contradicting its own positioning.
+            This section makes inclusion structural.
+          </p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Full WCAG audit -->
+      <section id="wcag-table" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">WCAG 2.2 AA Contrast Audit</span>
+          <h2>Every approved combination. Every context.</h2>
+          <p>
+            WCAG 2.2 SC 1.4.3: Normal text requires 4.5:1.
+            Large text (18pt+, or 14pt+ bold) requires 3:1.
+            Non-text UI elements require 3:1 against adjacent color.
+          </p>
+        </div>
+
+        <table class="contrast-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Foreground</th>
+              <th>Background</th>
+              <th>Ratio</th>
+              <th>Normal text</th>
+              <th>Large text</th>
+              <th>UI elements</th>
+              <th>Use for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ddd;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border-radius:2px;"></div><code>#252026</code></div></td>
+              <td><strong>14.18:1</strong></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td>Body text, headlines, all content on dark bg</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border:1px solid #999;border-radius:2px;"></div><code>#252026</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ccc;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><strong>14.18:1</strong></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td>Body text, headlines, all content on light bg</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#cccecd;border-radius:2px;"></div><code>#cccecd</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border-radius:2px;"></div><code>#252026</code></div></td>
+              <td><strong>10.11:1</strong></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td>Captions, dividers (text allowed in this combo only)</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#fe1d25;border-radius:2px;"></div><code>#fe1d25</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border-radius:2px;"></div><code>#252026</code></div></td>
+              <td><strong>4.12:1</strong></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td><span class="wcag-aa">AA Large</span></td>
+              <td><span class="wcag-aa">AA</span></td>
+              <td>Display text ≥18pt only. Icons ≥24px. Never body text.</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#fe1d25;border-radius:2px;"></div><code>#fe1d25</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ccc;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><strong>3.44:1</strong></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td><span class="wcag-aa">AA Large</span></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td>Display text ≥18pt only. Never body. Never hyperlinks.</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#779152;border-radius:2px;"></div><code>#779152</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#252026;border-radius:2px;"></div><code>#252026</code></div></td>
+              <td><strong>4.54:1</strong></td>
+              <td><span class="wcag-aa">AA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aa">AA</span></td>
+              <td>Body text on dark bg approved. Monitor — barely passes.</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#779152;border-radius:2px;"></div><code>#779152</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ccc;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><strong>3.13:1</strong></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td><span class="wcag-aa">AA Large</span></td>
+              <td><span class="wcag-aa">AA</span></td>
+              <td>Large display ≥18pt on light bg only.</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#4a5c33;border-radius:2px;"></div><code>#4a5c33</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ccc;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><strong>7.2:1</strong></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td><span class="wcag-aaa">AAA</span></td>
+              <td>Body text on light. Accessible green shade for links.</td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#cccecd;border-radius:2px;"></div><code>#cccecd</code></div></td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:20px;height:20px;background:#f2f1f0;border:1px solid #ccc;border-radius:2px;"></div><code>#f2f1f0</code></div></td>
+              <td><strong>1.40:1</strong></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td><span class="wcag-fail">FAIL</span></td>
+              <td style="color: var(--color-accent-brand); font-weight: 700;">PROHIBITED. Never text. Never UI. Decorative dividers only on dark bg.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Reduced motion -->
+      <section id="reduced-motion" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">prefers-reduced-motion</span>
+          <h2>Every animation must respect this query.</h2>
+          <p>
+            WCAG 2.3.3 (Level AAA) and 2.2.2 (Level A) both address motion harm.
+            Users with vestibular disorders, migraines, or ADHD can configure
+            their OS to signal reduced-motion preference.
+            NICHE's CSS must honor this signal everywhere.
+          </p>
+        </div>
+
+        <pre class="reveal-on-scroll"><code>/* ─── In tokens.css: all durations → 0ms ─── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-micro:  0ms;
+    --motion-quick:  0ms;
+    --motion-base:   0ms;
+    --motion-slow:   0ms;
+    --motion-logo:   0ms;
+  }
+}
+
+/* ─── For components with hardcoded transitions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .program-card,
+  .toc-card,
+  .demo-btn,
+  [class*="transition"] {
+    transition: none !important;
+  }
+
+  .word-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─── For scroll animations in JavaScript ─── */
+const prefersReducedMotion =
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Skip animation setup if user prefers no motion
+if (!prefersReducedMotion) {
+  initScrollReveal();
+  initWordReveal();
+}
+
+/* ─── For autoplay video ─── */
+/* Wrap in reduced-motion check OR provide a pause button */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  video.removeAttribute('autoplay');
+  video.pause();
+}</code></pre>
+
+        <div style="background: rgba(119,145,82,0.08); border: 1.5px solid var(--color-accent-secondary); padding: var(--space-24) var(--space-32); margin-top: var(--space-32);" class="reveal-on-scroll">
+          <div class="t-eyebrow" style="color: var(--color-accent-secondary-shade); margin-bottom: var(--space-12);">Testing reduced motion</div>
+          <p style="font-size: var(--type-body-s-size); line-height: 1.6; max-width: 100%;">
+            macOS: System Settings → Accessibility → Display → Reduce Motion.<br>
+            Windows: Settings → Ease of Access → Display → Show animations in Windows → Off.<br>
+            iOS: Settings → Accessibility → Motion → Reduce Motion.<br>
+            Android: Settings → Accessibility → Remove animations.
+          </p>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Alt-text guide -->
+      <section id="alt-text" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Alt-Text Writing Guide</span>
+          <h2>Alt text is a design decision. Write it like one.</h2>
+          <p>
+            Alt text is read by screen readers, indexing bots, and users on broken
+            connections. Bad alt text is worse than no alt text.
+            NICHE's alt text must be as intentional as its copywriting.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="background: rgba(119,145,82,0.08); border: 1.5px solid var(--color-accent-secondary); padding: var(--space-32);">
+            <div class="t-eyebrow" style="color: var(--color-accent-secondary-shade); margin-bottom: var(--space-16);">Do — write this</div>
+            <ul style="font-size: var(--type-body-s-size); line-height: 1.7; padding-left: var(--space-24);">
+              <li>Describe what matters for the context, not everything visible.</li>
+              <li>For photography: what is the person doing, what objects are present, what is the mood or setting.</li>
+              <li>For logos: include the word "logo", the brand name, and the variant (e.g. "on dark background").</li>
+              <li>For PDFs used as references: describe the content of the page clearly, including any text visible.</li>
+              <li>For decorative images (backgrounds, dividers): use alt="" to mark as decorative.</li>
+            </ul>
+          </div>
+          <div style="background: rgba(204,206,205,0.15); border: 1.5px solid var(--color-surface-muted); padding: var(--space-32);">
+            <div class="t-eyebrow" style="color: rgba(37,32,38,0.4); margin-bottom: var(--space-16);">Don't — avoid this</div>
+            <ul style="font-size: var(--type-body-s-size); line-height: 1.7; padding-left: var(--space-24); color: rgba(37,32,38,0.55);">
+              <li style="text-decoration: line-through;">alt="image" or alt="photo"</li>
+              <li style="text-decoration: line-through;">Starting with "Image of..." or "Picture of..."</li>
+              <li style="text-decoration: line-through;">Including file names: alt="NICHE-logo-v2-FINAL.png"</li>
+              <li style="text-decoration: line-through;">Repeating surrounding text verbatim in alt text</li>
+              <li style="text-decoration: line-through;">Keyword stuffing: alt="NICHE logo brand design school Bangkok creative"</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Logo alt text pattern</span>
+            <span class="spec-table__value">"NICHE [variant] wordmark on [background] — [one distinguishing characteristic]"<br>
+            Example: "NICHE OPT 02 primary wordmark on dark background — bold rounded humanist with tilted N"</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Photography alt text pattern</span>
+            <span class="spec-table__value">"[Subject/person] [action verb] [object/material] [context if relevant]"<br>
+            Example: "Person annotating architectural sketches at a desk with natural window light"</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Brand mockup alt text</span>
+            <span class="spec-table__value">"NICHE [touchpoint type]: [key visual and text elements visible]"<br>
+            Example: "NICHE outdoor poster: 'Find your niche' in white Fraunces over workshop photography"</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Max length</span>
+            <span class="spec-table__value">125 characters is the soft limit. Longer descriptions use aria-describedby or figcaption instead.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Decorative images</span>
+            <span class="spec-table__value">Use alt="" (empty string). Do not omit the alt attribute — missing alt = a11y fail.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- IG alt text -->
+      <section id="ig-alt" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Instagram Alt-Text</span>
+          <h2>IG has native alt text. Use it. Every post.</h2>
+          <p>
+            Instagram allows custom alt text per post. It is not auto-generated from
+            the caption. Most brands ignore it. NICHE will not.
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface-ink); padding: var(--space-32); margin-block: var(--space-32);" class="reveal-on-scroll">
+          <div class="t-eyebrow" style="color: var(--color-accent-brand); margin-bottom: var(--space-16);">How to add alt text in IG</div>
+          <ol style="padding-left: var(--space-24); color: rgba(242,241,240,0.7); font-size: var(--type-body-s-size); line-height: 1.7;">
+            <li>Post creation screen → Advanced Settings (bottom of screen)</li>
+            <li>Write alt text → Enter a description of the photo</li>
+            <li>Write the description following the photography alt text pattern above</li>
+            <li>Save. The description is stored with the post and read by screen readers.</li>
+          </ol>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Required for</span>
+            <span class="spec-table__value">All IG posts with images. Stories (where native alt text is available). Carousels — alt text per slide.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Caption vs alt text</span>
+            <span class="spec-table__value">The caption is for the sighted audience. Alt text is for users who can't see the image. They serve different purposes — don't copy-paste.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Focus states -->
+      <section id="focus" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Focus States</span>
+          <h2>Keyboard users must see where they are.</h2>
+          <p>
+            WCAG 2.4.7 (Level AA): Any keyboard-operable user interface has a mode of
+            operation where the keyboard focus indicator is visible.
+            The default browser focus ring is ugly but functional. NICHE's custom
+            focus style must be equally visible, ideally more so.
+          </p>
+        </div>
+
+        <pre class="reveal-on-scroll"><code>/* Global focus style — applied in base.css */
+:focus-visible {
+  outline: 2px solid #fe1d25;  /* brand red = high visibility */
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Never do this: */
+/* :focus { outline: none; } — accessibility failure */
+/* :focus-visible { outline: 0; } — accessibility failure */
+
+/* For dark backgrounds: */
+.section--dark :focus-visible,
+.cover-hero :focus-visible {
+  outline-color: #f2f1f0;  /* off-white — 14.18:1 on dark */
+}</code></pre>
+
+        <div class="do-dont reveal-on-scroll">
+          <div class="do-dont__cell do-dont__cell--do" style="text-decoration:none;">
+            <span class="do-dont__label">Do</span>
+            <div class="do-dont__content" style="text-decoration:none;">
+              Use <code>:focus-visible</code> (not <code>:focus</code>) to show focus rings only for keyboard navigation, not mouse clicks. Users who click don't need the ring — keyboard users do.
+            </div>
+          </div>
+          <div class="do-dont__cell do-dont__cell--dont">
+            <span class="do-dont__label">Don't</span>
+            <div class="do-dont__content">
+              Remove focus outlines for aesthetic reasons. If the focus ring breaks a design, fix the design — not the accessibility.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Semantic HTML -->
+      <section id="semantic" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Semantic HTML Guide</span>
+          <h2>HTML structure is the accessibility foundation.</h2>
+          <p>
+            Screen readers navigate by heading structure, landmark regions, and
+            semantic elements. Semantic HTML that is correct requires no additional
+            ARIA. ARIA that patches incorrect HTML creates new problems.
+          </p>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Page structure</span>
+            <span class="spec-table__value">Every page must have: one <code>&lt;h1&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;nav&gt;</code> with aria-label, one <code>&lt;header&gt;</code>.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Heading hierarchy</span>
+            <span class="spec-table__value">Never skip levels (h1 → h3 without h2). The visual size is independent of the semantic level. Use CSS to adjust size.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Images</span>
+            <span class="spec-table__value">Every <code>&lt;img&gt;</code> must have alt attribute. Decorative: alt="". Informative: meaningful description. Required by WCAG 1.1.1.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Buttons vs links</span>
+            <span class="spec-table__value">Use <code>&lt;button&gt;</code> for actions. Use <code>&lt;a&gt;</code> for navigation. Never use <code>&lt;div onclick&gt;</code> for either.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Form labels</span>
+            <span class="spec-table__value">Every <code>&lt;input&gt;</code> must have an associated <code>&lt;label&gt;</code>. Placeholder text is not a label.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Language</span>
+            <span class="spec-table__value">All pages must have <code>&lt;html lang="en"&gt;</code> (or "th" for Thai pages). Required by WCAG 3.1.1.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Color as only indicator</span>
+            <span class="spec-table__value">Never use color as the sole means of conveying information. The WCAG pass/fail table in §5 uses text badges, not just color — this is intentional.</span>
+          </div>
+        </div>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="15-event-wayfinding.html" class="section-nav__prev">Event &amp; Wayfinding</a>
+        <a href="17-ai-content-policy.html" class="section-nav__next">AI Content Policy</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
