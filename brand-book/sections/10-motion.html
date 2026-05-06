@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§10 Motion &amp; Animation System — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    /* Token demo table */
+    .motion-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-block: var(--space-48);
+    }
+
+    .motion-table th {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-12) var(--space-16);
+      font-size: var(--type-eyebrow-size);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .motion-table td {
+      padding: var(--space-16) var(--space-16);
+      border-bottom: var(--border-thin);
+      vertical-align: middle;
+    }
+
+    .motion-table tr:last-child td { border-bottom: none; }
+
+    .motion-token-label {
+      font-family: 'SF Mono', monospace;
+      font-size: var(--type-caption-size);
+      color: var(--color-accent-brand);
+      display: block;
+    }
+
+    .motion-ms {
+      font-family: 'SF Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    /* Timing bar demo */
+    .timing-bar {
+      height: 6px;
+      background: var(--color-surface-muted);
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 240px;
+    }
+
+    .timing-bar-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      background: var(--color-accent-brand);
+      width: 0%;
+      transition: width 0ms;
+    }
+
+    .timing-bar-fill.playing {
+      transition-timing-function: var(--ease-entrance);
+    }
+
+    /* Easing visualizer */
+    .easing-demos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 640px) { .easing-demos { grid-template-columns: 1fr; } }
+
+    .easing-cell {
+      background: var(--color-surface-ink);
+      padding: var(--space-32) var(--space-24);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    .easing-label {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(242,241,240,0.45);
+    }
+
+    .easing-curve {
+      font-family: 'SF Mono', monospace;
+      font-size: 10px;
+      color: var(--color-accent-brand);
+    }
+
+    .easing-dot-track {
+      height: 4px;
+      background: rgba(242,241,240,0.1);
+      border-radius: 2px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .easing-dot {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 10px;
+      height: 10px;
+      background: var(--color-surface-base);
+      border-radius: 50%;
+      transform: translate(0, -50%);
+      transition: left 800ms var(--ease-standard);
+    }
+
+    .easing-dot.entrance { transition-timing-function: var(--ease-entrance); }
+    .easing-dot.exit     { transition-timing-function: var(--ease-exit); }
+    .easing-dot.standard { transition-timing-function: var(--ease-standard); }
+
+    .easing-dot.animate { left: calc(100% - 10px); }
+
+    .easing-desc {
+      font-size: var(--type-caption-size);
+      color: rgba(242,241,240,0.55);
+      line-height: 1.5;
+    }
+
+    /* Logo reveal spec */
+    .logo-reveal-timeline {
+      display: flex;
+      height: 80px;
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+
+    .logo-reveal-stage {
+      flex: 1;
+      background: var(--color-surface-ink);
+      padding: var(--space-12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .logo-reveal-stage__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+    }
+
+    .logo-reveal-stage__ms {
+      font-family: 'SF Mono', monospace;
+      font-size: 11px;
+      color: rgba(242,241,240,0.5);
+    }
+
+    /* Live demos */
+    .live-demo-area {
+      background: var(--color-surface-ink);
+      padding: var(--space-64) var(--gutter);
+      margin-block: var(--space-48);
+    }
+
+    .demo-section-title {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      margin-bottom: var(--space-32);
+      display: block;
+    }
+
+    /* Demo elements */
+    .demo-flex {
+      display: flex;
+      gap: var(--space-24);
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* Card hover */
+    .demo-program-card {
+      background: var(--color-surface-base);
+      padding: var(--space-32);
+      width: 220px;
+      cursor: pointer;
+      transition: background var(--motion-quick) var(--ease-standard),
+                  color var(--motion-quick) var(--ease-standard);
+    }
+
+    .demo-program-card:hover {
+      background: rgba(242, 241, 240, 0.12);
+      color: var(--color-surface-base);
+      outline: 1.5px solid rgba(242,241,240,0.2);
+    }
+
+    .demo-program-card:hover .demo-program-tag {
+      transform: scale(1.05);
+      color: var(--color-accent-secondary);
+    }
+
+    .demo-program-card:hover .demo-program-title {
+      color: var(--color-surface-base);
+    }
+
+    .demo-program-tag {
+      display: inline-block;
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent-secondary-shade);
+      border: 1.5px solid currentColor;
+      padding: 2px 8px;
+      margin-bottom: var(--space-12);
+      transition: transform var(--motion-quick) var(--ease-standard),
+                  color var(--motion-quick) var(--ease-standard);
+    }
+
+    .demo-program-title {
+      font-size: var(--type-body-s-size);
+      font-weight: 700;
+      color: var(--color-surface-ink);
+      transition: color var(--motion-quick) var(--ease-standard);
+    }
+
+    /* Button hover */
+    .demo-btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: var(--type-button-size);
+      font-weight: var(--type-button-weight);
+      letter-spacing: var(--type-button-ls);
+      text-transform: uppercase;
+      padding: var(--space-16) var(--space-32);
+      background: var(--color-surface-base);
+      color: var(--color-surface-ink);
+      cursor: pointer;
+      border: none;
+      transition: background var(--motion-quick) var(--ease-standard),
+                  color var(--motion-quick) var(--ease-standard);
+    }
+    .demo-btn:hover {
+      background: var(--color-accent-brand);
+      color: var(--color-surface-base);
+    }
+
+    /* Word reveal demo */
+    .word-reveal-demo {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--color-surface-base);
+    }
+
+    .wr-word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .wr-inner {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform var(--motion-slow) var(--ease-entrance);
+    }
+
+    .wr-inner.revealed {
+      transform: translateY(0);
+    }
+
+    #reveal-trigger {
+      margin-top: var(--space-24);
+      font-family: var(--font-body);
+      font-size: var(--type-button-size);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: var(--space-12) var(--space-24);
+      background: transparent;
+      color: rgba(242,241,240,0.5);
+      border: 1px solid rgba(242,241,240,0.2);
+      cursor: pointer;
+      transition: color var(--motion-quick) var(--ease-standard),
+                  border-color var(--motion-quick) var(--ease-standard);
+    }
+    #reveal-trigger:hover {
+      color: var(--color-surface-base);
+      border-color: rgba(242,241,240,0.5);
+    }
+
+    /* Prohibited effects */
+    .prohibited-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 640px) { .prohibited-grid { grid-template-columns: 1fr; } }
+
+    .prohibited-cell {
+      background: rgba(204,206,205,0.1);
+      border: 1.5px solid var(--color-surface-muted);
+      padding: var(--space-24);
+    }
+
+    .prohibited-name {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent-brand);
+      display: block;
+      margin-bottom: var(--space-12);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 10</span>
+      <div class="book-sidebar__title">Motion System</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#tokens">5 Motion Tokens</a></li>
+        <li><a href="#easing">Easing Curves</a></li>
+        <li><a href="#principles">3 Principles</a></li>
+        <li><a href="#logo-reveal">Logo Reveal Spec</a></li>
+        <li><a href="#live-demos">Live Demos</a></li>
+        <li><a href="#prohibited">Prohibited Effects</a></li>
+        <li><a href="#code">CSS Implementation</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 10</span>
+          <h1 class="section-hero__title">Motion &amp; Animation System</h1>
+          <p class="section-hero__lead">
+            Five tokens. Three principles. Without this, every video editor improvises
+            and every website feels like a different brand.
+          </p>
+        </div>
+      </header>
+
+      <!-- 5 tokens -->
+      <section id="tokens" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Five Motion Tokens</span>
+          <h2>Authority: IBM Carbon Motion. Adapted for NICHE.</h2>
+          <p>
+            Five durations cover everything NICHE will need.
+            Reference the CSS variable, never the millisecond value directly.
+            When the system recalibrates, one change propagates everywhere.
+          </p>
+        </div>
+
+        <table class="motion-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Duration</th>
+              <th>Bar</th>
+              <th>Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="motion-token-label">--motion-micro</span></td>
+              <td><span class="motion-ms">80ms</span></td>
+              <td>
+                <div class="timing-bar">
+                  <div class="timing-bar-fill" data-duration="80" style="width: 9%;"></div>
+                </div>
+              </td>
+              <td style="font-size: var(--type-body-s-size);">Icon state changes, checkbox toggles, hover fills. Imperceptible transitions that prevent jarring state snaps.</td>
+            </tr>
+            <tr>
+              <td><span class="motion-token-label">--motion-quick</span></td>
+              <td><span class="motion-ms">150ms</span></td>
+              <td>
+                <div class="timing-bar">
+                  <div class="timing-bar-fill" data-duration="150" style="width: 17%;"></div>
+                </div>
+              </td>
+              <td style="font-size: var(--type-body-s-size);">Button press, tooltip appear, tag hover, card background cross-fade. The primary interaction token.</td>
+            </tr>
+            <tr>
+              <td><span class="motion-token-label">--motion-base</span></td>
+              <td><span class="motion-ms">280ms</span></td>
+              <td>
+                <div class="timing-bar">
+                  <div class="timing-bar-fill" data-duration="280" style="width: 31%;"></div>
+                </div>
+              </td>
+              <td style="font-size: var(--type-body-s-size);">Card entrance, drawer open, modal appear, accordion expand. System transitions that communicate structure.</td>
+            </tr>
+            <tr>
+              <td><span class="motion-token-label">--motion-slow</span></td>
+              <td><span class="motion-ms">500ms</span></td>
+              <td>
+                <div class="timing-bar">
+                  <div class="timing-bar-fill" data-duration="500" style="width: 56%;"></div>
+                </div>
+              </td>
+              <td style="font-size: var(--type-body-s-size);">Page transitions, hero text reveals (per word). These transitions carry narrative weight — they should feel considered.</td>
+            </tr>
+            <tr>
+              <td><span class="motion-token-label">--motion-logo</span></td>
+              <td><span class="motion-ms">900ms</span></td>
+              <td>
+                <div class="timing-bar">
+                  <div class="timing-bar-fill" data-duration="900" style="width: 100%;"></div>
+                </div>
+              </td>
+              <td style="font-size: var(--type-body-s-size);">Logo reveal — staged three-part sequence. See logo reveal spec below. Use only at page load / splash.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Easing -->
+      <section id="easing" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Easing Curves</span>
+          <h2>Three curves. Every animation uses one of these.</h2>
+          <p>Linear easing is never approved. Everything enters, exits, or adjusts in place
+          — each requires its own physics.</p>
+        </div>
+
+        <div class="easing-demos reveal-on-scroll">
+          <div class="easing-cell">
+            <span class="easing-label">Entrance</span>
+            <span class="easing-curve">cubic-bezier(0, 0, 0.3, 1)</span>
+            <div class="easing-dot-track">
+              <div class="easing-dot entrance" id="dot-entrance"></div>
+            </div>
+            <p class="easing-desc">Fast start, slow settle. For all elements entering the viewport or appearing on screen. Feels decisive, not tentative.</p>
+          </div>
+          <div class="easing-cell">
+            <span class="easing-label">Exit</span>
+            <span class="easing-curve">cubic-bezier(0.4, 0.14, 1, 1)</span>
+            <div class="easing-dot-track">
+              <div class="easing-dot exit" id="dot-exit"></div>
+            </div>
+            <p class="easing-desc">Slow start, fast end. For elements leaving the screen. Pulls away with intention — doesn't linger.</p>
+          </div>
+          <div class="easing-cell">
+            <span class="easing-label">Standard</span>
+            <span class="easing-curve">cubic-bezier(0.2, 0, 0.38, 0.9)</span>
+            <div class="easing-dot-track">
+              <div class="easing-dot standard" id="dot-standard"></div>
+            </div>
+            <p class="easing-desc">For in-place state changes: color swaps, hover fills, tab selections. Balanced — not theatrical.</p>
+          </div>
+        </div>
+
+        <button id="run-easing" style="font-family: var(--font-body); font-size: var(--type-button-size); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: var(--space-12) var(--space-24); background: var(--color-surface-ink); color: var(--color-surface-base); border: none; cursor: pointer;" class="reveal-on-scroll">
+          Run easing demos
+        </button>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Principles -->
+      <section id="principles" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Three Motion Principles</span>
+          <h2>Motion earns its place. It doesn't decorate.</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="padding: var(--space-40) var(--space-32); border: var(--border-thin);">
+            <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--color-surface-muted); line-height: 1; margin-bottom: var(--space-24);">1</div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-12);">Type-first reveal</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.6; max-width: 100%;">
+              Display text enters word-by-word — not letter-by-letter.
+              Letter-by-letter is the startup cliché. 40ms stagger per word.
+              Fraunces deserves to be read, not animated.
+            </p>
+          </div>
+          <div style="padding: var(--space-40) var(--space-32); border: var(--border-thin);">
+            <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--color-surface-muted); line-height: 1; margin-bottom: var(--space-24);">2</div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-12);">Red activates on intent</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.6; max-width: 100%;">
+              #fe1d25 appears in motion only on hover/active states.
+              It punctuates; it never auto-decorates on scroll.
+              Red that fires without user intent trains users to ignore it.
+            </p>
+          </div>
+          <div style="padding: var(--space-40) var(--space-32); border: var(--border-thin);">
+            <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--color-surface-muted); line-height: 1; margin-bottom: var(--space-24);">3</div>
+            <div style="font-size: var(--type-h4-size); font-weight: 700; margin-bottom: var(--space-12);">Program cards cross-fade</div>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.6; max-width: 100%;">
+              On hover: background cross-fades #f2f1f0 → #252026 at quick (150ms).
+              Category tag scales 1.0 → 1.05 simultaneously.
+              The card reacts to presence — not to arrival.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Logo reveal spec -->
+      <section id="logo-reveal" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Logo Reveal Specification</span>
+          <h2>900ms. Three stages. One breath.</h2>
+          <p>
+            The tilted N in OPT 02 creates a natural motion behavior.
+            The full logo reveal is a staged sequence — mark first, wordmark second, tagline third.
+            Use only at page load or brand splash moments.
+          </p>
+        </div>
+
+        <div class="logo-reveal-timeline reveal-on-scroll" aria-label="Logo reveal timeline diagram">
+          <div class="logo-reveal-stage" style="flex: 4; border-right: 2px solid var(--color-accent-brand);">
+            <span class="logo-reveal-stage__label">N. submark</span>
+            <span class="logo-reveal-stage__ms">0ms → 400ms</span>
+          </div>
+          <div class="logo-reveal-stage" style="flex: 4; border-right: 2px solid var(--color-surface-muted);">
+            <span class="logo-reveal-stage__label">Wordmark</span>
+            <span class="logo-reveal-stage__ms">350ms → 700ms</span>
+          </div>
+          <div class="logo-reveal-stage" style="flex: 3;">
+            <span class="logo-reveal-stage__label">Tagline</span>
+            <span class="logo-reveal-stage__ms">650ms → 900ms</span>
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">Stage 1 — Submark</span>
+            <span class="spec-table__value">N. enters from below at translateY(20px) opacity 0 → 1. Duration: 400ms. Easing: entrance. The N's tilt animates from 0° to final angle.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Stage 2 — Wordmark</span>
+            <span class="spec-table__value">Full NICHE wordmark cross-fades in starting 350ms. Overlap with Stage 1 creates continuity. Duration: 350ms. Easing: entrance.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Stage 3 — Tagline</span>
+            <span class="spec-table__value">"Find your niche." fades in word by word, 40ms stagger. Starts 650ms. Duration: 250ms. Easing: standard.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Total duration</span>
+            <span class="spec-table__value">900ms from first frame to complete. Do not extend — momentum is the point.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Reduced motion</span>
+            <span class="spec-table__value">All durations → 0ms. Mark, wordmark, and tagline appear simultaneously. No animation. This is required — not optional.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Live demos -->
+      <section id="live-demos" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Live Demos</span>
+          <h2>Hover everything. These are production-ready behaviors.</h2>
+          <p>All demos below use only the five tokens and three easing curves above.
+          No custom timing. No custom easing. Just the system.</p>
+        </div>
+
+        <div class="live-demo-area reveal-on-scroll">
+
+          <span class="demo-section-title">1 — Card hover (--motion-quick, 150ms, standard)</span>
+          <div class="demo-flex" style="margin-bottom: var(--space-48);">
+            <div class="demo-program-card">
+              <span class="demo-program-tag">Creativity</span>
+              <div class="demo-program-title">AI x Content Engine Studio</div>
+            </div>
+            <div class="demo-program-card">
+              <span class="demo-program-tag">Humanity</span>
+              <div class="demo-program-title">New Hospitality</div>
+            </div>
+            <div class="demo-program-card">
+              <span class="demo-program-tag">Entrepreneurship</span>
+              <div class="demo-program-title">First Venture Bootcamp</div>
+            </div>
+          </div>
+
+          <span class="demo-section-title">2 — Button hover (--motion-quick, 150ms, standard)</span>
+          <div class="demo-flex" style="margin-bottom: var(--space-48);">
+            <button class="demo-btn" aria-label="Apply button demo">Apply — Program 2026</button>
+            <button class="demo-btn" aria-label="More information button demo">More Information</button>
+          </div>
+
+          <span class="demo-section-title">3 — Word-by-word reveal (--motion-slow, 500ms, entrance · 40ms stagger)</span>
+          <div style="margin-bottom: var(--space-24);">
+            <div class="word-reveal-demo" id="word-reveal-text">
+              <span class="wr-word"><span class="wr-inner">Find</span></span>&#32;
+              <span class="wr-word"><span class="wr-inner">your</span></span>&#32;
+              <span class="wr-word"><span class="wr-inner">niche.</span></span>
+            </div>
+          </div>
+          <button id="reveal-trigger" aria-label="Replay word reveal animation">Replay reveal</button>
+
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Prohibited effects -->
+      <section id="prohibited" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Prohibited Motion Effects</span>
+          <h2>These effects are banned. Not discouraged — banned.</h2>
+          <p>Every prohibited effect below was either a cliché in 2022 or creates
+          accessibility harm. Neither is acceptable at NICHE.</p>
+        </div>
+
+        <div class="prohibited-grid reveal-on-scroll">
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Letter-by-letter reveal</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              The startup-pitch cliché. NICHE uses word-by-word only.
+              Letter-by-letter feels performative, delays legibility,
+              and fails in reduced-motion contexts.
+            </p>
+          </div>
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Parallax scroll</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              Scroll-linked position parallax causes motion sickness (vestibular disorder).
+              Violates WCAG 2.3.3. Not allowed anywhere in the NICHE web system.
+            </p>
+          </div>
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Auto-playing video with motion</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              Video that plays automatically with significant motion must include
+              a pause control. Autoplay with motion without pause = WCAG 2.2.2 failure.
+            </p>
+          </div>
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Bounce easing</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              bounce-in, bounce-out — toy register. NICHE is editorial.
+              Use the three approved curves. If it needs to bounce, the design is wrong.
+            </p>
+          </div>
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Infinite loop animations</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              Spinning logos, pulsing badges, looping backgrounds.
+              They fight for attention without earning it.
+              Motion at NICHE is triggered by user intent, not ambient.
+            </p>
+          </div>
+          <div class="prohibited-cell">
+            <span class="prohibited-name">Flash / strobe</span>
+            <p style="font-size: var(--type-body-s-size); color: rgba(37,32,38,0.65); line-height: 1.5; max-width: 100%;">
+              Three flashes per second or more causes seizures. WCAG 2.3.1.
+              No flashing at any frequency in NICHE digital materials.
+              No exceptions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- CSS code -->
+      <section id="code" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">CSS Implementation</span>
+          <h2>Copy this. Reference the tokens. Don't rewrite it.</h2>
+        </div>
+
+        <pre class="reveal-on-scroll"><code>/* Motion tokens — already defined in tokens.css */
+--motion-micro:   80ms;
+--motion-quick:   150ms;
+--motion-base:    280ms;
+--motion-slow:    500ms;
+--motion-logo:    900ms;
+
+--ease-entrance:  cubic-bezier(0, 0, 0.3, 1);
+--ease-exit:      cubic-bezier(0.4, 0.14, 1, 1);
+--ease-standard:  cubic-bezier(0.2, 0, 0.38, 0.9);
+
+/* Example: program card */
+.program-card {
+  transition:
+    background  var(--motion-quick) var(--ease-standard),
+    color       var(--motion-quick) var(--ease-standard);
+}
+
+/* Example: word-by-word reveal */
+.word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform var(--motion-slow) var(--ease-entrance);
+}
+/* Apply stagger in JS: delay = wordIndex * 40ms */
+
+/* Reduced motion — REQUIRED */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-micro:  0ms;
+    --motion-quick:  0ms;
+    --motion-base:   0ms;
+    --motion-slow:   0ms;
+    --motion-logo:   0ms;
+  }
+}</code></pre>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="09-iconography.html" class="section-nav__prev">Iconography</a>
+        <a href="11-digital-social.html" class="section-nav__next">Digital &amp; Social</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+  <script>
+    // Easing demo runner
+    const runBtn = document.getElementById('run-easing');
+    const dots   = ['dot-entrance', 'dot-exit', 'dot-standard'].map(id => document.getElementById(id));
+
+    if (runBtn) {
+      runBtn.addEventListener('click', () => {
+        dots.forEach(dot => { if (dot) dot.classList.remove('animate'); });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            dots.forEach(dot => { if (dot) dot.classList.add('animate'); });
+            setTimeout(() => {
+              dots.forEach(dot => { if (dot) dot.classList.remove('animate'); });
+            }, 1200);
+          });
+        });
+      });
+      // Auto-run once when scrolled into view
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          runBtn.click();
+          observer.disconnect();
+        }
+      }, { threshold: 0.5 });
+      observer.observe(runBtn);
+    }
+
+    // Word reveal replay
+    const replayBtn = document.getElementById('reveal-trigger');
+    const inners    = document.querySelectorAll('#word-reveal-text .wr-inner');
+
+    function playReveal() {
+      inners.forEach(el => el.classList.remove('revealed'));
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          inners.forEach((el, i) => {
+            setTimeout(() => el.classList.add('revealed'), 80 + i * 80);
+          });
+        });
+      });
+    }
+
+    if (replayBtn) {
+      replayBtn.addEventListener('click', playReveal);
+      // Auto-play on scroll
+      const rvObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) { playReveal(); rvObserver.disconnect(); }
+      }, { threshold: 0.5 });
+      const rvText = document.getElementById('word-reveal-text');
+      if (rvText) rvObserver.observe(rvText);
+    }
+
+    // Timing bar animation on scroll
+    document.querySelectorAll('.timing-bar-fill').forEach(bar => {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          const dur = parseInt(bar.dataset.duration, 10);
+          const pct = (dur / 900) * 100;
+          bar.style.transition = `width ${dur}ms var(--ease-entrance)`;
+          bar.style.width = pct + '%';
+          observer.disconnect();
+        }
+      }, { threshold: 0.5 });
+      observer.observe(bar);
+    });
+  </script>
+</body>
+</html>
