@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§8 Voice, Tone &amp; Messaging — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    .voice-principle {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: var(--space-32);
+      padding: var(--space-48) 0;
+      border-bottom: var(--border-thin);
+      align-items: start;
+    }
+    .voice-principle:last-child { border-bottom: none; }
+
+    .voice-principle__num {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-surface-muted);
+      line-height: 1;
+    }
+
+    .voice-principle__title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: var(--space-12);
+    }
+
+    .voice-principle__body {
+      font-size: var(--type-body-m-size);
+      color: rgba(37,32,38,0.7);
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    .voice-principle__example {
+      margin-top: var(--space-16);
+      padding: var(--space-16) var(--space-24);
+      background: rgba(254,29,37,0.05);
+      border-left: 3px solid var(--color-accent-brand);
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--color-surface-ink);
+      font-weight: 600;
+    }
+
+    .tone-matrix {
+      display: grid;
+      grid-template-columns: 140px repeat(4, 1fr);
+      border: var(--border-thin);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 768px) {
+      .tone-matrix { grid-template-columns: 1fr; }
+    }
+
+    .tone-matrix-cell {
+      padding: var(--space-16);
+      border-right: var(--border-thin);
+      border-bottom: var(--border-thin);
+      font-size: var(--type-body-s-size);
+    }
+
+    .tone-matrix-cell:nth-child(5n) { border-right: none; }
+
+    .tone-matrix-header {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+    }
+
+    .tone-matrix-label {
+      font-weight: 700;
+      background: rgba(37,32,38,0.04);
+    }
+
+    .dial {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      margin-top: var(--space-4);
+    }
+    .dial-track {
+      flex: 1;
+      height: 4px;
+      background: var(--color-surface-muted);
+      border-radius: 2px;
+      position: relative;
+    }
+    .dial-fill {
+      height: 100%;
+      background: var(--color-accent-brand);
+      border-radius: 2px;
+    }
+    .dial-label {
+      font-size: 9px;
+      color: rgba(37,32,38,0.4);
+      white-space: nowrap;
+    }
+
+    .forbidden-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-block: var(--space-48);
+    }
+    @media (max-width: 640px) { .forbidden-grid { grid-template-columns: 1fr; } }
+
+    .forbidden-cell {
+      background: var(--color-surface-ink);
+      padding: var(--space-32);
+      color: var(--color-surface-base);
+    }
+
+    .forbidden-word {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: line-through;
+      text-decoration-color: var(--color-accent-brand);
+      text-decoration-thickness: 3px;
+      color: rgba(242,241,240,0.4);
+      display: block;
+      margin-bottom: var(--space-12);
+    }
+
+    .forbidden-reason {
+      font-size: var(--type-body-s-size);
+      color: rgba(242,241,240,0.55);
+      line-height: 1.5;
+    }
+
+    .tagline-block {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-96) var(--gutter);
+      text-align: center;
+      margin-block: var(--space-48);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 08</span>
+      <div class="book-sidebar__title">Voice &amp; Tone</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#four-principles">Four Voice Principles</a></li>
+        <li><a href="#do-dont-table">Do / Don't Pairs</a></li>
+        <li><a href="#tone-matrix">Channel-Tone Matrix</a></li>
+        <li><a href="#forbidden">Forbidden Words</a></li>
+        <li><a href="#taglines">Tagline Rules</a></li>
+        <li><a href="#corpus">Voice Corpus</a></li>
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 08</span>
+          <h1 class="section-hero__title">Voice, Tone &amp; Messaging</h1>
+          <p class="section-hero__lead">
+            "Find your niche" is three words. Write like that.
+            Challenge the system, not the person.
+            Side with the independent. Always.
+          </p>
+        </div>
+      </header>
+
+      <!-- Four voice principles -->
+      <section id="four-principles" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Four Voice Principles</span>
+          <h2>The rules behind the voice.</h2>
+          <p>
+            These principles are not aspirational guidelines. They are filters.
+            Before publishing any copy, test it against all four.
+            If it fails one, rewrite it.
+          </p>
+        </div>
+
+        <div class="reveal-on-scroll">
+
+          <div class="voice-principle">
+            <div class="voice-principle__num">1</div>
+            <div>
+              <div class="voice-principle__title">Challenge the assumption, not the person.</div>
+              <p class="voice-principle__body">
+                NICHE questions the system ("wrong way?"), not the learner.
+                Provocation is the register — but the target is always a belief or a norm,
+                never the individual in front of you. The tone is confident, not condescending.
+                Challengeable, not combative.
+              </p>
+              <div class="voice-principle__example">
+                "Are you learning wrong way?" — not "You are learning wrong."
+              </div>
+            </div>
+          </div>
+
+          <div class="voice-principle">
+            <div class="voice-principle__num">2</div>
+            <div>
+              <div class="voice-principle__title">Short sentences earn their weight.</div>
+              <p class="voice-principle__body">
+                "Find your niche" is three words. Every word in a NICHE sentence is
+                working. If a sentence doesn't tighten when you remove a word,
+                you haven't removed enough words yet. Editorial precision, not casual informality.
+              </p>
+              <div class="voice-principle__example">
+                "The photography program that teaches you to sell." — not "Our comprehensive photography program will teach you how to price, position, and sell your photographic work to clients."
+              </div>
+            </div>
+          </div>
+
+          <div class="voice-principle">
+            <div class="voice-principle__num">3</div>
+            <div>
+              <div class="voice-principle__title">Side with independents.</div>
+              <p class="voice-principle__body">
+                Use "you" / "your". Never "students" or "learners" — they flatten people
+                into roles. Prefer "creators", "makers", "you".
+                NICHE talks to the person who works independently, thinks independently,
+                and earns independently. The copy reflects that respect.
+              </p>
+              <div class="voice-principle__example">
+                "All Eyes on Independents." — not "All Eyes on Our Students."
+              </div>
+            </div>
+          </div>
+
+          <div class="voice-principle">
+            <div class="voice-principle__num">4</div>
+            <div>
+              <div class="voice-principle__title">Confident specificity over inspiring vagueness.</div>
+              <p class="voice-principle__body">
+                Vague inspiration is what every other institution sells.
+                NICHE sells specificity. Numbers, outcomes, time frames.
+                "Learn portfolio pricing in 4 hours" is more inspiring than "unlock your potential"
+                — because it is believable. Belief precedes desire.
+              </p>
+              <div class="voice-principle__example">
+                "4 weeks. 1 mentor. 1 working portfolio." — not "A transformative creative journey."
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Do / Don't pairs -->
+      <section id="do-dont-table" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Do / Don't Pairs</span>
+          <h2>The pattern made explicit.</h2>
+          <p>These are direct substitutions from the brand's existing voice corpus.
+          Refer to this table before writing program descriptions, social captions,
+          website copy, or any public-facing communication.</p>
+        </div>
+
+        <table class="voice-table reveal-on-scroll">
+          <thead>
+            <tr>
+              <th>Write this</th>
+              <th>Not this</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>The photography program that teaches you to sell.</td>
+              <td>Unlock your creative potential through transformative photography experiences.</td>
+            </tr>
+            <tr>
+              <td>Most schools teach trends. We teach judgment.</td>
+              <td>We believe in empowering the next generation of creative professionals.</td>
+            </tr>
+            <tr>
+              <td>Are you learning wrong way?</td>
+              <td>Discover a better approach to creative learning today.</td>
+            </tr>
+            <tr>
+              <td>4 weeks. 1 mentor. 1 working portfolio.</td>
+              <td>A comprehensive, immersive curriculum designed around your creative growth.</td>
+            </tr>
+            <tr>
+              <td>Sales &amp; Dealmaking — for makers who price their own work.</td>
+              <td>Build the skills to monetize your creative practice in a supportive environment.</td>
+            </tr>
+            <tr>
+              <td>AI x Content Engine Studio. Build the machine. Own the output.</td>
+              <td>Learn how to leverage artificial intelligence to enhance your creative workflow.</td>
+            </tr>
+            <tr>
+              <td>All Eyes on Independents.</td>
+              <td>NICHE celebrates the diversity of creative voices in our community.</td>
+            </tr>
+            <tr>
+              <td>Find your niche.</td>
+              <td>Find your passion and pursue your dreams at NICHE.</td>
+            </tr>
+            <tr>
+              <td>11–30 November 2026. Cohort is limited.</td>
+              <td>Enroll today and join our growing community of creative entrepreneurs!</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Channel-tone matrix -->
+      <section id="tone-matrix" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Channel-Tone Matrix</span>
+          <h2>Same voice. Different pitch by channel.</h2>
+          <p>
+            Voice is constant — the principles above never change.
+            Tone shifts by channel. OOH is most provocative.
+            Email is most direct. IG is most human.
+            The matrix below shows the dial for each register.
+          </p>
+        </div>
+
+        <div class="tone-matrix reveal-on-scroll" role="table" aria-label="Channel tone matrix">
+          <!-- Headers -->
+          <div class="tone-matrix-cell tone-matrix-header">Channel</div>
+          <div class="tone-matrix-cell tone-matrix-header">Provocative</div>
+          <div class="tone-matrix-cell tone-matrix-header">Direct</div>
+          <div class="tone-matrix-cell tone-matrix-header">Warm</div>
+          <div class="tone-matrix-cell tone-matrix-header">Formal</div>
+
+          <!-- OOH -->
+          <div class="tone-matrix-cell tone-matrix-label">OOH / Billboard</div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 90%;"></div></div><span class="dial-label">High</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 100%;"></div></div><span class="dial-label">Max</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 20%;"></div></div><span class="dial-label">Low</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 10%;"></div></div><span class="dial-label">Min</span></div>
+          </div>
+
+          <!-- IG -->
+          <div class="tone-matrix-cell tone-matrix-label">IG Post / Story</div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 60%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 75%;"></div></div><span class="dial-label">High</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 55%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 10%;"></div></div><span class="dial-label">Min</span></div>
+          </div>
+
+          <!-- Website -->
+          <div class="tone-matrix-cell tone-matrix-label">Website</div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 50%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 85%;"></div></div><span class="dial-label">High</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 45%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 20%;"></div></div><span class="dial-label">Low</span></div>
+          </div>
+
+          <!-- Email -->
+          <div class="tone-matrix-cell tone-matrix-label">Email</div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 30%;"></div></div><span class="dial-label">Low</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 80%;"></div></div><span class="dial-label">High</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 60%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 35%;"></div></div><span class="dial-label">Low</span></div>
+          </div>
+
+          <!-- Diploma / Certificate -->
+          <div class="tone-matrix-cell tone-matrix-label">Diploma / Cert</div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 5%;"></div></div><span class="dial-label">Min</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 60%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 40%;"></div></div><span class="dial-label">Med</span></div>
+          </div>
+          <div class="tone-matrix-cell">
+            <div class="dial"><div class="dial-track"><div class="dial-fill" style="width: 80%;"></div></div><span class="dial-label">High</span></div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Forbidden words -->
+      <section id="forbidden" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Forbidden Words</span>
+          <h2>These words undo everything.</h2>
+          <p>
+            These words appear in the copy of every institution NICHE is positioning against.
+            Using them signals conformity, not independence.
+            Flag and replace on sight.
+          </p>
+        </div>
+
+        <div class="forbidden-grid reveal-on-scroll">
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Empower</span>
+            <span class="forbidden-reason">NGO register. Implies the audience lacks power and you're granting it. NICHE's audience already has power — it needs direction, not permission.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Journey</span>
+            <span class="forbidden-reason">Travel metaphor overused by every bootcamp. Implies meandering. NICHE is specific and time-bounded: 11–30 November. That's not a journey.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Transformative</span>
+            <span class="forbidden-reason">What transformation claims, specificity proves. Write the outcome, not the adjective for the experience.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Passionate</span>
+            <span class="forbidden-reason">Self-declared passion is a red flag. NICHE assumes passion exists. The question is whether it's combined with judgment and craft.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Innovative</span>
+            <span class="forbidden-reason">Every institution claims it. None define it. If NICHE is innovative, the curriculum is the evidence — not the adjective.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Community</span>
+            <span class="forbidden-reason">Acceptable in alumni context only. "Join our community" as a call to action is the phonetic equivalent of a waiting room poster. Replace with specifics: "11–30 November, 40 makers, 12 programs."</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Students</span>
+            <span class="forbidden-reason">Too institutional. NICHE's participants are creators, makers, you. "Students" implies a power hierarchy that NICHE's voice actively rejects.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">Holistic</span>
+            <span class="forbidden-reason">Wellness spa register. NICHE is a creative institute, not a retreat. Specificity is the register, not integrative wholeness.</span>
+          </div>
+          <div class="forbidden-cell">
+            <span class="forbidden-word">World-class</span>
+            <span class="forbidden-reason">Self-assessed quality claims earn immediate skepticism. Let the output and the faculty prove it — don't announce it.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Tagline rules -->
+      <section id="taglines" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Tagline Rules</span>
+          <h2>These three words are protected.</h2>
+          <p>
+            The taglines below are NICHE's highest-value copy assets.
+            They are not decorative — they are the brand's positioning in compressed form.
+            Rules for use below.
+          </p>
+        </div>
+
+        <div class="tagline-block reveal-on-scroll">
+          <div style="font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.02em; color: var(--color-surface-base);">
+            Find your niche.
+          </div>
+        </div>
+
+        <div class="spec-table reveal-on-scroll">
+          <div class="spec-table__row">
+            <span class="spec-table__label">"Find your niche"</span>
+            <span class="spec-table__value">Primary tagline. Always lowercase except at start of sentence. Never "Find Your Niche" unless typographically required (title case on print cover).</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">"Are you learning wrong way?"</span>
+            <span class="spec-table__value">Challenge hook. Use on OOH, billboard, poster. Not for email subject lines — too confrontational in push context. Use where attention is earned, not demanded.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">"All Eyes on Independents"</span>
+            <span class="spec-table__value">Program / cohort-level hook. Use for event materials, IG announcement posts. Not the primary tagline — secondary positioning.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Thai translation</span>
+            <span class="spec-table__value">Not yet decided — all current brand materials use English only. Decision required before Thai-language campaign launch. See §1 Foundation for pending decision.</span>
+          </div>
+          <div class="spec-table__row">
+            <span class="spec-table__label">Punctuation</span>
+            <span class="spec-table__value">Period after "Find your niche." — mirrors the "N." submark's declarative period. Never use exclamation marks in NICHE copy. Never.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <!-- Voice corpus -->
+      <section id="corpus" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Voice Corpus</span>
+          <h2>Every NICHE line in the original brief. Verbatim.</h2>
+          <p>
+            These are the actual words that appeared in the brand PDF mockups.
+            They are the canonical voice corpus — the ground truth for tone
+            before any derivative copy is written.
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface-ink); padding: var(--space-64) var(--gutter); margin-block: var(--space-48);" class="reveal-on-scroll">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-48);">
+            <div>
+              <div style="font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-24);">Taglines &amp; hooks</div>
+              <ul style="list-style: none; padding: 0;">
+                <li style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-surface-base); padding: var(--space-12) 0; border-bottom: 1px solid rgba(242,241,240,0.08);">Find your niche</li>
+                <li style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-surface-base); padding: var(--space-12) 0; border-bottom: 1px solid rgba(242,241,240,0.08);">Are you learning wrong way?</li>
+                <li style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-surface-base); padding: var(--space-12) 0; border-bottom: 1px solid rgba(242,241,240,0.08);">All Eyes on Independents</li>
+                <li style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-surface-base); padding: var(--space-12) 0; border-bottom: 1px solid rgba(242,241,240,0.08);">Find Your NICHE — Coming Soon</li>
+                <li style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-surface-base); padding: var(--space-12) 0;">Find your Niche · 11–30 November 2026</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size: var(--type-eyebrow-size); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-brand); margin-bottom: var(--space-24);">Institutional &amp; UI copy</div>
+              <ul style="list-style: none; padding: 0;">
+                <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">New Institute of Creativity, Humanity &amp; Entrepreneurship</li>
+                <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">Program</li>
+                <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">subject 01 / DESIGN AND CRAFT COURSE</li>
+                <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0; border-bottom: 1px solid rgba(242,241,240,0.06);">more information at www.niche.com</li>
+                <li style="font-size: var(--type-body-s-size); color: rgba(242,241,240,0.65); padding: var(--space-8) 0;">@niche.official / nicheofficial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="07-photography.html" class="section-nav__prev">Photography Direction</a>
+        <a href="09-iconography.html" class="section-nav__next">Iconography</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
