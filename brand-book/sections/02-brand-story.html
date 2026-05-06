@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>§02 Brand Story — NICHE Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/book.css">
+  <style>
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="../index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <a href="../index.html" class="book-topbar__back">All sections</a>
+  </nav>
+
+  <div class="reading-progress no-print" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="reading-progress__bar"></div>
+  </div>
+
+  <div class="book-layout">
+
+    <aside class="book-sidebar no-print" aria-label="Section navigation">
+      <span class="book-sidebar__section-num">§ 02</span>
+      <div class="book-sidebar__title">Brand Story</div>
+      <ul class="book-sidebar__toc">
+        <li><a href="#what-niche-is-not">What NICHE is not</a></li>
+        <li><a href="#the-anti-mainstream-position">The anti-mainstream position</a></li>
+        <li><a href="#origin-voice">Origin voice</a></li>
+        <li><a href="#todo">Pending Input</a></li>
+
+      </ul>
+    </aside>
+
+    <main class="book-content">
+
+      <header class="section-hero">
+        <div class="container">
+          <span class="section-hero__num">Section 02</span>
+          <h1 class="section-hero__title">Brand Story</h1>
+          <p class="section-hero__lead">Where NICHE came from, and what it refuses to be.</p>
+        </div>
+      </header>
+
+
+      <section id="what-niche-is-not" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Overview</span>
+          <h2>What NICHE is not</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">Not a bootcamp (bootcamps optimize for speed and certificates). Not a university (universities optimize for credentials and prestige). Not a workshop series (workshops are episodic, not systemic). NICHE is a cohort institute — intensive, peer-based, outcome-oriented.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="the-anti-mainstream-position" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">The anti-mainstream position</span>
+          <h2>The anti-mainstream position</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">The copy 'Are you learning wrong way?' is not a rhetorical flourish — it is the brand's core thesis. Most creative education teaches technique divorced from judgment, market, and self-knowledge. NICHE teaches all three simultaneously.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+      <section id="origin-voice" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Origin voice</span>
+          <h2>Origin voice</h2>
+        </div>
+        <p class="t-body-l reveal-on-scroll">The founding story should be told in first person, past tense, with specific detail. No 'we realized' vagueness — actual events, dates, and decisions.</p>
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+
+      <section id="todo" class="section-body">
+        <div class="section-intro reveal-on-scroll">
+          <span class="t-eyebrow">Pending Content</span>
+          <h2>Brand owner input required.</h2>
+        </div>
+
+        <aside class="todo">
+          <p><strong>Founding story:</strong> Write the actual origin story of NICHE — who, when, what problem, first program, first cohort. This is the brand's autobiography.</p>
+        </aside>
+
+        <aside class="todo">
+          <p><strong>Competitive positioning:</strong> Complete the sentence: 'NICHE is the only institute that...' — this should be a single, defensible differentiator.</p>
+        </aside>
+
+      </section>
+
+      <hr style="border: none; border-top: var(--border-thin);">
+
+
+      <nav class="section-nav" aria-label="Next and previous sections">
+        <a href="01-foundation.html" class="section-nav__prev">Brand Foundation</a>
+        <a href="04-pillar-program-lockups.html" class="section-nav__next">Pillar &amp; Program Lock-Ups</a>
+      </nav>
+
+    </main>
+  </div>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>
