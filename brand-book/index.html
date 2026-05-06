@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NICHE — Brand Book</title>
+  <meta name="description" content="Brand guidelines for NICHE — New Institute of Creativity, Humanity & Entrepreneurship.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/book.css">
+
+  <style>
+    /* Index-specific reveal animation */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity var(--motion-slow) var(--ease-entrance),
+                  transform var(--motion-slow) var(--ease-entrance);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Executive summary */
+    .exec-summary {
+      background: var(--color-surface-ink);
+      color: var(--color-surface-base);
+      padding: var(--space-80) var(--gutter);
+    }
+
+    .exec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-48);
+    }
+
+    .exec-table td {
+      padding: var(--space-16) var(--space-24);
+      border-bottom: 1px solid rgba(242, 241, 240, 0.08);
+      vertical-align: top;
+      color: var(--color-surface-base);
+    }
+
+    .exec-table td:first-child {
+      font-size: var(--type-eyebrow-size);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(242, 241, 240, 0.35);
+      width: 220px;
+    }
+
+    .exec-table td:last-child {
+      font-size: var(--type-body-m-size);
+      line-height: 1.5;
+    }
+
+    .exec-table strong { color: var(--color-surface-base); font-weight: 700; }
+
+    .version-block {
+      text-align: center;
+      padding: var(--space-64) var(--gutter);
+      border-top: var(--border-thin);
+    }
+
+    .version-block p {
+      font-size: var(--type-caption-size);
+      color: rgba(37, 32, 38, 0.4);
+      max-width: 100%;
+      margin-inline: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top nav -->
+  <nav class="book-topbar no-print" role="navigation" aria-label="Brand book navigation">
+    <a href="index.html" class="book-topbar__wordmark" aria-label="NICHE Brand Book home">
+      <span>NICHE</span> Brand Book
+    </a>
+    <ul class="book-topbar__nav">
+      <li><a href="#toc">Contents</a></li>
+      <li><a href="sections/03-logo-system.html">Logos</a></li>
+      <li><a href="sections/05-color.html">Color</a></li>
+      <li><a href="sections/06-typography.html">Type</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Cover hero -->
+    <section class="cover-hero" aria-labelledby="cover-title">
+      <div class="cover-hero__bg-text" aria-hidden="true">NICHE</div>
+
+      <div class="container">
+        <span class="cover-hero__eyebrow">Brand Guidelines — Version 1.0</span>
+
+        <h1 class="cover-hero__title" id="cover-title">
+          <span class="word"><span class="word-inner">New</span></span>&#8203;
+          <span class="word"><span class="word-inner">Institute</span></span>
+          <br>
+          <span class="word"><span class="word-inner">of</span></span>&#8203;
+          <span class="word"><span class="word-inner">Creativity,</span></span>
+          <br>
+          <span class="word"><span class="word-inner">Humanity</span></span>
+          <br>
+          <span class="word"><span class="word-inner">&amp;</span></span>&#8203;
+          <span class="word"><span class="word-inner">Entrepreneurship</span></span>
+        </h1>
+
+        <p class="cover-hero__subtitle">
+          The visual and verbal identity of NICHE — how it looks,
+          sounds, and behaves across every touchpoint.
+        </p>
+
+        <div class="cover-hero__meta">
+          <span class="cover-hero__meta-item">20 Sections</span>
+          <span class="cover-hero__meta-item">Est. 45 min read</span>
+          <span class="cover-hero__meta-item">Cohort — Nov 2026</span>
+          <span class="cover-hero__meta-item">www.niche.com</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logo display -->
+    <section class="section section--dark" aria-label="Primary logo">
+      <div class="container flex-center" style="padding-block: var(--space-96);">
+        <img
+          src="assets/logos/logo-opt-02-on-dark.png"
+          alt="NICHE primary wordmark — Option 02, bold rounded humanist with tilted N"
+          style="max-width: min(560px, 80vw); width: 100%;"
+        >
+      </div>
+    </section>
+
+    <!-- Executive summary -->
+    <section class="exec-summary" aria-labelledby="exec-heading">
+      <div class="container container--wide">
+        <span class="t-eyebrow" style="color: var(--color-accent-brand); display: block; margin-bottom: var(--space-16);">Executive Summary</span>
+        <h2 class="t-h1" id="exec-heading" style="color: var(--color-surface-base); margin-bottom: var(--space-16);">Find your niche.</h2>
+        <p style="color: rgba(242, 241, 240, 0.6); margin-bottom: var(--space-48); max-width: 620px;">
+          The key decisions this document makes on behalf of the brand.
+          Everything else descends from these.
+        </p>
+
+        <table class="exec-table">
+          <tbody>
+            <tr>
+              <td>Primary logo</td>
+              <td><strong>OPT 02</strong> — bold rounded humanist, tilted N. Best balance of warmth, distinctiveness, and 10-year longevity for a 3-pillar institute.</td>
+            </tr>
+            <tr>
+              <td>Submark</td>
+              <td><strong>"N." house-mark</strong> — promoted to system-canonical. The period punctuates a carved niche. It will outlive the wordmark as favicon, app icon, embroidery.</td>
+            </tr>
+            <tr>
+              <td>OPT 01 role</td>
+              <td>Retained as <strong>NICHE Labs / Tech / AI</strong> sub-brand visual language — its industrial authority is correct for hackathons and technical programs.</td>
+            </tr>
+            <tr>
+              <td>OPT 03 role</td>
+              <td>Reframed as <strong>NICHE Journal / Annual</strong> editorial masthead — not retired, scoped. Fails embroidery and 16px tests at institutional scale.</td>
+            </tr>
+            <tr>
+              <td>Type pairing</td>
+              <td><strong>Fraunces</strong> (free display, GT Sectra substitute until licensed) + <strong>Bai Jamjuree</strong> (Thai+Latin UI/body, free SIL OFL). See §6.</td>
+            </tr>
+            <tr>
+              <td>Color system</td>
+              <td>Hold at <strong>5 brand colors</strong>. Red is display-only — never body text. Warm gray is decorative-only — never text. Green: body only on dark background.</td>
+            </tr>
+            <tr>
+              <td>Voice register</td>
+              <td><strong>Declarative. Provocative. Short.</strong> "Are you learning wrong way?" — challenge the system, never the person. Side with the independent. See §8.</td>
+            </tr>
+            <tr>
+              <td>Critical gaps</td>
+              <td>Motion system, AI-content policy, WCAG audit, dark-mode tokens, partnership lockups, governance — all addressed in this document for the first time.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Brand quote -->
+    <section style="padding: var(--space-80) var(--gutter); background: var(--color-surface-base);">
+      <div class="container container--wide">
+        <div class="brand-quote">
+          <p>"Are you learning wrong way?"</p>
+        </div>
+        <p class="t-body-m" style="color: rgba(37,32,38,0.5); margin-top: var(--space-24); max-width: 500px;">
+          NICHE's voice is three words or a direct challenge. Not an elevator pitch.
+          Not a vision statement. A provocation that earns its place.
+        </p>
+      </div>
+    </section>
+
+    <!-- Table of Contents -->
+    <section id="toc" style="padding: var(--space-80) var(--gutter) var(--space-96);">
+      <div class="container container--wide">
+        <span class="t-eyebrow" style="color: var(--color-accent-brand); display: block; margin-bottom: var(--space-16);">Contents</span>
+        <h2 class="t-h1" style="margin-bottom: var(--space-8);">20 sections.</h2>
+        <p class="t-body-l" style="color: rgba(37,32,38,0.5); margin-bottom: 0;">
+          Everything a designer, vendor, or brand steward needs.
+        </p>
+
+        <div class="toc-grid reveal-on-scroll">
+
+          <a href="sections/01-foundation.html" class="toc-card">
+            <span class="toc-card__num">01</span>
+            <div class="toc-card__title">Brand Foundation</div>
+            <p class="toc-card__desc">Mission, "Find your niche", three pillar definitions, positioning against mainstream creative education.</p>
+          </a>
+
+          <a href="sections/02-brand-story.html" class="toc-card">
+            <span class="toc-card__num">02</span>
+            <div class="toc-card__title">Brand Story</div>
+            <p class="toc-card__desc">Origin, positioning statement, what NICHE is not — and why that matters.</p>
+          </a>
+
+          <a href="sections/03-logo-system.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">03</span>
+            <div class="toc-card__title">Logo System</div>
+            <p class="toc-card__desc">Primary wordmark, "N." submark, sub-brand roles, clear-space, minimum sizes, colorways, do/don't rules.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/04-pillar-program-lockups.html" class="toc-card">
+            <span class="toc-card__num">04</span>
+            <div class="toc-card__title">Pillar &amp; Program Lock-Ups</div>
+            <p class="toc-card__desc">Hierarchy diagram: NICHE → Pillar → Program. Lock-up grid for all 12 programs.</p>
+          </a>
+
+          <a href="sections/05-color.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">05</span>
+            <div class="toc-card__title">Color Palette</div>
+            <p class="toc-card__desc">5 brand colors + green scale, WCAG AA contrast audit with pass/fail badges, semantic tokens, dark-mode alternates.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/06-typography.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">06</span>
+            <div class="toc-card__title">Typography</div>
+            <p class="toc-card__desc">Fraunces + Bai Jamjuree, 12-token type scale, Thai/Latin handling, print vs screen variants.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/07-photography.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">07</span>
+            <div class="toc-card__title">Photography Direction</div>
+            <p class="toc-card__desc">Three shooting modes, do/don't rules, Lightroom recipe, mood board from existing assets.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/08-voice-tone.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">08</span>
+            <div class="toc-card__title">Voice, Tone &amp; Messaging</div>
+            <p class="toc-card__desc">Four voice principles, do/don't pair table, channel-tone matrix, forbidden words, tagline rules.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/09-iconography.html" class="toc-card">
+            <span class="toc-card__num">09</span>
+            <div class="toc-card__title">Iconography &amp; Graphic Language</div>
+            <p class="toc-card__desc">Icon system principles, mixed-photography collage technique, poster compositional rules.</p>
+          </a>
+
+          <a href="sections/10-motion.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">10</span>
+            <div class="toc-card__title">Motion &amp; Animation System</div>
+            <p class="toc-card__desc">5 motion tokens with live CSS demos, logo reveal spec, IG story transitions, prohibited effects.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/11-digital-social.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">11</span>
+            <div class="toc-card__title">Digital &amp; Social Templates</div>
+            <p class="toc-card__desc">IG post/story safe zones, content pillars per program, email signature, LinkedIn banner specs.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/12-print-physical.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">12</span>
+            <div class="toc-card__title">Print &amp; Physical Touchpoints</div>
+            <p class="toc-card__desc">Brochure grid, billboard/signage spec, namecard, t-shirt placement, poster system.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/13-course-card-cert.html" class="toc-card">
+            <span class="toc-card__num">13</span>
+            <div class="toc-card__title">Course Card &amp; Certificate System</div>
+            <p class="toc-card__desc">Repeatable course-card template (digital + print + IG), certificate template, micro-credential badge.</p>
+          </a>
+
+          <a href="sections/14-faculty-alumni.html" class="toc-card">
+            <span class="toc-card__num">14</span>
+            <div class="toc-card__title">Faculty, Staff &amp; Alumni</div>
+            <p class="toc-card__desc">Headshot crop ratios, bio short/long, "NICHE Alumni" badge, UGC repost rules.</p>
+          </a>
+
+          <a href="sections/15-event-wayfinding.html" class="toc-card">
+            <span class="toc-card__num">15</span>
+            <div class="toc-card__title">Event &amp; Wayfinding</div>
+            <p class="toc-card__desc">Stage backdrop, pull-up banner, badge/lanyard, environmental signage scale guide.</p>
+          </a>
+
+          <a href="sections/16-accessibility.html" class="toc-card toc-card--priority">
+            <span class="toc-card__num">16</span>
+            <div class="toc-card__title">Accessibility Standards</div>
+            <p class="toc-card__desc">Full WCAG 2.2 AA audit, alt-text writing guide, prefers-reduced-motion code, IG alt-text instructions.</p>
+            <span class="toc-card__badge">Priority</span>
+          </a>
+
+          <a href="sections/17-ai-content-policy.html" class="toc-card">
+            <span class="toc-card__num">17</span>
+            <div class="toc-card__title">AI Content Policy</div>
+            <p class="toc-card__desc">Approved tools, human-review triggers, prohibited uses, brand-voice prompting guide. First in NICHE's history.</p>
+          </a>
+
+          <a href="sections/18-partnership-co-branding.html" class="toc-card">
+            <span class="toc-card__num">18</span>
+            <div class="toc-card__title">Partnership &amp; Co-Branding</div>
+            <p class="toc-card__desc">Co-logo grids, minimum clear-space, sponsor credit hierarchy, approval process.</p>
+          </a>
+
+          <a href="sections/19-asset-library.html" class="toc-card">
+            <span class="toc-card__num">19</span>
+            <div class="toc-card__title">Asset Library &amp; File Naming</div>
+            <p class="toc-card__desc">Figma source, logo package, font licenses, photo library structure, naming conventions.</p>
+          </a>
+
+          <a href="sections/20-governance.html" class="toc-card">
+            <span class="toc-card__num">20</span>
+            <div class="toc-card__title">Governance &amp; Version Log</div>
+            <p class="toc-card__desc">Brand steward, approval process, version history, review cadence, change request template.</p>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer / version -->
+    <div class="version-block">
+      <p>NICHE Brand Book — Version 1.0 — 2026<br>
+      New Institute of Creativity, Humanity &amp; Entrepreneurship · www.niche.com</p>
+    </div>
+
+  </main>
+
+  <script src="js/nav.js"></script>
+</body>
+</html>
