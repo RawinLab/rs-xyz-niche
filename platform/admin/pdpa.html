@@ -14,7 +14,7 @@
   <style>
     .section-label {
       font-size: 11px; font-weight: 700; letter-spacing:.1em;
-      text-transform: uppercase; color: rgba(37,32,38,0.45);
+      text-transform: uppercase; color: rgba(10,10,10,0.45);
       margin-bottom: var(--space-12);
     }
     .section-card {
@@ -47,7 +47,7 @@
     .consent-bar-label__name { font-weight: 600; }
     .consent-bar-label__pct { font-weight: 700; font-family: var(--font-display); font-size: 16px; }
     .consent-bar-track {
-      height: 10px; background: rgba(37,32,38,0.06); border-radius: 5px; overflow: hidden;
+      height: 10px; background: rgba(10,10,10,0.06); border-radius: 5px; overflow: hidden;
     }
     .consent-bar-fill {
       height: 100%; border-radius: 5px;
@@ -61,8 +61,8 @@
       font-size: 11px; font-weight: 700; letter-spacing: .04em;
       white-space: nowrap;
     }
-    .countdown-pill--active { background: #fff8e1; color: #9a6b00; }
-    .countdown-pill--expired { background: rgba(254,29,37,0.1); color: var(--color-accent-brand); }
+    .countdown-pill--active { background: #FFFFFF; color: #757575; }
+    .countdown-pill--expired { background: rgba(10,10,10,0.1); color: var(--color-accent-brand); }
 
     /* Compliance checklist */
     .compliance-list { display: flex; flex-direction: column; gap: var(--space-12); }
@@ -76,12 +76,12 @@
       width: 20px; height: 20px; border-radius: 50%;
       display: grid; place-items: center; flex-shrink: 0; margin-top: 1px;
     }
-    .compliance-item__icon--pass { background: rgba(74,92,51,0.15); }
+    .compliance-item__icon--pass { background: rgba(117,117,117,0.15); }
     .compliance-item__icon--pass svg { stroke: var(--color-accent-secondary-shade); }
-    .compliance-item__icon--warn { background: #fff8e1; }
-    .compliance-item__icon--warn svg { stroke: #9a6b00; }
+    .compliance-item__icon--warn { background: #FFFFFF; }
+    .compliance-item__icon--warn svg { stroke: #757575; }
     .compliance-item__label { font-size: 13px; font-weight: 600; }
-    .compliance-item__meta { font-size: 11px; color: rgba(37,32,38,0.5); margin-top: 2px; }
+    .compliance-item__meta { font-size: 11px; color: rgba(10,10,10,0.5); margin-top: 2px; }
 
     /* KPI tile small override */
     .kpi-strip .kpi-tile .kpi-tile__value { font-size: 28px; }
@@ -159,7 +159,7 @@
   <header class="app-topbar">
     <div class="topbar">
       <div class="topbar__search">
-        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
         <input type="search" placeholder="Search…">
       </div>
       <div class="topbar__actions">
@@ -202,20 +202,20 @@
           </div>
         </div>
         <div class="kpi-tile">
-          <div class="kpi-tile__icon-tile" style="background: #e8a13d;">
+          <div class="kpi-tile__icon-tile" style="background: #757575;">
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5v4M9 13h.01"/><circle cx="9" cy="9" r="7"/></svg>
           </div>
           <div class="kpi-tile__label">Withdrawal Requests</div>
           <div class="kpi-tile__value" style="font-size:28px;">2</div>
-          <div class="kpi-tile__delta" style="color:#9a6b00;">Pending review</div>
+          <div class="kpi-tile__delta" style="color:#757575;">Pending review</div>
         </div>
         <div class="kpi-tile">
-          <div class="kpi-tile__icon-tile" style="background: #5b7fc4;">
+          <div class="kpi-tile__icon-tile" style="background: #757575;">
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l6 6 6-6M9 3v12"/></svg>
           </div>
           <div class="kpi-tile__label">Pending Exports</div>
           <div class="kpi-tile__value" style="font-size:28px;">3</div>
-          <div class="kpi-tile__delta" style="color:#2f5498;">Within 30-day SLA</div>
+          <div class="kpi-tile__delta" style="color:#757575;">Within 30-day SLA</div>
         </div>
         <div class="kpi-tile">
           <div class="kpi-tile__icon-tile" style="background: var(--color-accent-brand);">
@@ -237,7 +237,7 @@
               <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9l4 4 6-8"/><circle cx="9" cy="9" r="7"/></svg>
               Consent Dashboard
             </div>
-            <span style="font-size:11px; color:rgba(37,32,38,0.45);">87 learners total</span>
+            <span style="font-size:11px; color:rgba(10,10,10,0.45);">87 learners total</span>
           </div>
           <div class="section-card__body">
             <div class="consent-chart">
@@ -249,7 +249,7 @@
                 <div class="consent-bar-track">
                   <div class="consent-bar-fill" style="width:97%; background:var(--color-accent-secondary-shade);"></div>
                 </div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.45);">84 / 87 learners · 3 pending</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.45);">84 / 87 learners · 3 pending</div>
               </div>
               <div class="consent-bar-row">
                 <div class="consent-bar-label">
@@ -259,17 +259,17 @@
                 <div class="consent-bar-track">
                   <div class="consent-bar-fill" style="width:91%; background:var(--color-accent-secondary-shade);"></div>
                 </div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.45);">79 / 87 learners</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.45);">79 / 87 learners</div>
               </div>
               <div class="consent-bar-row">
                 <div class="consent-bar-label">
                   <span class="consent-bar-label__name">Aggregated platform analytics</span>
-                  <span class="consent-bar-label__pct" style="color:#e8a13d;">78%</span>
+                  <span class="consent-bar-label__pct" style="color:#757575;">78%</span>
                 </div>
                 <div class="consent-bar-track">
-                  <div class="consent-bar-fill" style="width:78%; background:#e8a13d;"></div>
+                  <div class="consent-bar-fill" style="width:78%; background:#757575;"></div>
                 </div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.45);">68 / 87 learners</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.45);">68 / 87 learners</div>
               </div>
               <div class="consent-bar-row">
                 <div class="consent-bar-label">
@@ -279,7 +279,7 @@
                 <div class="consent-bar-track">
                   <div class="consent-bar-fill" style="width:44%; background:var(--color-accent-brand);"></div>
                 </div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.45);">38 / 87 learners · opt-in</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.45);">38 / 87 learners · opt-in</div>
               </div>
             </div>
           </div>
@@ -356,47 +356,47 @@
         </div>
         <table class="data-table__inner" style="width:100%;">
           <thead>
-            <tr style="background:rgba(37,32,38,0.02); border-bottom:1px solid var(--color-divider);">
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">User</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Requested At</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Status</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">SLA Days Left</th>
+            <tr style="background:rgba(10,10,10,0.02); border-bottom:1px solid var(--color-divider);">
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">User</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">Requested At</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">Status</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">SLA Days Left</th>
               <th style="padding:var(--space-12) var(--space-16);"></th>
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom:1px solid rgba(37,32,38,0.04);">
+            <tr style="border-bottom:1px solid rgba(10,10,10,0.04);">
               <td style="padding:var(--space-12) var(--space-16);">
                 <div class="cell-user">
                   <div class="avatar">M</div>
-                  <div><div style="font-weight:600; font-size:13px;">Manee Suwan</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">manee@suwan.th</div></div>
+                  <div><div style="font-weight:600; font-size:13px;">Manee Suwan</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">manee@suwan.th</div></div>
                 </div>
               </td>
-              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 09, 2026 at 11:42</td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(10,10,10,0.6);">Dec 09, 2026 at 11:42</td>
               <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--pending"><span class="status-chip__dot"></span>Preparing</span></td>
-              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#9a6b00;">21 days</td>
+              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#757575;">21 days</td>
               <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--ghost btn--sm">Send Export</button></td>
             </tr>
-            <tr style="border-bottom:1px solid rgba(37,32,38,0.04);">
+            <tr style="border-bottom:1px solid rgba(10,10,10,0.04);">
               <td style="padding:var(--space-12) var(--space-16);">
                 <div class="cell-user">
                   <div class="avatar">R</div>
-                  <div><div style="font-weight:600; font-size:13px;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">ratchaporn@t.th</div></div>
+                  <div><div style="font-weight:600; font-size:13px;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">ratchaporn@t.th</div></div>
                 </div>
               </td>
-              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 06, 2026 at 09:15</td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(10,10,10,0.6);">Dec 06, 2026 at 09:15</td>
               <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--pending"><span class="status-chip__dot"></span>Preparing</span></td>
-              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#9a6b00;">24 days</td>
+              <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:#757575;">24 days</td>
               <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--ghost btn--sm">Send Export</button></td>
             </tr>
             <tr>
               <td style="padding:var(--space-12) var(--space-16);">
                 <div class="cell-user">
-                  <div class="avatar" style="background:rgba(91,127,196,0.12);color:#2f5498;">O</div>
-                  <div><div style="font-weight:600; font-size:13px;">Onuma Phak</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">onuma@phak.th</div></div>
+                  <div class="avatar" style="background:rgba(117,117,117,0.12);color:#757575;">O</div>
+                  <div><div style="font-weight:600; font-size:13px;">Onuma Phak</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">onuma@phak.th</div></div>
                 </div>
               </td>
-              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 03, 2026 at 14:30</td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(10,10,10,0.6);">Dec 03, 2026 at 14:30</td>
               <td style="padding:var(--space-12) var(--space-16);"><span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Ready</span></td>
               <td style="padding:var(--space-12) var(--space-16); font-weight:700; color:var(--color-accent-secondary-shade);">27 days</td>
               <td style="padding:var(--space-12) var(--space-16);"><button class="btn btn--primary btn--sm">Send Export</button></td>
@@ -416,26 +416,26 @@
         </div>
         <table class="data-table__inner" style="width:100%;">
           <thead>
-            <tr style="background:rgba(37,32,38,0.02); border-bottom:1px solid var(--color-divider);">
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">User</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Requested At</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Scheduled For</th>
-              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(37,32,38,0.55);">Cancel Window</th>
+            <tr style="background:rgba(10,10,10,0.02); border-bottom:1px solid var(--color-divider);">
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">User</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">Requested At</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">Scheduled For</th>
+              <th style="padding:var(--space-12) var(--space-16); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:700; color:rgba(10,10,10,0.55);">Cancel Window</th>
               <th style="padding:var(--space-12) var(--space-16);"></th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: rgba(255,248,225,0.4);">
+            <tr style="background: rgba(255,255,255,0.4);">
               <td style="padding:var(--space-12) var(--space-16);">
                 <div class="cell-user">
-                  <div class="avatar" style="background: rgba(37,32,38,0.06);">?</div>
+                  <div class="avatar" style="background: rgba(10,10,10,0.06);">?</div>
                   <div>
-                    <div style="font-weight:600; font-size:13px; font-family:'SF Mono',monospace; font-size:12px; color:rgba(37,32,38,0.6);">user-anon-pending</div>
-                    <div style="font-size:11px; color:rgba(37,32,38,0.4);">PII redacted from display</div>
+                    <div style="font-weight:600; font-size:13px; font-family:'SF Mono',monospace; font-size:12px; color:rgba(10,10,10,0.6);">user-anon-pending</div>
+                    <div style="font-size:11px; color:rgba(10,10,10,0.4);">PII redacted from display</div>
                   </div>
                 </div>
               </td>
-              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(37,32,38,0.6);">Dec 14, 2026 at 16:45</td>
+              <td style="padding:var(--space-12) var(--space-16); font-size:13px; color:rgba(10,10,10,0.6);">Dec 14, 2026 at 16:45</td>
               <td style="padding:var(--space-12) var(--space-16); font-size:13px;">Jan 13, 2027 at 16:45</td>
               <td style="padding:var(--space-12) var(--space-16);">
                 <div class="countdown-pill countdown-pill--active">
@@ -451,8 +451,8 @@
             </tr>
           </tbody>
         </table>
-        <div style="padding:var(--space-12) var(--space-16); border-top:1px solid var(--color-divider); background:rgba(255,248,225,0.25); font-size:12px; color:#9a6b00; display:flex; align-items:center; gap:var(--space-8);">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="#9a6b00" stroke-width="1.8"><circle cx="9" cy="9" r="7"/><path d="M9 5v4M9 13h.01"/></svg>
+        <div style="padding:var(--space-12) var(--space-16); border-top:1px solid var(--color-divider); background:rgba(255,255,255,0.25); font-size:12px; color:#757575; display:flex; align-items:center; gap:var(--space-8);">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="#757575" stroke-width="1.8"><circle cx="9" cy="9" r="7"/><path d="M9 5v4M9 13h.01"/></svg>
           Anonymization is irreversible. PII will be replaced with pseudonyms; enrollment history is preserved for financial records.
         </div>
       </div>

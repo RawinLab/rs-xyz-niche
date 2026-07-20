@@ -14,7 +14,7 @@
   <style>
     /* Dimmed background to simulate modal context */
     .modal-page-bg {
-      background: rgba(37,32,38,0.45);
+      background: rgba(10,10,10,0.45);
       min-height: calc(100vh - 64px);
       display: flex;
       align-items: flex-start;
@@ -40,7 +40,7 @@
       flex-shrink: 0;
       border: 2px solid var(--color-divider);
       background: white;
-      color: rgba(37,32,38,0.35);
+      color: rgba(10,10,10,0.35);
       transition: background var(--motion-quick) var(--ease-standard),
                   border-color var(--motion-quick) var(--ease-standard);
     }
@@ -59,8 +59,8 @@
       letter-spacing: 0.02em;
     }
     .stepper__step.is-active .stepper__label { color: var(--color-surface-ink); }
-    .stepper__step.is-done .stepper__label { color: rgba(37,32,38,0.5); }
-    .stepper__step:not(.is-active):not(.is-done) .stepper__label { color: rgba(37,32,38,0.35); }
+    .stepper__step.is-done .stepper__label { color: rgba(10,10,10,0.5); }
+    .stepper__step:not(.is-active):not(.is-done) .stepper__label { color: rgba(10,10,10,0.35); }
     .stepper__connector {
       flex: 1; height: 2px;
       background: var(--color-divider);
@@ -83,7 +83,7 @@
     }
     .scope-option.is-selected {
       border-color: var(--color-surface-ink);
-      background: rgba(37,32,38,0.03);
+      background: rgba(10,10,10,0.03);
     }
     .scope-option__radio {
       width: 16px; height: 16px; border-radius: 50%;
@@ -104,20 +104,20 @@
       display: flex; align-items: center;
       font-size: 14px; font-weight: 600;
     }
-    .scope-option__desc { font-size: 12px; color: rgba(37,32,38,0.5); margin-top: 4px; padding-left: 24px; }
+    .scope-option__desc { font-size: 12px; color: rgba(10,10,10,0.5); margin-top: 4px; padding-left: 24px; }
 
     /* Selected cohort preview */
     .cohort-preview {
       display: flex; align-items: center; gap: var(--space-12);
       padding: var(--space-12) var(--space-16);
-      background: rgba(37,32,38,0.03);
+      background: rgba(10,10,10,0.03);
       border: 1px solid var(--color-divider);
       border-radius: 6px;
       margin-top: var(--space-16);
     }
     .cohort-preview__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-accent-brand); flex-shrink: 0; }
     .cohort-preview__name { font-size: 14px; font-weight: 700; }
-    .cohort-preview__meta { font-size: 12px; color: rgba(37,32,38,0.5); }
+    .cohort-preview__meta { font-size: 12px; color: rgba(10,10,10,0.5); }
 
     /* OpenFGA tuple block */
     .tuple-card {
@@ -127,17 +127,17 @@
     }
     .tuple-card__header {
       padding: var(--space-12) var(--space-16);
-      border-bottom: 1px solid rgba(242,241,240,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       display: flex; align-items: center; justify-content: space-between;
     }
     .tuple-card__label {
       font-size: 10px; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: rgba(242,241,240,0.45);
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
     }
     .tuple-card__badge {
       font-size: 9px; font-weight: 700; letter-spacing: .08em;
       text-transform: uppercase; padding: 2px 8px; border-radius: 10px;
-      background: rgba(74,92,51,0.3); color: #b4c49a;
+      background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
     }
     .tuple-code {
       padding: var(--space-20) var(--space-24);
@@ -149,13 +149,13 @@
       line-height: 1.8;
       border-radius: 0;
     }
-    .tuple-code .kw { color: rgba(242,241,240,0.5); }
-    .tuple-code .val-relation { color: #b4c49a; }
-    .tuple-code .val-user { color: #8bc4f0; }
-    .tuple-code .val-object { color: #fe8c8f; }
+    .tuple-code .kw { color: rgba(255,255,255,0.5); }
+    .tuple-code .val-relation { color: rgba(255,255,255,0.85); }
+    .tuple-code .val-user { color: rgba(255,255,255,0.65); }
+    .tuple-code .val-object { color: rgba(255,255,255,0.65); }
 
     .context-summary {
-      background: rgba(37,32,38,0.04);
+      background: rgba(10,10,10,0.04);
       border: 1px solid var(--color-divider);
       border-radius: 6px;
       padding: var(--space-12) var(--space-16);
@@ -169,7 +169,7 @@
       border-radius: 8px;
       max-width: 600px;
       width: 100%;
-      box-shadow: 0 24px 64px rgba(37,32,38,0.3);
+      box-shadow: 0 24px 64px rgba(10,10,10,0.3);
       overflow: hidden;
     }
     .modal-card__header {
@@ -258,7 +258,7 @@
   <header class="app-topbar">
     <div class="topbar">
       <div class="topbar__search">
-        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
         <input type="search" placeholder="Search…">
       </div>
       <div class="topbar__actions">
@@ -280,7 +280,7 @@
               <div style="font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--color-accent-brand); margin-bottom:4px;">Settings · Roles &amp; Permissions</div>
               <h2 style="font-family:var(--font-display); font-size:22px; font-weight:700; letter-spacing:-0.01em;">Grant Role</h2>
             </div>
-            <button style="background:none;border:none;cursor:pointer;padding:var(--space-8);color:rgba(37,32,38,0.4);" aria-label="Close">
+            <button style="background:none;border:none;cursor:pointer;padding:var(--space-8);color:rgba(10,10,10,0.4);" aria-label="Close">
               <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l10 10M14 4L4 14"/></svg>
             </button>
           </div>
@@ -318,8 +318,8 @@
           <!-- Context summary from prior steps -->
           <div class="context-summary">
             Granting <strong>Instructor</strong> role to
-            <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,32,38,0.06);padding:2px 8px;border-radius:4px;font-weight:700;">
-              <span class="avatar avatar--sm" style="background:rgba(74,92,51,0.12);color:var(--color-accent-secondary-shade);">A</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,10,10,0.06);padding:2px 8px;border-radius:4px;font-weight:700;">
+              <span class="avatar avatar--sm" style="background:rgba(117,117,117,0.12);color:var(--color-accent-secondary-shade);">A</span>
               achara@niche.ac
             </span>
           </div>

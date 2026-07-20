@@ -19,7 +19,7 @@
       padding: var(--space-24) var(--space-32);
       background: var(--color-surface-ink);
       color: var(--color-surface-base);
-      border-bottom: 1px solid rgba(242,241,240,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .instructor-greeting__text { display: flex; flex-direction: column; gap: 4px; }
     .instructor-greeting__name {
@@ -28,7 +28,7 @@
       font-weight: 700;
       letter-spacing: -0.01em;
     }
-    .instructor-greeting__meta { font-size: 12px; color: rgba(242,241,240,0.55); }
+    .instructor-greeting__meta { font-size: 12px; color: rgba(255,255,255,0.55); }
     .instructor-greeting__avatar {
       width: 48px; height: 48px;
       border-radius: 50%;
@@ -43,8 +43,8 @@
       display: flex;
       align-items: center;
       gap: var(--space-8);
-      background: rgba(254,29,37,0.15);
-      border: 1px solid rgba(254,29,37,0.3);
+      background: rgba(10,10,10,0.15);
+      border: 1px solid rgba(10,10,10,0.3);
       border-radius: 6px;
       padding: var(--space-8) var(--space-16);
       font-size: 12px;
@@ -68,7 +68,7 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(37,32,38,0.45);
+      color: rgba(10,10,10,0.45);
       margin-bottom: var(--space-16);
     }
 
@@ -103,7 +103,7 @@
     .session-card__time-block .ampm { font-size: 9px; letter-spacing: 0.08em; opacity: 0.6; }
     .session-card__body { flex: 1; }
     .session-card__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .session-card__meta { font-size: 12px; color: rgba(37,32,38,0.55); display: flex; gap: var(--space-12); flex-wrap: wrap; }
+    .session-card__meta { font-size: 12px; color: rgba(10,10,10,0.55); display: flex; gap: var(--space-12); flex-wrap: wrap; }
     .session-card__live-badge {
       margin-left: auto;
       display: inline-flex;
@@ -114,7 +114,7 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--color-accent-brand);
-      background: rgba(254,29,37,0.08);
+      background: rgba(10,10,10,0.08);
       border-radius: 4px;
       padding: 3px 8px;
     }
@@ -131,8 +131,8 @@
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: rgba(37,32,38,0.55);
-      background: rgba(37,32,38,0.05);
+      color: rgba(10,10,10,0.55);
+      background: rgba(10,10,10,0.05);
       border-radius: 4px;
       padding: 3px 8px;
     }
@@ -152,7 +152,7 @@
     .at-risk-item__avatar {
       width: 32px; height: 32px;
       border-radius: 50%;
-      background: rgba(254,29,37,0.12);
+      background: rgba(10,10,10,0.12);
       color: var(--color-accent-brand);
       display: grid; place-items: center;
       font-size: 11px; font-weight: 700;
@@ -160,7 +160,7 @@
     }
     .at-risk-item__info { flex: 1; min-width: 0; }
     .at-risk-item__name { font-size: 13px; font-weight: 700; }
-    .at-risk-item__reason { font-size: 11px; color: rgba(37,32,38,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .at-risk-item__reason { font-size: 11px; color: rgba(10,10,10,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .at-risk-item__action {
       flex-shrink: 0;
       font-size: 11px;
@@ -168,7 +168,7 @@
       color: var(--color-accent-brand);
       text-decoration: none;
       padding: 4px 8px;
-      border: 1px solid rgba(254,29,37,0.25);
+      border: 1px solid rgba(10,10,10,0.25);
       border-radius: 3px;
     }
 
@@ -178,7 +178,7 @@
       display: flex;
       gap: var(--space-12);
       padding: var(--space-12) 0;
-      border-bottom: 1px solid rgba(37,32,38,0.05);
+      border-bottom: 1px solid rgba(10,10,10,0.05);
     }
     .activity-item:last-child { border-bottom: none; }
     .activity-item__dot {
@@ -188,9 +188,9 @@
     }
     .activity-item__dot--submit { background: var(--color-accent-secondary-shade); }
     .activity-item__dot--atrisk  { background: var(--color-accent-brand); }
-    .activity-item__dot--admin   { background: rgba(37,32,38,0.4); }
+    .activity-item__dot--admin   { background: rgba(10,10,10,0.4); }
     .activity-item__text { flex: 1; font-size: 13px; line-height: 1.45; }
-    .activity-item__time { font-size: 11px; color: rgba(37,32,38,0.4); white-space: nowrap; }
+    .activity-item__time { font-size: 11px; color: rgba(10,10,10,0.4); white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -277,7 +277,7 @@
           Teaching: Cohort 1 — Creative ID&amp;ST
         </div>
         <div class="topbar__search">
-          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="search" placeholder="Search learners, submissions…" aria-label="Search">
         </div>
         <div class="topbar__actions">
@@ -285,7 +285,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div class="topbar__icon-btn-badge"></div>
           </button>
-          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(255,255,255,0.08);border-radius:6px;cursor:pointer;">
             <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
             <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
             <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
@@ -354,7 +354,7 @@
           <div class="kpi-tile">
             <div class="kpi-tile__label">Unread Announcements</div>
             <div class="kpi-tile__value">1</div>
-            <div class="kpi-tile__delta" style="color:rgba(37,32,38,0.5);">From Admin · 2h ago</div>
+            <div class="kpi-tile__delta" style="color:rgba(10,10,10,0.5);">From Admin · 2h ago</div>
             <div class="kpi-tile__icon-tile">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             </div>
@@ -385,7 +385,7 @@
               </span>
             </div>
             <div class="session-card">
-              <div class="session-card__time-block" style="background:rgba(37,32,38,0.15);color:var(--color-surface-ink);">
+              <div class="session-card__time-block" style="background:rgba(10,10,10,0.15);color:var(--color-surface-ink);">
                 <div class="hour">19</div>
                 <div class="ampm">PM</div>
               </div>
@@ -469,7 +469,7 @@
                 </div>
               </div>
               <div style="margin-top:var(--space-12);padding-top:var(--space-12);border-top:1px solid var(--color-divider);text-align:center;">
-                <a href="#" style="font-size:12px;color:rgba(37,32,38,0.45);text-decoration:none;font-weight:600;">View all activity →</a>
+                <a href="#" style="font-size:12px;color:rgba(10,10,10,0.45);text-decoration:none;font-weight:600;">View all activity →</a>
               </div>
             </div>
           </div>

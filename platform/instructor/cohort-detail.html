@@ -16,7 +16,7 @@
       background: var(--color-surface-ink);
       color: var(--color-surface-base);
       padding: var(--space-32) var(--space-48);
-      border-bottom: 1px solid rgba(242,241,240,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .cohort-hero__top {
       display: flex;
@@ -39,7 +39,7 @@
       align-items: center;
       gap: var(--space-16);
       font-size: 13px;
-      color: rgba(242,241,240,0.65);
+      color: rgba(255,255,255,0.65);
       flex-wrap: wrap;
     }
     .cohort-hero__meta-divider { opacity: 0.3; }
@@ -48,11 +48,11 @@
       align-items: center;
       gap: var(--space-12);
       padding: var(--space-16) var(--space-24);
-      background: rgba(242,241,240,0.05);
-      border: 1px solid rgba(242,241,240,0.1);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
     }
-    .cohort-hero__cap-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(242,241,240,0.5); margin-bottom: 4px; }
+    .cohort-hero__cap-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
     .cohort-hero__cap-value { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1; }
     .cohort-hero__actions {
       display: flex;
@@ -64,14 +64,14 @@
     .cohort-tabs {
       background: var(--color-surface-ink);
       padding: 0 var(--space-48);
-      border-bottom: 1px solid rgba(242,241,240,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .cohort-tabs .tabs {
       border-bottom: none;
       margin-bottom: 0;
     }
     .cohort-tabs .tabs__item {
-      color: rgba(242,241,240,0.5);
+      color: rgba(255,255,255,0.5);
       padding: var(--space-16) var(--space-16);
       font-size: 13px;
     }
@@ -80,8 +80,8 @@
       border-bottom-color: var(--color-accent-brand);
     }
     .cohort-tabs .tabs__count {
-      background: rgba(242,241,240,0.1);
-      color: rgba(242,241,240,0.6);
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
     }
 
     /* Roster filters bar */
@@ -92,7 +92,7 @@
       padding: var(--space-16);
       border-bottom: 1px solid var(--color-divider);
       flex-wrap: wrap;
-      background: rgba(37,32,38,0.02);
+      background: rgba(10,10,10,0.02);
     }
     .filter-select {
       border: 1px solid var(--color-divider);
@@ -116,8 +116,8 @@
       font-family: var(--font-body);
     }
     .filter-toggle--active {
-      background: rgba(254,29,37,0.08);
-      border-color: rgba(254,29,37,0.3);
+      background: rgba(10,10,10,0.08);
+      border-color: rgba(10,10,10,0.3);
       color: var(--color-accent-brand);
       font-weight: 700;
     }
@@ -180,9 +180,9 @@
       border-radius: 4px;
       background: white;
       cursor: pointer;
-      color: rgba(37,32,38,0.5);
+      color: rgba(10,10,10,0.5);
     }
-    .actions-menu__btn:hover { background: rgba(37,32,38,0.04); color: var(--color-surface-ink); }
+    .actions-menu__btn:hover { background: rgba(10,10,10,0.04); color: var(--color-surface-ink); }
     .actions-menu__dropdown {
       position: absolute;
       right: 0; top: calc(100% + 4px);
@@ -207,7 +207,7 @@
       color: var(--color-surface-ink);
       transition: background var(--motion-micro) var(--ease-standard);
     }
-    .actions-menu__item:hover { background: rgba(37,32,38,0.04); }
+    .actions-menu__item:hover { background: rgba(10,10,10,0.04); }
     .actions-menu__item--danger { color: var(--color-accent-brand); }
     .actions-menu__divider { height: 1px; background: var(--color-divider); margin: 4px 0; }
 
@@ -294,14 +294,14 @@
           Teaching: Cohort 1 — Creative ID&amp;ST
         </div>
         <div class="topbar__search">
-          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="search" placeholder="Search learners…" aria-label="Search">
         </div>
         <div class="topbar__actions">
           <button class="topbar__icon-btn" aria-label="Notifications">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           </button>
-          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(255,255,255,0.08);border-radius:6px;cursor:pointer;">
             <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
             <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
             <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
@@ -317,7 +317,7 @@
         <div class="cohort-hero__top">
           <div>
             <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);">
-              <span class="pillar-tag pillar-tag--creativity" style="background:rgba(254,29,37,0.2);color:#ff6b70;">Creativity</span>
+              <span class="pillar-tag pillar-tag--creativity" style="background:rgba(10,10,10,0.2);color:#0A0A0A;">Creativity</span>
               <span class="status-chip status-chip--current">Active</span>
             </div>
             <div class="cohort-hero__name">Cohort 1 — Creative Identity &amp; Storytelling</div>
@@ -338,7 +338,7 @@
                   <div class="capacity__fill" style="width:75%;background:var(--color-accent-secondary);"></div>
                 </div>
               </div>
-              <div style="font-size:11px;color:rgba(242,241,240,0.5);margin-top:4px;">75% capacity · 6 seats open</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;">75% capacity · 6 seats open</div>
             </div>
           </div>
         </div>
@@ -378,7 +378,7 @@
           <button class="btn btn--ghost-on-dark btn--sm">Mark At-Risk</button>
           <button class="btn btn--ghost-on-dark btn--sm">Schedule 1-on-1</button>
           <button class="btn btn--ghost-on-dark btn--sm">Export</button>
-          <button style="margin-left:auto;background:none;border:none;color:rgba(242,241,240,0.5);font-size:12px;cursor:pointer;">Clear selection</button>
+          <button style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.5);font-size:12px;cursor:pointer;">Clear selection</button>
         </div>
 
         <div class="data-table">
@@ -426,18 +426,18 @@
               </thead>
               <tbody>
                 <!-- Row 1: At-risk -->
-                <tr style="background:rgba(254,29,37,0.02);">
+                <tr style="background:rgba(10,10,10,0.02);">
                   <td><input type="checkbox" checked aria-label="Select Aira Sukcharoen"></td>
                   <td>
                     <div class="cell-user">
-                      <div class="avatar" style="background:rgba(254,29,37,0.15);color:var(--color-accent-brand);">AS</div>
+                      <div class="avatar" style="background:rgba(10,10,10,0.15);color:var(--color-accent-brand);">AS</div>
                       <div>
                         <div style="font-weight:700;">Aira Sukcharoen</div>
-                        <div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div>
+                        <div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div>
                       </div>
                     </div>
                   </td>
-                  <td style="color:rgba(37,32,38,0.55);font-size:12px;">aira.s@email.com</td>
+                  <td style="color:rgba(10,10,10,0.55);font-size:12px;">aira.s@email.com</td>
                   <td class="progress-cell">
                     <div class="progress-row">
                       <div class="progress" style="width:100px;">
@@ -454,11 +454,11 @@
                       <span style="font-size:12px;">72%</span>
                     </div>
                   </td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">3 days ago</span></td>
-                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">3 days ago</span></td>
+                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(10,10,10,0.4);">✓</span></span></td>
                   <td>
                     <div class="at-risk-flag">
-                      <span class="status-chip status-chip--needs-revision" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">
+                      <span class="status-chip status-chip--needs-revision" style="background:rgba(10,10,10,0.1);color:var(--color-accent-brand);">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         At-Risk
                       </span>
@@ -497,18 +497,18 @@
                 </tr>
 
                 <!-- Row 2: At-risk -->
-                <tr style="background:rgba(254,29,37,0.02);">
+                <tr style="background:rgba(10,10,10,0.02);">
                   <td><input type="checkbox" checked aria-label="Select Krit Mehra"></td>
                   <td>
                     <div class="cell-user">
-                      <div class="avatar" style="background:rgba(254,29,37,0.15);color:var(--color-accent-brand);">KM</div>
+                      <div class="avatar" style="background:rgba(10,10,10,0.15);color:var(--color-accent-brand);">KM</div>
                       <div>
                         <div style="font-weight:700;">Krit Mehra</div>
-                        <div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div>
+                        <div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div>
                       </div>
                     </div>
                   </td>
-                  <td style="color:rgba(37,32,38,0.55);font-size:12px;">krit.m@email.com</td>
+                  <td style="color:rgba(10,10,10,0.55);font-size:12px;">krit.m@email.com</td>
                   <td class="progress-cell">
                     <div class="progress-row">
                       <div class="progress" style="width:100px;">
@@ -529,7 +529,7 @@
                   <td><span style="font-size:12px;color:var(--color-accent-brand);">3/6 ⚠</span></td>
                   <td>
                     <div class="at-risk-flag">
-                      <span class="status-chip status-chip--needs-revision" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">
+                      <span class="status-chip status-chip--needs-revision" style="background:rgba(10,10,10,0.1);color:var(--color-accent-brand);">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         At-Risk
                       </span>
@@ -561,11 +561,11 @@
                 <!-- Normal rows -->
                 <tr>
                   <td><input type="checkbox" aria-label="Select Nattacha Boonma"></td>
-                  <td><div class="cell-user"><div class="avatar">NB</div><div><div style="font-weight:700;">Nattacha Boonma</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
-                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">nattacha.b@email.com</td>
+                  <td><div class="cell-user"><div class="avatar">NB</div><div><div style="font-weight:700;">Nattacha Boonma</div><div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(10,10,10,0.55);">nattacha.b@email.com</td>
                   <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill progress__fill--moss" style="width:83%;"></div></div><span class="progress-row__label">83% · 10/12</span></div></td>
                   <td><span style="font-size:12px;">96%</span></td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">2h ago</span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">2h ago</span></td>
                   <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">6/6 ✓</span></td>
                   <td>—</td>
                   <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><a href="#" class="actions-menu__item">Mark At-Risk</a><a href="#" class="actions-menu__item">Schedule 1-on-1</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
@@ -573,23 +573,23 @@
 
                 <tr>
                   <td><input type="checkbox" aria-label="Select Pasin Rattanachot"></td>
-                  <td><div class="cell-user"><div class="avatar">PR</div><div><div style="font-weight:700;">Pasin Rattanachot</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
-                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">pasin.r@email.com</td>
+                  <td><div class="cell-user"><div class="avatar">PR</div><div><div style="font-weight:700;">Pasin Rattanachot</div><div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(10,10,10,0.55);">pasin.r@email.com</td>
                   <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:67%;"></div></div><span class="progress-row__label">67% · 8/12</span></div></td>
                   <td><span style="font-size:12px;">87%</span></td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">1 day ago</span></td>
-                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">1 day ago</span></td>
+                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(10,10,10,0.4);">✓</span></span></td>
                   <td>—</td>
                   <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><a href="#" class="actions-menu__item">Mark At-Risk</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
                 </tr>
 
                 <tr>
                   <td><input type="checkbox" aria-label="Select Wanlaya Khunying"></td>
-                  <td><div class="cell-user"><div class="avatar" style="background:rgba(74,92,51,0.15);color:var(--color-accent-secondary-shade);">WK</div><div><div style="font-weight:700;">Wanlaya Khunying</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
-                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">wanlaya.k@email.com</td>
+                  <td><div class="cell-user"><div class="avatar" style="background:rgba(117,117,117,0.15);color:var(--color-accent-secondary-shade);">WK</div><div><div style="font-weight:700;">Wanlaya Khunying</div><div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(10,10,10,0.55);">wanlaya.k@email.com</td>
                   <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill progress__fill--moss" style="width:92%;"></div></div><span class="progress-row__label">92% · 11/12</span></div></td>
                   <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">98%</span></td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">5h ago</span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">5h ago</span></td>
                   <td><span style="font-size:12px;color:var(--color-accent-secondary-shade);">6/6 ✓</span></td>
                   <td>—</td>
                   <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
@@ -597,12 +597,12 @@
 
                 <tr>
                   <td><input type="checkbox" aria-label="Select Chalisa Nakorn"></td>
-                  <td><div class="cell-user"><div class="avatar">CN</div><div><div style="font-weight:700;">Chalisa Nakorn</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
-                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">chalisa.n@email.com</td>
+                  <td><div class="cell-user"><div class="avatar">CN</div><div><div style="font-weight:700;">Chalisa Nakorn</div><div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(10,10,10,0.55);">chalisa.n@email.com</td>
                   <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:75%;"></div></div><span class="progress-row__label">75% · 9/12</span></div></td>
                   <td><span style="font-size:12px;">83%</span></td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">Yesterday</span></td>
-                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">Yesterday</span></td>
+                  <td><span style="font-size:12px;">5/6 <span style="color:rgba(10,10,10,0.4);">✓</span></span></td>
                   <td>—</td>
                   <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="actions-menu__dropdown"><a href="#" class="actions-menu__item">Message</a><div class="actions-menu__divider"></div><a href="#" class="actions-menu__item actions-menu__item--danger">Remove</a></div></div></td>
                 </tr>
@@ -610,12 +610,12 @@
                 <!-- Placeholder rows to fill out the table -->
                 <tr>
                   <td><input type="checkbox"></td>
-                  <td><div class="cell-user"><div class="avatar">ST</div><div><div style="font-weight:700;">Supakan Thongdee</div><div style="font-size:11px;color:rgba(37,32,38,0.45);">BKK · enrolled</div></div></div></td>
-                  <td style="font-size:12px;color:rgba(37,32,38,0.55);">supakan.t@email.com</td>
+                  <td><div class="cell-user"><div class="avatar">ST</div><div><div style="font-weight:700;">Supakan Thongdee</div><div style="font-size:11px;color:rgba(10,10,10,0.45);">BKK · enrolled</div></div></div></td>
+                  <td style="font-size:12px;color:rgba(10,10,10,0.55);">supakan.t@email.com</td>
                   <td class="progress-cell"><div class="progress-row"><div class="progress" style="width:100px;"><div class="progress__fill" style="width:58%;"></div></div><span class="progress-row__label">58% · 7/12</span></div></td>
                   <td><span style="font-size:12px;">79%</span></td>
-                  <td><span style="font-size:12px;color:rgba(37,32,38,0.55);">6h ago</span></td>
-                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(37,32,38,0.4);">✓</span></span></td>
+                  <td><span style="font-size:12px;color:rgba(10,10,10,0.55);">6h ago</span></td>
+                  <td><span style="font-size:12px;">4/6 <span style="color:rgba(10,10,10,0.4);">✓</span></span></td>
                   <td>—</td>
                   <td><div class="actions-menu"><button class="actions-menu__btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></div></td>
                 </tr>
@@ -624,7 +624,7 @@
           </div>
 
           <!-- Table footer -->
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-12) var(--space-16);border-top:1px solid var(--color-divider);font-size:12px;color:rgba(37,32,38,0.55);">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-12) var(--space-16);border-top:1px solid var(--color-divider);font-size:12px;color:rgba(10,10,10,0.55);">
             <span>Showing 7 of 18 learners · 2 at-risk</span>
             <div style="display:flex;gap:var(--space-8);">
               <button class="btn btn--ghost btn--sm">← Prev</button>

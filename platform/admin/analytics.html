@@ -27,7 +27,7 @@
       background: white; cursor: pointer;
     }
     .filter-select:focus { outline: none; border-color: var(--color-surface-ink); }
-    .filter-label { font-size: 11px; font-weight: 700; letter-spacing:.08em; text-transform: uppercase; color: rgba(37,32,38,0.45); }
+    .filter-label { font-size: 11px; font-weight: 700; letter-spacing:.08em; text-transform: uppercase; color: rgba(10,10,10,0.45); }
 
     .section-title {
       font-family: var(--font-body);
@@ -53,7 +53,7 @@
     }
     .legend-item {
       display: flex; align-items: center; gap: var(--space-8);
-      font-size: 12px; font-weight: 600; color: rgba(37,32,38,0.7);
+      font-size: 12px; font-weight: 600; color: rgba(10,10,10,0.7);
     }
     .legend-line {
       width: 20px; height: 3px; border-radius: 2px;
@@ -64,13 +64,13 @@
       display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 8px; border-radius: 10px;
       font-size: 10px; font-weight: 700; letter-spacing:.04em; text-transform: uppercase;
-      background: rgba(254,29,37,0.1); color: var(--color-accent-brand);
+      background: rgba(10,10,10,0.1); color: var(--color-accent-brand);
     }
     .at-risk-reason--pacing {
-      background: #fff8e1; color: #9a6b00;
+      background: #FFFFFF; color: #757575;
     }
     .at-risk-reason--inactive {
-      background: rgba(37,32,38,0.06); color: rgba(37,32,38,0.6);
+      background: rgba(10,10,10,0.06); color: rgba(10,10,10,0.6);
     }
 
     .y-axis-label {
@@ -80,7 +80,7 @@
       font-size: 9px; fill: rgba(10,10,10,0.4); font-family: 'Libre Franklin', sans-serif;
       text-anchor: middle;
     }
-    .grid-line { stroke: rgba(37,32,38,0.06); stroke-width: 1; }
+    .grid-line { stroke: rgba(10,10,10,0.06); stroke-width: 1; }
     .chart-line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
   </style>
 </head>
@@ -156,7 +156,7 @@
   <header class="app-topbar">
     <div class="topbar">
       <div class="topbar__search">
-        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
         <input type="search" placeholder="Search…">
       </div>
       <div class="topbar__actions">
@@ -202,7 +202,7 @@
           </div>
           <div class="kpi-tile__label">Active Cohorts</div>
           <div class="kpi-tile__value">4</div>
-          <div class="kpi-tile__delta" style="color: rgba(37,32,38,0.45);">Nov – Apr cycle</div>
+          <div class="kpi-tile__delta" style="color: rgba(10,10,10,0.45);">Nov – Apr cycle</div>
         </div>
         <div class="kpi-tile">
           <div class="kpi-tile__icon-tile">
@@ -227,7 +227,7 @@
           </div>
         </div>
         <div class="kpi-tile">
-          <div class="kpi-tile__icon-tile" style="background: #e8a13d;">
+          <div class="kpi-tile__icon-tile" style="background: #757575;">
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 14l4-6 4 3 4-8"/></svg>
           </div>
           <div class="kpi-tile__label">Avg Completion</div>
@@ -255,13 +255,13 @@
         <div class="chart-header">
           <div>
             <div class="section-title" style="margin-bottom:4px;">Cohort Completion Curves</div>
-            <div style="font-size:13px; color:rgba(37,32,38,0.5);">% learners completing each week's required content · Weeks 1–10</div>
+            <div style="font-size:13px; color:rgba(10,10,10,0.5);">% learners completing each week's required content · Weeks 1–10</div>
           </div>
           <div class="chart-legend">
-            <div class="legend-item"><div class="legend-line" style="background:#fe1d25;"></div>Creative ID&amp;ST C1</div>
-            <div class="legend-item"><div class="legend-line" style="background:#4a5c33;"></div>Food Business C1</div>
-            <div class="legend-item"><div class="legend-line" style="background:#5b7fc4;"></div>AI×Content C1</div>
-            <div class="legend-item"><div class="legend-line" style="background:#a07840; height:2px; border-top: 2px dashed #a07840; background:none;"></div>Pilot C0</div>
+            <div class="legend-item"><div class="legend-line" style="background:#0A0A0A; height:3px;"></div>Creative ID&amp;ST C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:rgba(10,10,10,0.65);"></div>Food Business C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:rgba(10,10,10,0.4);"></div>AI×Content C1</div>
+            <div class="legend-item"><div class="legend-line" style="background:rgba(10,10,10,0.65); height:0; border-top: 2px dashed rgba(10,10,10,0.65);"></div>Pilot C0</div>
           </div>
         </div>
 
@@ -297,34 +297,34 @@
           <text x="604" y="248" class="x-axis-label">W9</text>
           <text x="670" y="248" class="x-axis-label">W10</text>
 
-          <!-- Creative ID&ST (red) — strong start, slight dip -->
+          <!-- Creative ID&ST (hero line) — strong start, slight dip -->
           <!-- % values: 85, 82, 79, 74, 70, 65, 63, 60, 58, 55 -->
           <!-- y = 230 - (pct/100)*200 -->
-          <polyline class="chart-line" stroke="#fe1d25"
+          <polyline class="chart-line" stroke="#0A0A0A" stroke-width="3"
             points="60,60 128,66 196,72 264,82 332,90 400,100 468,104 536,110 604,114 670,120"/>
 
-          <!-- Food Business (green) — steadier, slightly lower -->
+          <!-- Food Business (mid weight) — steadier, slightly lower -->
           <!-- % values: 75, 73, 71, 68, 64, 62, 60, 57, 55, 52 -->
-          <polyline class="chart-line" stroke="#4a5c33"
+          <polyline class="chart-line" stroke="rgba(10,10,10,0.65)"
             points="60,80 128,84 196,88 264,94 332,102 400,106 468,110 536,116 604,120 670,126"/>
 
-          <!-- AI×Content (blue) — starts slower, catches up -->
+          <!-- AI×Content (light weight) — starts slower, catches up -->
           <!-- % values: 65, 67, 70, 72, 70, 68, 65, 63, 62, 60 -->
-          <polyline class="chart-line" stroke="#5b7fc4"
+          <polyline class="chart-line" stroke="rgba(10,10,10,0.4)"
             points="60,100 128,96 196,90 264,86 332,90 400,94 468,100 536,104 604,106 670,110"/>
 
-          <!-- Pilot C0 (amber, dashed, ends at week 8) — benchmark line -->
+          <!-- Pilot C0 (dashed benchmark, ends at week 8) -->
           <!-- % values: 90, 88, 84, 80, 76, 72, 68, 66 -->
-          <polyline class="chart-line" stroke="#a07840" stroke-dasharray="6,3" stroke-width="2"
+          <polyline class="chart-line" stroke="rgba(10,10,10,0.65)" stroke-dasharray="6,3" stroke-width="2"
             points="60,50 128,54 196,62 264,70 332,78 400,86 468,94 536,98"/>
 
-          <!-- Data point dots for Creative -->
-          <circle cx="670" cy="120" r="4" fill="#fe1d25"/>
-          <circle cx="670" cy="126" r="4" fill="#4a5c33"/>
-          <circle cx="536" cy="98" r="4" fill="#a07840"/>
+          <!-- Data point dots for end-of-line -->
+          <circle cx="670" cy="120" r="4" fill="#0A0A0A"/>
+          <circle cx="670" cy="126" r="4" fill="rgba(10,10,10,0.65)"/>
+          <circle cx="536" cy="98" r="4" fill="rgba(10,10,10,0.65)"/>
 
           <!-- Annotation: at-risk dip on Creative W6 -->
-          <circle cx="400" cy="100" r="5" fill="none" stroke="#fe1d25" stroke-width="1.5"/>
+          <circle cx="400" cy="100" r="5" fill="none" stroke="#0A0A0A" stroke-width="1.5"/>
         </svg>
       </div>
 
@@ -338,7 +338,7 @@
             <option>Creative ID&amp;ST C1</option>
             <option>Food Business C1</option>
           </select>
-          <span style="margin-left:auto; font-size:12px; color:rgba(37,32,38,0.45);">7 at-risk learners</span>
+          <span style="margin-left:auto; font-size:12px; color:rgba(10,10,10,0.45);">7 at-risk learners</span>
         </div>
         <table>
           <thead>
@@ -354,7 +354,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><div class="cell-user"><div class="avatar" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">M</div><div><div style="font-weight:600;">Manee Suwan</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">manee@suwan.th</div></div></div></td>
+              <td><div class="cell-user"><div class="avatar" style="background:rgba(10,10,10,0.1);color:var(--color-accent-brand);">M</div><div><div style="font-weight:600;">Manee Suwan</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">manee@suwan.th</div></div></div></td>
               <td><span style="font-size:12px;">Creative ID&amp;ST C1</span></td>
               <td>
                 <div class="progress-row">
@@ -362,7 +362,7 @@
                   <span style="color:var(--color-accent-brand); font-weight:700;">28%</span>
                 </div>
               </td>
-              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 22, 2026</td>
+              <td style="color:rgba(10,10,10,0.6); font-size:13px;">Nov 22, 2026</td>
               <td style="font-weight:700; color:var(--color-accent-brand);">18 days</td>
               <td>
                 <span class="at-risk-reason">Low progress</span>
@@ -371,7 +371,7 @@
               <td><button class="btn btn--ghost btn--sm">View</button></td>
             </tr>
             <tr>
-              <td><div class="cell-user"><div class="avatar">B</div><div><div style="font-weight:600;">Boon Chaiwong</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">boon@ch.th</div></div></div></td>
+              <td><div class="cell-user"><div class="avatar">B</div><div><div style="font-weight:600;">Boon Chaiwong</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">boon@ch.th</div></div></div></td>
               <td><span style="font-size:12px;">Food Business C1</span></td>
               <td>
                 <div class="progress-row">
@@ -379,27 +379,27 @@
                   <span style="color:var(--color-accent-brand); font-weight:700;">35%</span>
                 </div>
               </td>
-              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 26, 2026</td>
+              <td style="color:rgba(10,10,10,0.6); font-size:13px;">Nov 26, 2026</td>
               <td style="font-weight:700; color:var(--color-accent-brand);">14 days</td>
               <td><span class="at-risk-reason">Low progress</span></td>
               <td><button class="btn btn--ghost btn--sm">View</button></td>
             </tr>
             <tr>
-              <td><div class="cell-user"><div class="avatar" style="background:rgba(91,127,196,0.12);color:#2f5498;">O</div><div><div style="font-weight:600;">Onuma Phak</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">onuma@phak.th</div></div></div></td>
+              <td><div class="cell-user"><div class="avatar" style="background:rgba(117,117,117,0.12);color:#757575;">O</div><div><div style="font-weight:600;">Onuma Phak</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">onuma@phak.th</div></div></div></td>
               <td><span style="font-size:12px;">AI×Content C1</span></td>
               <td>
                 <div class="progress-row">
-                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#e8a13d;width:42%;"></div></div>
-                  <span style="color:#9a6b00; font-weight:700;">42%</span>
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#757575;width:42%;"></div></div>
+                  <span style="color:#757575; font-weight:700;">42%</span>
                 </div>
               </td>
-              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Dec 02, 2026</td>
-              <td style="font-weight:700; color:#9a6b00;">8 days</td>
+              <td style="color:rgba(10,10,10,0.6); font-size:13px;">Dec 02, 2026</td>
+              <td style="font-weight:700; color:#757575;">8 days</td>
               <td><span class="at-risk-reason at-risk-reason--pacing">Behind pace</span></td>
               <td><button class="btn btn--ghost btn--sm">View</button></td>
             </tr>
             <tr>
-              <td><div class="cell-user"><div class="avatar">R</div><div><div style="font-weight:600;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">ratchaporn@t.th</div></div></div></td>
+              <td><div class="cell-user"><div class="avatar">R</div><div><div style="font-weight:600;">Ratchaporn T.</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">ratchaporn@t.th</div></div></div></td>
               <td><span style="font-size:12px;">Creative ID&amp;ST C1</span></td>
               <td>
                 <div class="progress-row">
@@ -407,22 +407,22 @@
                   <span style="color:var(--color-accent-brand); font-weight:700;">30%</span>
                 </div>
               </td>
-              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 19, 2026</td>
+              <td style="color:rgba(10,10,10,0.6); font-size:13px;">Nov 19, 2026</td>
               <td style="font-weight:700; color:var(--color-accent-brand);">21 days</td>
               <td><span class="at-risk-reason">Inactive 14d+</span><span class="at-risk-reason" style="margin-left:4px;">Low progress</span></td>
               <td><button class="btn btn--ghost btn--sm">View</button></td>
             </tr>
             <tr>
-              <td><div class="cell-user"><div class="avatar">S</div><div><div style="font-weight:600;">Supakorn Watt</div><div style="font-size:11px;color:rgba(37,32,38,0.5);">supakorn@w.th</div></div></div></td>
+              <td><div class="cell-user"><div class="avatar">S</div><div><div style="font-weight:600;">Supakorn Watt</div><div style="font-size:11px;color:rgba(10,10,10,0.5);">supakorn@w.th</div></div></div></td>
               <td><span style="font-size:12px;">Food Business C1</span></td>
               <td>
                 <div class="progress-row">
-                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#e8a13d;width:38%;"></div></div>
-                  <span style="color:#9a6b00; font-weight:700;">38%</span>
+                  <div class="progress progress--lg" style="width:80px;"><div class="progress__fill" style="background:#757575;width:38%;"></div></div>
+                  <span style="color:#757575; font-weight:700;">38%</span>
                 </div>
               </td>
-              <td style="color:rgba(37,32,38,0.6); font-size:13px;">Nov 30, 2026</td>
-              <td style="font-weight:700; color:#9a6b00;">10 days</td>
+              <td style="color:rgba(10,10,10,0.6); font-size:13px;">Nov 30, 2026</td>
+              <td style="font-weight:700; color:#757575;">10 days</td>
               <td><span class="at-risk-reason at-risk-reason--pacing">Behind pace</span></td>
               <td><button class="btn btn--ghost btn--sm">View</button></td>
             </tr>
