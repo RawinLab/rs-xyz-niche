@@ -21,7 +21,7 @@
     }
     .generated-link-card__label {
       font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(37,32,38,0.45);
+      text-transform: uppercase; color: rgba(10,10,10,0.45);
       margin-bottom: var(--space-12);
     }
     .link-copy-row {
@@ -39,7 +39,7 @@
       display: flex; gap: var(--space-24); flex-wrap: wrap;
     }
     .link-meta-item { display: flex; flex-direction: column; gap: 4px; }
-    .link-meta-item__key { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(37,32,38,0.45); }
+    .link-meta-item__key { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(10,10,10,0.45); }
     .link-meta-item__val { font-size: 14px; font-weight: 600; }
 
     .qr-area {
@@ -49,7 +49,7 @@
       border: 1px solid var(--color-divider); border-radius: 4px;
       width: 140px;
     }
-    .qr-area__caption { font-size: 11px; color: rgba(37,32,38,0.45); }
+    .qr-area__caption { font-size: 11px; color: rgba(10,10,10,0.45); }
 
     .generator-form {
       background: white;
@@ -65,10 +65,10 @@
     .action-menu-btn {
       background: none; border: none; cursor: pointer;
       padding: var(--space-4) var(--space-8);
-      font-size: 18px; color: rgba(37,32,38,0.4);
+      font-size: 18px; color: rgba(10,10,10,0.4);
       border-radius: 4px;
     }
-    .action-menu-btn:hover { background: rgba(37,32,38,0.06); }
+    .action-menu-btn:hover { background: rgba(10,10,10,0.06); }
   </style>
 </head>
 <body class="app-shell">
@@ -194,7 +194,7 @@
   <header class="app-topbar">
     <div class="topbar">
       <div class="topbar__search">
-        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.45);fill:none;stroke-width:1.5;" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5"/><path d="M14 14l-3-3"/></svg>
         <input type="search" placeholder="Search…">
       </div>
       <div class="topbar__actions">
@@ -299,27 +299,27 @@
           <div class="qr-area">
             <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="QR code placeholder">
               <!-- Finder pattern TL -->
-              <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
-              <rect x="12" y="12" width="16" height="16" rx="1" fill="#252026"/>
+              <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#0A0A0A" stroke-width="3"/>
+              <rect x="12" y="12" width="16" height="16" rx="1" fill="#0A0A0A"/>
               <!-- Finder pattern TR -->
-              <rect x="65" y="5" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
-              <rect x="72" y="12" width="16" height="16" rx="1" fill="#252026"/>
+              <rect x="65" y="5" width="30" height="30" rx="2" fill="none" stroke="#0A0A0A" stroke-width="3"/>
+              <rect x="72" y="12" width="16" height="16" rx="1" fill="#0A0A0A"/>
               <!-- Finder pattern BL -->
-              <rect x="5" y="65" width="30" height="30" rx="2" fill="none" stroke="#252026" stroke-width="3"/>
-              <rect x="12" y="72" width="16" height="16" rx="1" fill="#252026"/>
+              <rect x="5" y="65" width="30" height="30" rx="2" fill="none" stroke="#0A0A0A" stroke-width="3"/>
+              <rect x="12" y="72" width="16" height="16" rx="1" fill="#0A0A0A"/>
               <!-- Data cells -->
-              <rect x="42" y="5" width="5" height="5" fill="#252026"/><rect x="52" y="5" width="5" height="5" fill="#252026"/>
-              <rect x="42" y="15" width="5" height="5" fill="#252026"/><rect x="57" y="15" width="5" height="5" fill="#252026"/>
-              <rect x="47" y="25" width="5" height="5" fill="#252026"/>
-              <rect x="42" y="42" width="5" height="5" fill="#252026"/><rect x="52" y="42" width="5" height="5" fill="#252026"/><rect x="62" y="42" width="5" height="5" fill="#252026"/>
-              <rect x="47" y="52" width="5" height="5" fill="#252026"/><rect x="57" y="52" width="5" height="5" fill="#252026"/>
-              <rect x="42" y="62" width="5" height="5" fill="#252026"/>
-              <rect x="52" y="62" width="5" height="5" fill="#252026"/><rect x="62" y="62" width="5" height="5" fill="#252026"/>
-              <rect x="42" y="72" width="5" height="5" fill="#252026"/><rect x="57" y="72" width="5" height="5" fill="#252026"/>
-              <rect x="52" y="82" width="5" height="5" fill="#252026"/><rect x="62" y="82" width="5" height="5" fill="#252026"/>
-              <rect x="72" y="42" width="5" height="5" fill="#252026"/><rect x="82" y="42" width="5" height="5" fill="#252026"/>
-              <rect x="77" y="52" width="5" height="5" fill="#252026"/><rect x="82" y="62" width="5" height="5" fill="#252026"/>
-              <rect x="72" y="72" width="5" height="5" fill="#252026"/>
+              <rect x="42" y="5" width="5" height="5" fill="#0A0A0A"/><rect x="52" y="5" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="42" y="15" width="5" height="5" fill="#0A0A0A"/><rect x="57" y="15" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="47" y="25" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="42" y="42" width="5" height="5" fill="#0A0A0A"/><rect x="52" y="42" width="5" height="5" fill="#0A0A0A"/><rect x="62" y="42" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="47" y="52" width="5" height="5" fill="#0A0A0A"/><rect x="57" y="52" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="42" y="62" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="52" y="62" width="5" height="5" fill="#0A0A0A"/><rect x="62" y="62" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="42" y="72" width="5" height="5" fill="#0A0A0A"/><rect x="57" y="72" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="52" y="82" width="5" height="5" fill="#0A0A0A"/><rect x="62" y="82" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="72" y="42" width="5" height="5" fill="#0A0A0A"/><rect x="82" y="42" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="77" y="52" width="5" height="5" fill="#0A0A0A"/><rect x="82" y="62" width="5" height="5" fill="#0A0A0A"/>
+              <rect x="72" y="72" width="5" height="5" fill="#0A0A0A"/>
             </svg>
             <span class="qr-area__caption">QR Code</span>
           </div>

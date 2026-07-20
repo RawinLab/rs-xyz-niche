@@ -23,11 +23,11 @@
       gap: var(--space-24);
     }
     .role-chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-    .role-chip--learner { background: rgba(74,92,51,0.15); color: #b4c49a; }
-    .role-chip--instructor { background: rgba(242,241,240,0.15); color: var(--color-surface-base); }
-    .role-chip--admin { background: rgba(254,29,37,0.2); color: #ff8080; }
-    .role-chip--light-learner { background: rgba(74,92,51,0.1); color: var(--color-accent-secondary-shade); }
-    .role-chip--light-instructor { background: rgba(37,32,38,0.08); color: var(--color-surface-ink); }
+    .role-chip--learner { background: rgba(10,10,10,0.06); color: #0A0A0A; }
+    .role-chip--instructor { background: rgba(255,255,255,0.15); color: var(--color-surface-base); }
+    .role-chip--admin { background: rgba(10,10,10,0.2); color: #0A0A0A; }
+    .role-chip--light-learner { background: rgba(117,117,117,0.1); color: var(--color-accent-secondary-shade); }
+    .role-chip--light-instructor { background: rgba(10,10,10,0.08); color: var(--color-surface-ink); }
 
     /* PDPA Timeline */
     .pdpa-timeline { list-style: none; padding: 0; margin: 0; }
@@ -48,11 +48,11 @@
       background: white;
       border: 2px solid var(--color-divider);
     }
-    .pdpa-timeline__dot--granted { border-color: var(--color-accent-secondary-shade); background: rgba(74,92,51,0.12); }
-    .pdpa-timeline__dot--revoked { border-color: var(--color-accent-brand); background: rgba(254,29,37,0.1); }
-    .pdpa-timeline__date { font-size: 11px; color: rgba(37,32,38,0.5); margin-bottom: 4px; }
+    .pdpa-timeline__dot--granted { border-color: var(--color-accent-secondary-shade); background: rgba(117,117,117,0.12); }
+    .pdpa-timeline__dot--revoked { border-color: var(--color-accent-brand); background: rgba(10,10,10,0.1); }
+    .pdpa-timeline__date { font-size: 11px; color: rgba(10,10,10,0.5); margin-bottom: 4px; }
     .pdpa-timeline__event { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-    .pdpa-timeline__detail { font-size: 12px; color: rgba(37,32,38,0.6); }
+    .pdpa-timeline__detail { font-size: 12px; color: rgba(10,10,10,0.6); }
   </style>
 </head>
 <body class="app-shell">
@@ -133,14 +133,14 @@
 
     <!-- USER HERO -->
     <div class="user-hero">
-      <div class="avatar avatar--lg" style="background:rgba(37,32,38,0.3);color:var(--color-surface-base);font-size:24px;font-weight:800;flex-shrink:0;">SI</div>
+      <div class="avatar avatar--lg" style="background:rgba(10,10,10,0.3);color:var(--color-surface-base);font-size:24px;font-weight:800;flex-shrink:0;">SI</div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);flex-wrap:wrap;">
           <h1 style="font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-0.01em;">Sasha Ivanov</h1>
           <span class="role-chip role-chip--learner">Learner</span>
           <span class="role-chip role-chip--instructor">Instructor</span>
         </div>
-        <div style="font-size:13px;color:rgba(242,241,240,0.6);margin-bottom:var(--space-16);">sasha@example.com · Asia/Bangkok · Member since Oct 2026</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:var(--space-16);">sasha@example.com · Asia/Bangkok · Member since Oct 2026</div>
         <div style="display:flex;gap:var(--space-8);">
           <button class="btn btn--ghost-on-dark btn--sm">Edit Profile</button>
           <button class="btn btn--ghost-on-dark btn--sm">Send Message</button>
@@ -164,7 +164,7 @@
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-16);">
         <div>
           <h2 style="font-size:16px;font-weight:700;margin-bottom:4px;">Role × Scope Memberships</h2>
-          <p style="font-size:13px;color:rgba(37,32,38,0.55);">Sasha holds multiple roles across different scopes — Instructor of one cohort, Learner of another.</p>
+          <p style="font-size:13px;color:rgba(10,10,10,0.55);">Sasha holds multiple roles across different scopes — Instructor of one cohort, Learner of another.</p>
         </div>
         <button class="btn btn--primary btn--sm">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 1v10M1 6h10"/></svg>
@@ -176,69 +176,69 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;">
           <thead>
             <tr>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Scope Type</th>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Resource</th>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Role</th>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted by</th>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted at</th>
-              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(37,32,38,0.02);text-align:center;font-weight:700;text-transform:uppercase;">Revoke</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Scope Type</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Resource</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Role</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted by</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:left;font-weight:700;text-transform:uppercase;">Granted at</th>
+              <th style="padding:12px 16px;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid var(--color-divider);background:rgba(10,10,10,0.02);text-align:center;font-weight:700;text-transform:uppercase;">Revoke</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
-                <span class="badge badge--neutral" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Cohort</span>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(10,10,10,0.06);color:rgba(10,10,10,0.7);">Cohort</span>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
                 <div style="font-weight:600;">AI×Content · Cohort 1</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">cohort:ai-content-c1</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">cohort:ai-content-c1</div>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
                 <span class="role-chip role-chip--light-instructor">Instructor</span>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);font-size:12px;">
                 <div style="font-weight:600;">praew@niche.ac</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Admin</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">Admin</div>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">2026-09-15</td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:center;">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);font-size:12px;">2026-09-15</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);text-align:center;">
                 <button class="btn btn--destructive btn--sm" style="padding:4px 8px;" title="Revoke this role">✕</button>
               </td>
             </tr>
             <tr>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
-                <span class="badge badge--neutral" style="font-size:10px;background:rgba(37,32,38,0.06);color:rgba(37,32,38,0.7);">Cohort</span>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(10,10,10,0.06);color:rgba(10,10,10,0.7);">Cohort</span>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
                 <div style="font-weight:600;">Creative ID&amp;ST · Cohort 1</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">cohort:creative-idst-c1</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">cohort:creative-idst-c1</div>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);">
                 <span class="role-chip role-chip--light-learner">Learner</span>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);font-size:12px;">
                 <div style="font-weight:600;">system</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Auto (enrollment)</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">Auto (enrollment)</div>
               </td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);font-size:12px;">2026-11-01</td>
-              <td style="padding:12px 16px;border-bottom:1px solid rgba(37,32,38,0.04);text-align:center;">
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);font-size:12px;">2026-11-01</td>
+              <td style="padding:12px 16px;border-bottom:1px solid rgba(10,10,10,0.04);text-align:center;">
                 <button class="btn btn--destructive btn--sm" style="padding:4px 8px;" title="Revoke this role">✕</button>
               </td>
             </tr>
             <tr>
               <td style="padding:12px 16px;">
-                <span class="badge badge--neutral" style="font-size:10px;background:rgba(74,92,51,0.1);color:var(--color-accent-secondary-shade);">Course</span>
+                <span class="badge badge--neutral" style="font-size:10px;background:rgba(117,117,117,0.1);color:var(--color-accent-secondary-shade);">Course</span>
               </td>
               <td style="padding:12px 16px;">
                 <div style="font-weight:600;">Intro to AI Copywriting</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">course:intro-ai-copy-01</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">course:intro-ai-copy-01</div>
               </td>
               <td style="padding:12px 16px;">
                 <span class="role-chip role-chip--light-learner">Learner</span>
               </td>
               <td style="padding:12px 16px;font-size:12px;">
                 <div style="font-weight:600;">system</div>
-                <div style="font-size:11px;color:rgba(37,32,38,0.5);">Auto (cohort member)</div>
+                <div style="font-size:11px;color:rgba(10,10,10,0.5);">Auto (cohort member)</div>
               </td>
               <td style="padding:12px 16px;font-size:12px;">2026-11-05</td>
               <td style="padding:12px 16px;text-align:center;">
@@ -250,8 +250,8 @@
       </div>
 
       <!-- HIDDEN TABS PREVIEW — Profile, Enrollments, Activity, PDPA shown below as collapsed notes -->
-      <div style="margin-top:var(--space-32);padding:var(--space-20);background:rgba(37,32,38,0.03);border-radius:8px;border:1px dashed var(--color-divider);">
-        <p style="font-size:12px;color:rgba(37,32,38,0.4);font-style:italic;text-align:center;">Other tab panels (Profile, Enrollments, Activity) load on tab click — see PDPA tab below for static preview</p>
+      <div style="margin-top:var(--space-32);padding:var(--space-20);background:rgba(10,10,10,0.03);border-radius:8px;border:1px dashed var(--color-divider);">
+        <p style="font-size:12px;color:rgba(10,10,10,0.4);font-style:italic;text-align:center;">Other tab panels (Profile, Enrollments, Activity) load on tab click — see PDPA tab below for static preview</p>
       </div>
 
       <!-- PDPA TAB PREVIEW (inline for static demo) -->
@@ -263,7 +263,7 @@
           </div>
           <div style="display:flex;gap:var(--space-8);">
             <button class="btn btn--ghost btn--sm">Export Personal Data</button>
-            <button class="btn btn--sm" style="background:rgba(254,29,37,0.08);color:var(--color-accent-brand);border:1px solid rgba(254,29,37,0.2);">Anonymize Account…</button>
+            <button class="btn btn--sm" style="background:rgba(10,10,10,0.08);color:var(--color-accent-brand);border:1px solid rgba(10,10,10,0.2);">Anonymize Account…</button>
           </div>
         </div>
 
@@ -293,9 +293,9 @@
             <div class="pdpa-timeline__detail">Channel: email-preferences-link · IP: 49.xxx.xxx.8 · Re-subscribed</div>
           </li>
           <li class="pdpa-timeline__item" style="border-left-color:transparent;">
-            <div class="pdpa-timeline__dot" style="border-color:rgba(37,32,38,0.2);"></div>
+            <div class="pdpa-timeline__dot" style="border-color:rgba(10,10,10,0.2);"></div>
             <div class="pdpa-timeline__date">2027-02-20 · 16:00 ICT</div>
-            <div class="pdpa-timeline__event" style="color:rgba(37,32,38,0.5);">Data Export Requested</div>
+            <div class="pdpa-timeline__event" style="color:rgba(10,10,10,0.5);">Data Export Requested</div>
             <div class="pdpa-timeline__detail">Actor: praew@niche.ac (admin) · Delivered via email</div>
           </li>
         </ol>
@@ -310,13 +310,13 @@
   <div class="modal">
     <div class="modal__header">
       <h2 style="font-size:18px;font-weight:700;">Grant Role</h2>
-      <p style="font-size:13px;color:rgba(37,32,38,0.55);margin-top:4px;">Assign a role scoped to a specific resource for Sasha Ivanov</p>
+      <p style="font-size:13px;color:rgba(10,10,10,0.55);margin-top:4px;">Assign a role scoped to a specific resource for Sasha Ivanov</p>
     </div>
     <div class="modal__body">
       <div style="display:flex;gap:var(--space-8);margin-bottom:var(--space-24);">
         <div style="flex:1;padding:var(--space-12);background:var(--color-surface-ink);color:var(--color-surface-base);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;">1. Role</div>
-        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(37,32,38,0.4);">2. Scope</div>
-        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(37,32,38,0.4);">3. Confirm</div>
+        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(10,10,10,0.4);">2. Scope</div>
+        <div style="flex:1;padding:var(--space-12);border:1px solid var(--color-divider);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-align:center;color:rgba(10,10,10,0.4);">3. Confirm</div>
       </div>
       <div class="field">
         <label class="field__label">Role</label>
@@ -325,21 +325,21 @@
             <input type="radio" name="role" value="learner">
             <div>
               <div style="font-weight:600;">Learner</div>
-              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Access to course content and assignments</div>
+              <div style="font-size:12px;color:rgba(10,10,10,0.55);">Access to course content and assignments</div>
             </div>
           </label>
-          <label class="checkbox-row" style="align-items:center;background:rgba(37,32,38,0.02);border-color:var(--color-surface-ink);">
+          <label class="checkbox-row" style="align-items:center;background:rgba(10,10,10,0.02);border-color:var(--color-surface-ink);">
             <input type="radio" name="role" value="instructor" checked>
             <div>
               <div style="font-weight:600;">Instructor</div>
-              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Manage roster, grades, and communications for a cohort</div>
+              <div style="font-size:12px;color:rgba(10,10,10,0.55);">Manage roster, grades, and communications for a cohort</div>
             </div>
           </label>
           <label class="checkbox-row" style="align-items:center;">
             <input type="radio" name="role" value="admin">
             <div>
               <div style="font-weight:600;">Admin</div>
-              <div style="font-size:12px;color:rgba(37,32,38,0.55);">Full platform access — use sparingly</div>
+              <div style="font-size:12px;color:rgba(10,10,10,0.55);">Full platform access — use sparingly</div>
             </div>
           </label>
         </div>

@@ -29,7 +29,7 @@
     }
     .composer-card__section {
       padding: var(--space-20) var(--space-24);
-      border-bottom: 1px solid rgba(37,32,38,0.06);
+      border-bottom: 1px solid rgba(10,10,10,0.06);
     }
     .composer-card__section:last-child { border-bottom: none; }
     .composer-section-label {
@@ -37,7 +37,7 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(37,32,38,0.4);
+      color: rgba(10,10,10,0.4);
       margin-bottom: var(--space-12);
     }
 
@@ -47,8 +47,8 @@
       align-items: center;
       gap: 2px;
       padding: var(--space-8) var(--space-12);
-      background: rgba(37,32,38,0.02);
-      border-bottom: 1px solid rgba(37,32,38,0.06);
+      background: rgba(10,10,10,0.02);
+      border-bottom: 1px solid rgba(10,10,10,0.06);
     }
     .composer-toolbar-btn {
       width: 28px; height: 28px;
@@ -57,13 +57,13 @@
       background: none;
       cursor: pointer;
       border-radius: 3px;
-      color: rgba(37,32,38,0.55);
+      color: rgba(10,10,10,0.55);
       font-size: 12px;
       font-family: var(--font-body);
       font-weight: 700;
       transition: background var(--motion-micro) var(--ease-standard);
     }
-    .composer-toolbar-btn:hover { background: rgba(37,32,38,0.07); color: var(--color-surface-ink); }
+    .composer-toolbar-btn:hover { background: rgba(10,10,10,0.07); color: var(--color-surface-ink); }
     .composer-toolbar-sep { width: 1px; height: 16px; background: var(--color-divider); margin: 0 3px; flex-shrink: 0; }
 
     /* Composer editable area */
@@ -73,11 +73,11 @@
       font-size: 14px;
       line-height: 1.65;
       outline: none;
-      color: rgba(37,32,38,0.85);
+      color: rgba(10,10,10,0.85);
     }
     .composer-body:empty::before {
       content: attr(data-placeholder);
-      color: rgba(37,32,38,0.3);
+      color: rgba(10,10,10,0.3);
     }
 
     /* Audience pills */
@@ -100,19 +100,19 @@
       transition: all var(--motion-quick) var(--ease-standard);
     }
     .audience-pill--cohort {
-      background: rgba(37,32,38,0.08);
+      background: rgba(10,10,10,0.08);
       color: var(--color-surface-ink);
-      border-color: rgba(37,32,38,0.15);
+      border-color: rgba(10,10,10,0.15);
     }
     .audience-pill--atrisk {
-      background: rgba(254,29,37,0.1);
+      background: rgba(10,10,10,0.1);
       color: var(--color-accent-brand);
-      border-color: rgba(254,29,37,0.2);
+      border-color: rgba(10,10,10,0.2);
     }
     .audience-pill--individual {
-      background: rgba(74,92,51,0.1);
+      background: rgba(117,117,117,0.1);
       color: var(--color-accent-secondary-shade);
-      border-color: rgba(74,92,51,0.2);
+      border-color: rgba(117,117,117,0.2);
     }
     .audience-pill__remove {
       display: grid; place-items: center;
@@ -131,8 +131,8 @@
       padding: 5px 10px;
       font-size: 12px;
       font-weight: 600;
-      color: rgba(37,32,38,0.4);
-      border: 1.5px dashed rgba(37,32,38,0.2);
+      color: rgba(10,10,10,0.4);
+      border: 1.5px dashed rgba(10,10,10,0.2);
       border-radius: 14px;
       background: none;
       cursor: pointer;
@@ -143,7 +143,7 @@
     .audience-preview {
       margin-top: var(--space-12);
       font-size: 12px;
-      color: rgba(37,32,38,0.5);
+      color: rgba(10,10,10,0.5);
     }
     .audience-preview strong { color: var(--color-surface-ink); }
     .audience-preview a { color: var(--color-accent-brand); font-weight: 700; text-decoration: none; }
@@ -164,7 +164,7 @@
       cursor: pointer;
       transition: border-color var(--motion-micro) var(--ease-standard);
     }
-    .channel-item:hover { border-color: rgba(37,32,38,0.3); }
+    .channel-item:hover { border-color: rgba(10,10,10,0.3); }
     .channel-item--checked { border-color: var(--color-surface-ink); }
     .channel-item--disabled { opacity: 0.5; cursor: not-allowed; }
     .channel-item__icon {
@@ -173,12 +173,12 @@
       display: grid; place-items: center;
       flex-shrink: 0;
     }
-    .channel-item__icon--inapp { background: rgba(37,32,38,0.08); color: var(--color-surface-ink); }
-    .channel-item__icon--email { background: rgba(74,92,51,0.12); color: var(--color-accent-secondary-shade); }
-    .channel-item__icon--line { background: rgba(37,32,38,0.06); color: rgba(37,32,38,0.35); }
+    .channel-item__icon--inapp { background: rgba(10,10,10,0.08); color: var(--color-surface-ink); }
+    .channel-item__icon--email { background: rgba(117,117,117,0.12); color: var(--color-accent-secondary-shade); }
+    .channel-item__icon--line { background: rgba(10,10,10,0.06); color: rgba(10,10,10,0.35); }
     .channel-item__info { flex: 1; }
     .channel-item__name { font-size: 13px; font-weight: 700; }
-    .channel-item__sub { font-size: 11px; color: rgba(37,32,38,0.45); }
+    .channel-item__sub { font-size: 11px; color: rgba(10,10,10,0.45); }
 
     /* Schedule radio */
     .schedule-radio-group {
@@ -200,18 +200,18 @@
     }
     .schedule-radio-option.is-selected {
       border-color: var(--color-surface-ink);
-      background: rgba(37,32,38,0.03);
+      background: rgba(10,10,10,0.03);
     }
     .schedule-radio-option input[type="radio"] { accent-color: var(--color-surface-ink); }
     .schedule-radio-option__label { font-size: 13px; font-weight: 700; }
-    .schedule-radio-option__sub { font-size: 11px; color: rgba(37,32,38,0.45); }
+    .schedule-radio-option__sub { font-size: 11px; color: rgba(10,10,10,0.45); }
 
     .schedule-datetime-row {
       display: flex;
       gap: var(--space-12);
       margin-top: var(--space-12);
       padding: var(--space-16);
-      background: rgba(37,32,38,0.03);
+      background: rgba(10,10,10,0.03);
       border: 1px solid var(--color-divider);
       border-radius: 6px;
     }
@@ -244,16 +244,16 @@
     }
     .history-item {
       padding: var(--space-14, 14px) var(--space-20);
-      border-bottom: 1px solid rgba(37,32,38,0.05);
+      border-bottom: 1px solid rgba(10,10,10,0.05);
       cursor: pointer;
       transition: background var(--motion-micro) var(--ease-standard);
     }
     .history-item:last-child { border-bottom: none; }
-    .history-item:hover { background: rgba(37,32,38,0.02); }
+    .history-item:hover { background: rgba(10,10,10,0.02); }
     .history-item__title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .history-item__meta {
       font-size: 11px;
-      color: rgba(37,32,38,0.45);
+      color: rgba(10,10,10,0.45);
       display: flex;
       gap: var(--space-8);
       flex-wrap: wrap;
@@ -263,7 +263,7 @@
       font-size: 10px;
       font-weight: 700;
       color: var(--color-accent-secondary-shade);
-      background: rgba(74,92,51,0.1);
+      background: rgba(117,117,117,0.1);
       padding: 2px 6px;
       border-radius: 3px;
     }
@@ -344,14 +344,14 @@
           Teaching: Cohort 1 — Creative ID&amp;ST
         </div>
         <div class="topbar__search">
-          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);fill:none;stroke-width:2;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="search" placeholder="Search announcements…" aria-label="Search">
         </div>
         <div class="topbar__actions">
           <button class="topbar__icon-btn" aria-label="Notifications">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           </button>
-          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(242,241,240,0.08);border-radius:6px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:var(--space-8);padding:var(--space-8) var(--space-12);background:rgba(255,255,255,0.08);border-radius:6px;cursor:pointer;">
             <div class="avatar" style="background:var(--color-accent-brand);color:white;width:28px;height:28px;font-size:11px;">AW</div>
             <span style="font-size:13px;font-weight:600;color:var(--color-shell-text);">Achara</span>
             <span class="badge badge--danger" style="font-size:9px;padding:2px 5px;">Instructor</span>
@@ -441,7 +441,7 @@
                     </div>
                   </div>
                   <div class="audience-pill audience-pill--individual">
-                    <div class="avatar avatar--sm" style="background:rgba(74,92,51,0.2);color:var(--color-accent-secondary-shade);width:16px;height:16px;font-size:8px;">AS</div>
+                    <div class="avatar avatar--sm" style="background:rgba(117,117,117,0.2);color:var(--color-accent-secondary-shade);width:16px;height:16px;font-size:8px;">AS</div>
                     Aira Sukcharoen
                     <div class="audience-pill__remove" aria-label="Remove individual">
                       <svg width="8" height="8" viewBox="0 0 24 24" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -581,7 +581,7 @@
               <div class="history-item">
                 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
                   <div class="history-item__title">Gentle reminder: Module 3 deadline</div>
-                  <span class="history-item__reach" style="background:rgba(254,29,37,0.1);color:var(--color-accent-brand);">2 reached</span>
+                  <span class="history-item__reach" style="background:rgba(10,10,10,0.1);color:var(--color-accent-brand);">2 reached</span>
                 </div>
                 <div class="history-item__meta">
                   <span>Nov 15, 2026</span>
@@ -605,7 +605,7 @@
               <div class="history-item">
                 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-8);">
                   <div class="history-item__title">Personal check-in — let's catch up</div>
-                  <span class="history-item__reach" style="background:rgba(74,92,51,0.12);color:var(--color-accent-secondary-shade);">1 reached</span>
+                  <span class="history-item__reach" style="background:rgba(117,117,117,0.12);color:var(--color-accent-secondary-shade);">1 reached</span>
                 </div>
                 <div class="history-item__meta">
                   <span>Nov 17, 2026</span>
@@ -614,26 +614,26 @@
                 </div>
               </div>
 
-              <div style="padding:var(--space-12) var(--space-20);text-align:center;border-top:1px solid rgba(37,32,38,0.05);">
-                <a href="#" style="font-size:12px;color:rgba(37,32,38,0.4);text-decoration:none;font-weight:600;">View all →</a>
+              <div style="padding:var(--space-12) var(--space-20);text-align:center;border-top:1px solid rgba(10,10,10,0.05);">
+                <a href="#" style="font-size:12px;color:rgba(10,10,10,0.4);text-decoration:none;font-weight:600;">View all →</a>
               </div>
             </div>
 
             <!-- Quick stats -->
             <div class="card" style="margin-top:var(--space-16);padding:var(--space-16);">
-              <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(37,32,38,0.4);margin-bottom:var(--space-12);">This Month</div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.4);margin-bottom:var(--space-12);">This Month</div>
               <div style="display:flex;gap:var(--space-24);">
                 <div>
                   <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;">7</div>
-                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Sent</div>
+                  <div style="font-size:11px;color:rgba(10,10,10,0.5);margin-top:2px;">Sent</div>
                 </div>
                 <div>
                   <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;color:var(--color-accent-secondary-shade);">94%</div>
-                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Open rate</div>
+                  <div style="font-size:11px;color:rgba(10,10,10,0.5);margin-top:2px;">Open rate</div>
                 </div>
                 <div>
                   <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1;">3</div>
-                  <div style="font-size:11px;color:rgba(37,32,38,0.5);margin-top:2px;">Targeted</div>
+                  <div style="font-size:11px;color:rgba(10,10,10,0.5);margin-top:2px;">Targeted</div>
                 </div>
               </div>
             </div>
