@@ -6,6 +6,8 @@
 
 This document consolidates concrete adopt/reject patterns from the Figma references provided in `requirements/ref.md`. The 4th file (SchoolHub Admin) was paywall-blocked; admin patterns are covered separately in [ADMIN_PATTERNS.md](./ADMIN_PATTERNS.md). The 3rd (Education Landing) hit quota during analysis; only its conventional genre patterns are summarized here.
 
+> **Brand V2 supersedes v1 color/type decisions (2026-07):** patterns below that reference the v1 ink/cream/red/moss palette or Fraunces/Bai Jamjuree still apply structurally (layout, IA, component shape), but any color- or type-specific detail should be read through `design/REBRAND_V2_BRIEF.md` — chrome is black on white with gray support only, pillar colors are flood/mark-only, and Libre Franklin is the single type family.
+
 ---
 
 ## 1. Reference inventory
