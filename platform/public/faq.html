@@ -212,7 +212,12 @@
     <a href="index.html" class="public-nav__brand">
       <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
     </a>
-    <ul class="public-nav__menu">
+    <button type="button" class="public-nav__toggle" aria-expanded="false" aria-controls="public-nav-menu" aria-label="Open menu">
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+    </button>
+    <ul class="public-nav__menu" id="public-nav-menu">
       <li><a href="programs.html">Programs</a></li>
       <li><a href="index.html#pathways">Pathways</a></li>
       <li><a href="about.html">About</a></li>
@@ -436,5 +441,24 @@
     }
   </script>
 
+
+<script>
+(function () {
+  var nav = document.querySelector('.public-nav');
+  var btn = document.querySelector('.public-nav__toggle');
+  if (!nav || !btn) return;
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('is-open'));
+  });
+  window.addEventListener('resize', function () {
+    if (window.matchMedia('(min-width: 721px)').matches) setOpen(false);
+  });
+})();
+</script>
 </body>
 </html>
