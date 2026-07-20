@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Chat — NICHE Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* ---- Program switcher (sidebar) — shared with dashboard ---- */
+    .prog-switch { display: flex; flex-direction: column; gap: 2px; }
+    .prog-switch__item {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-8) var(--space-12);
+      border-radius: 6px; text-decoration: none;
+      color: var(--color-shell-text-mute);
+      font-size: 13px; font-weight: 500;
+    }
+    .prog-switch__item:hover { background: var(--color-shell-active); color: var(--color-shell-text); }
+    .prog-switch__item.is-active { background: var(--color-shell-active); color: var(--color-shell-text); font-weight: 600; }
+    .prog-switch__code {
+      width: 22px; height: 22px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.02em;
+    }
+    .prog-switch__mod {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      background: var(--color-shell-text); color: var(--color-shell-bg);
+      padding: 1px 6px; border-radius: 10px;
+    }
+    .prog-switch__enroll {
+      display: flex; align-items: center; gap: var(--space-8);
+      padding: var(--space-8) var(--space-12);
+      color: var(--color-shell-text-mute); font-size: 12px; text-decoration: none;
+    }
+    .prog-switch__enroll:hover { color: var(--color-shell-text); }
+
+    /* ---- Chat layout ---- */
+    .chat-grid { display: grid; grid-template-columns: 288px 1fr; gap: var(--space-24); align-items: start; }
+
+    /* Threads rail */
+    .chat-rail { display: flex; flex-direction: column; gap: var(--space-24); position: sticky; top: 0; }
+    .chat-rail__group-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(10,10,10,0.45); margin-bottom: var(--space-8);
+    }
+    .chat-thread {
+      display: block; text-decoration: none; color: inherit;
+      padding: var(--space-12); border-radius: 8px; border: 1px solid transparent;
+    }
+    .chat-thread:hover { background: rgba(10,10,10,0.03); }
+    .chat-thread.is-active { background: white; border-color: var(--color-divider); box-shadow: var(--shadow-sm, 0 1px 2px rgba(10,10,10,0.05)); }
+    .chat-thread__title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-thread__meta { font-size: 11px; color: rgba(10,10,10,0.5); margin-top: 3px; display: flex; gap: var(--space-8); }
+    .chat-thread__time { margin-left: auto; }
+
+    /* Conversation */
+    .chat-conv {
+      background: white; border: 1px solid var(--color-divider); border-radius: 12px;
+      display: flex; flex-direction: column; min-height: 640px; overflow: hidden;
+    }
+    .chat-conv__head {
+      padding: var(--space-20) var(--space-24); border-bottom: 1px solid var(--color-divider);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-16);
+    }
+    .chat-conv__title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
+    .chat-conv__grounded {
+      display: flex; align-items: center; gap: var(--space-8);
+      font-size: 12px; color: rgba(10,10,10,0.55); margin-top: var(--space-8);
+    }
+    .chat-conv__grounded svg { width: 13px; height: 13px; stroke: rgba(10,10,10,0.5); stroke-width: 1.5; fill: none; }
+
+    .chat-log { flex: 1; padding: var(--space-24); display: flex; flex-direction: column; gap: var(--space-24); }
+    .chat-msg { display: flex; gap: var(--space-12); max-width: 82%; }
+    .chat-msg--user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-msg__avatar {
+      width: 30px; height: 30px; flex-shrink: 0; border-radius: 8px;
+      display: grid; place-items: center; font-size: 11px; font-weight: 800;
+    }
+    .chat-msg__avatar--tutor { background: var(--color-surface-ink); color: var(--color-surface-base); }
+    .chat-msg__avatar--user { background: rgba(10,10,10,0.08); color: var(--color-surface-ink); }
+    .chat-msg__bubble {
+      padding: var(--space-12) var(--space-16); border-radius: 12px;
+      font-size: 14px; line-height: 1.55;
+    }
+    .chat-msg--tutor .chat-msg__bubble { background: rgba(10,10,10,0.04); border-top-left-radius: 3px; }
+    .chat-msg--user .chat-msg__bubble { background: var(--color-surface-ink); color: var(--color-surface-base); border-top-right-radius: 3px; }
+    .chat-msg__bubble p { margin: 0 0 var(--space-8); }
+    .chat-msg__bubble p:last-child { margin-bottom: 0; }
+    .chat-msg__bubble ul { margin: var(--space-8) 0; padding-left: 18px; }
+    .chat-msg__bubble li { margin-bottom: 4px; }
+    .chat-msg__time { font-size: 10px; color: rgba(10,10,10,0.4); margin-top: 6px; }
+    .chat-msg--user .chat-msg__time { text-align: right; }
+    .chat-msg__cite {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; color: rgba(10,10,10,0.6);
+      background: white; border: 1px solid var(--color-divider); border-radius: 20px;
+      padding: 3px 10px; margin-top: var(--space-8); margin-right: 6px; text-decoration: none;
+    }
+    .chat-msg__cite:hover { border-color: var(--color-surface-ink); color: var(--color-surface-ink); }
+    .chat-msg__cite svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    /* Composer */
+    .chat-composer { padding: var(--space-16) var(--space-24) var(--space-24); border-top: 1px solid var(--color-divider); }
+    .chat-composer__box {
+      display: flex; align-items: center; gap: var(--space-12);
+      border: 1px solid var(--color-divider); border-radius: 12px;
+      padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+    }
+    .chat-composer__box:focus-within { border-color: var(--color-surface-ink); }
+    .chat-composer__input { flex: 1; border: none; outline: none; font: inherit; font-size: 14px; background: transparent; }
+    .chat-composer__hint { font-size: 11px; color: rgba(10,10,10,0.4); margin-top: var(--space-8); text-align: center; }
+
+    @media (max-width: 1100px) { .chat-grid { grid-template-columns: 1fr; } .chat-rail { position: static; } }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- ========== SIDEBAR (canonical — shared across learner pages) ========== -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="dashboard.html" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Student Portal</div>
+          </div>
+        </a>
+
+        <div class="sidebar__group">
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="chat.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
+            <span class="sidebar__label">Chat</span>
+          </a>
+          <a href="learn.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 3L2 6l7 3 7-3-7-3z"/><path d="M4 8v4c0 1 2.2 2 5 2s5-1 5-2V8"/></svg>
+            <span class="sidebar__label">Learn</span>
+          </a>
+          <a href="progress.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 15V7M8 15V3M13 15v-5"/></svg>
+            <span class="sidebar__label">Progress</span>
+          </a>
+        </div>
+
+        <!-- Program switcher: General / per-program / Career services -->
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Programs</div>
+          <div class="prog-switch">
+            <a href="dashboard.html" class="prog-switch__item">
+              <span class="prog-switch__code">ALL</span>
+              <span>General</span>
+            </a>
+            <a href="chat.html" class="prog-switch__item is-active">
+              <span class="prog-switch__code">SE</span>
+              <span>Sales &amp; Dealmaking</span>
+              <span class="prog-switch__mod">M3</span>
+            </a>
+            <a href="chat.html" class="prog-switch__item">
+              <span class="prog-switch__code">SH</span>
+              <span>Wellness &amp; Spa</span>
+              <span class="prog-switch__mod">M2</span>
+            </a>
+            <a href="#" class="prog-switch__enroll">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 3v8M3 7h8"/></svg>
+              Enroll in another program
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Services</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+            <span class="sidebar__label">Career services</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 13px;">AM</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Amara Chaiyo</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">2 programs · Bangkok</div>
+            </div>
+            <a href="profile.html" style="display:grid;place-items:center;flex-shrink:0;" aria-label="Profile &amp; settings">
+              <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ========== TOPBAR ========== -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          SE Sales &amp; Dealmaking · Module 3
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search your chat threads…" aria-label="Search threads">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
+            <span class="topbar__icon-btn-badge"></span>
+          </button>
+          <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 12px; cursor: pointer;">AM</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== MAIN ========== -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">NICHE Tutor</div>
+            <h1 class="page-header__heading">Chat</h1>
+          </div>
+          <div class="page-header__actions">
+            <a href="#" class="btn btn--primary btn--sm">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;margin-right:6px;" viewBox="0 0 14 14"><path d="M7 3v8M3 7h8"/></svg>
+              New chat
+            </a>
+          </div>
+        </div>
+
+        <div class="chat-grid">
+
+          <!-- ===== Threads rail ===== -->
+          <div class="chat-rail">
+            <div>
+              <div class="chat-rail__group-label">SE · Sales &amp; Dealmaking</div>
+              <a href="chat.html" class="chat-thread is-active">
+                <div class="chat-thread__title">Anchoring tactics — practice scenarios</div>
+                <div class="chat-thread__meta"><span>14 messages</span><span class="chat-thread__time">2h ago</span></div>
+              </a>
+              <a href="chat.html" class="chat-thread">
+                <div class="chat-thread__title">How do I frame a first offer?</div>
+                <div class="chat-thread__meta"><span>9 messages</span><span class="chat-thread__time">Mon</span></div>
+              </a>
+              <a href="chat.html" class="chat-thread">
+                <div class="chat-thread__title">BATNA vs reservation price</div>
+                <div class="chat-thread__meta"><span>5 messages</span><span class="chat-thread__time">Sun</span></div>
+              </a>
+            </div>
+
+            <div>
+              <div class="chat-rail__group-label">SH · Wellness &amp; Spa</div>
+              <a href="chat.html" class="chat-thread">
+                <div class="chat-thread__title">Essential-oil safety for sensitive skin</div>
+                <div class="chat-thread__meta"><span>6 messages</span><span class="chat-thread__time">Yesterday</span></div>
+              </a>
+              <a href="chat.html" class="chat-thread">
+                <div class="chat-thread__title">Carrier-oil dilution ratios</div>
+                <div class="chat-thread__meta"><span>4 messages</span><span class="chat-thread__time">Thu</span></div>
+              </a>
+            </div>
+
+            <div class="card" style="padding: var(--space-16);">
+              <div class="chat-rail__group-label" style="margin-bottom: var(--space-8);">Related to this thread</div>
+              <a href="chat.html" class="thread-link" style="display:block;font-size:12px;font-weight:600;color:var(--color-surface-ink);text-decoration:none;padding:6px 0;border-bottom:1px solid var(--color-divider);">Concession ladder worked example</a>
+              <a href="chat.html" class="thread-link" style="display:block;font-size:12px;font-weight:600;color:var(--color-surface-ink);text-decoration:none;padding:6px 0;">Handling an aggressive counter-anchor</a>
+            </div>
+          </div>
+
+          <!-- ===== Conversation ===== -->
+          <div class="chat-conv">
+            <div class="chat-conv__head">
+              <div>
+                <div class="chat-conv__title">Anchoring tactics — practice scenarios</div>
+                <div class="chat-conv__grounded">
+                  <svg viewBox="0 0 14 14"><path d="M3 2h6l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M9 2v3h3"/></svg>
+                  Grounded in your Module 3 materials — Negotiation &amp; closing
+                </div>
+              </div>
+              <span class="pillar-tag">SE · Sales &amp; Dealmaking</span>
+            </div>
+
+            <div class="chat-log">
+              <!-- User -->
+              <div class="chat-msg chat-msg--user">
+                <div class="chat-msg__avatar chat-msg__avatar--user">AM</div>
+                <div>
+                  <div class="chat-msg__bubble"><p>I keep losing the room when I open with a number. How do I anchor without sounding aggressive?</p></div>
+                  <div class="chat-msg__time">2:04 PM</div>
+                </div>
+              </div>
+
+              <!-- Tutor -->
+              <div class="chat-msg chat-msg--tutor">
+                <div class="chat-msg__avatar chat-msg__avatar--tutor">N</div>
+                <div>
+                  <div class="chat-msg__bubble">
+                    <p>Good instinct to worry about tone — an anchor lands better when it's <strong>justified, not just stated</strong>. From your Module 3 reading, three moves keep an opening anchor credible:</p>
+                    <ul>
+                      <li><strong>Lead with the rationale, then the number.</strong> "Given the onboarding scope and the 12-month term, we're looking at ฿X."</li>
+                      <li><strong>Anchor at the edge of a defensible range</strong>, not past it — a wild anchor invites a wild counter.</li>
+                      <li><strong>Pause after the number.</strong> Silence signals confidence; back-pedalling signals the number was soft.</li>
+                    </ul>
+                    <p>Want to run a live scenario where you deliver the opener and I play a skeptical buyer?</p>
+                  </div>
+                  <div>
+                    <a href="learn.html" class="chat-msg__cite"><svg viewBox="0 0 14 14"><path d="M3 2h6l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z"/></svg>Reading: Anchoring &amp; the credible range</a>
+                    <a href="learn.html" class="chat-msg__cite"><svg viewBox="0 0 14 14"><path d="M2 4l5-2 5 2v6l-5 2-5-2z"/></svg>Class replay · Module 3.2</a>
+                  </div>
+                  <div class="chat-msg__time">2:04 PM · NICHE Tutor</div>
+                </div>
+              </div>
+
+              <!-- User -->
+              <div class="chat-msg chat-msg--user">
+                <div class="chat-msg__avatar chat-msg__avatar--user">AM</div>
+                <div>
+                  <div class="chat-msg__bubble"><p>Yes — let's do the scenario. I'm selling a ฿180k package and I want to anchor at ฿220k.</p></div>
+                  <div class="chat-msg__time">2:06 PM</div>
+                </div>
+              </div>
+
+              <!-- Tutor -->
+              <div class="chat-msg chat-msg--tutor">
+                <div class="chat-msg__avatar chat-msg__avatar--tutor">N</div>
+                <div>
+                  <div class="chat-msg__bubble">
+                    <p><em>Buyer:</em> "We've had two other quotes come in around ฿150k. What are we looking at with you?"</p>
+                    <p>Deliver your opener. Remember: rationale first, number at the edge of your defensible range, then hold the silence. Type your line and I'll react as the buyer.</p>
+                  </div>
+                  <div class="chat-msg__time">2:06 PM · NICHE Tutor</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-composer">
+              <div class="chat-composer__box">
+                <input class="chat-composer__input" type="text" placeholder="Message NICHE Tutor…" aria-label="Message NICHE Tutor">
+                <button class="btn btn--primary btn--icon" aria-label="Send">
+                  <svg style="width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;" viewBox="0 0 16 16"><path d="M2 8l12-5-5 12-2-5-5-2z"/></svg>
+                </button>
+              </div>
+              <div class="chat-composer__hint">NICHE Tutor answers only from your enrolled program materials. Demo — responses are static.</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+</body>
+</html>

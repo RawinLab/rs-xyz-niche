@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Dashboard — NICHE Learner</title>
+  <title>Dashboard — NICHE Student Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -12,523 +12,406 @@
   <link rel="stylesheet" href="../shared/base.css">
   <link rel="stylesheet" href="../shared/platform.css">
   <style>
-    /* Dashboard-specific layout */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      gap: var(--space-32);
-      align-items: start;
+    /* ---- Program switcher (sidebar) ---- */
+    .prog-switch { display: flex; flex-direction: column; gap: 2px; }
+    .prog-switch__item {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-8) var(--space-12);
+      border-radius: 6px; text-decoration: none;
+      color: var(--color-shell-text-mute);
+      font-size: 13px; font-weight: 500;
     }
-    .dashboard-focus { display: flex; flex-direction: column; gap: var(--space-24); }
-    .dashboard-rail  { display: flex; flex-direction: column; gap: var(--space-24); }
-
-    /* Continue card */
-    .continue-card {
-      background: var(--color-surface-ink);
-      color: var(--color-surface-base);
-      border-radius: 8px;
-      padding: var(--space-32);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-16);
-      position: relative;
-      overflow: hidden;
-    }
-    .continue-card::after {
-      content: '';
-      position: absolute;
-      right: -40px; top: -40px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: rgba(254, 29, 37, 0.08);
-    }
-    .continue-card__eyebrow {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-accent-brand);
-    }
-    .continue-card__title {
-      font-family: var(--font-display);
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      max-width: 480px;
-    }
-    .continue-card__meta {
-      display: flex;
-      align-items: center;
-      gap: var(--space-16);
-      flex-wrap: wrap;
-    }
-    .continue-card__meta-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-8);
-      font-size: 12px;
-      color: rgba(242, 241, 240, 0.65);
-    }
-    .continue-card__meta-icon {
-      width: 14px; height: 14px;
-      stroke: currentColor; stroke-width: 1.5; fill: none;
-    }
-    .continue-card__actions {
-      display: flex;
-      align-items: center;
-      gap: var(--space-12);
-      margin-top: var(--space-8);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* At-risk alert */
-    .alert-card {
-      background: rgba(254, 29, 37, 0.06);
-      border: 1px solid rgba(254, 29, 37, 0.2);
-      border-radius: 8px;
-      padding: var(--space-20) var(--space-24);
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-16);
-    }
-    .alert-card__icon {
-      width: 36px; height: 36px;
-      background: rgba(254, 29, 37, 0.1);
-      border-radius: 6px;
+    .prog-switch__item:hover { background: var(--color-shell-active); color: var(--color-shell-text); }
+    .prog-switch__item.is-active { background: var(--color-shell-active); color: var(--color-shell-text); font-weight: 600; }
+    .prog-switch__code {
+      width: 22px; height: 22px; flex-shrink: 0;
       display: grid; place-items: center;
-      flex-shrink: 0;
-      color: var(--color-accent-brand);
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.02em;
     }
-    .alert-card__icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-    .alert-card__title { font-size: 14px; font-weight: 700; color: var(--color-accent-brand); margin-bottom: 4px; }
-    .alert-card__body { font-size: 13px; color: rgba(37,32,38,0.75); line-height: 1.5; }
+    .prog-switch__mod {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      background: var(--color-shell-text); color: var(--color-shell-bg);
+      padding: 1px 6px; border-radius: 10px;
+    }
+    .prog-switch__enroll {
+      display: flex; align-items: center; gap: var(--space-8);
+      padding: var(--space-8) var(--space-12);
+      color: var(--color-shell-text-mute); font-size: 12px; text-decoration: none;
+    }
+    .prog-switch__enroll:hover { color: var(--color-shell-text); }
 
-    /* Announcements feed */
-    .announcement-item {
-      padding: var(--space-16) 0;
-      border-bottom: 1px solid var(--color-divider);
-      display: flex;
-      gap: var(--space-12);
-      align-items: flex-start;
-    }
-    .announcement-item:last-child { border-bottom: none; }
-    .announcement-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--color-accent-brand);
-      flex-shrink: 0;
-      margin-top: 6px;
-    }
-    .announcement-dot--read { background: var(--color-divider); }
-    .announcement-item__title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-    .announcement-item__body { font-size: 12px; color: rgba(37,32,38,0.6); line-height: 1.5; }
-    .announcement-item__time { font-size: 11px; color: rgba(37,32,38,0.4); margin-top: 4px; }
+    /* ---- Dashboard layout ---- */
+    .dash-grid { display: grid; grid-template-columns: 1fr 300px; gap: var(--space-32); align-items: start; }
+    .dash-main { display: flex; flex-direction: column; gap: var(--space-24); }
+    .dash-rail { display: flex; flex-direction: column; gap: var(--space-24); }
 
-    /* Rail: schedule strip */
-    .schedule-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-12);
-      padding: var(--space-12) 0;
-      border-bottom: 1px solid var(--color-divider);
+    .status-summary {
+      display: flex; align-items: center; gap: var(--space-24);
+      font-size: 14px; color: rgba(10,10,10,0.7);
     }
-    .schedule-item:last-child { border-bottom: none; }
-    .schedule-time { font-size: 11px; font-weight: 700; color: rgba(37,32,38,0.45); min-width: 52px; }
-    .schedule-icon {
-      width: 32px; height: 32px;
-      border-radius: 6px;
-      display: grid; place-items: center;
-      flex-shrink: 0;
+    .status-summary strong { color: var(--color-surface-ink); font-weight: 800; }
+    .status-summary__pip {
+      display: inline-flex; align-items: center; gap: var(--space-8);
     }
-    .schedule-icon--onsite { background: rgba(37,32,38,0.08); }
-    .schedule-icon--online { background: rgba(74, 92, 51, 0.12); }
-    .schedule-icon--async  { background: rgba(254, 29, 37, 0.08); }
-    .schedule-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-    .schedule-info { flex: 1; min-width: 0; }
-    .schedule-info__name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .schedule-info__sub { font-size: 11px; color: rgba(37,32,38,0.5); }
+    .status-summary__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent-brand); }
+    .status-summary__dot--live { animation: pulse-dot 2s var(--ease-standard) infinite; }
 
-    /* Rail: cohort peers */
-    .peer-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-12);
-      padding: var(--space-10) 0;
-      border-bottom: 1px solid var(--color-divider);
-      font-size: 12px;
+    /* ---- Program card ---- */
+    .prog-card {
+      background: white; border: 1px solid var(--color-divider);
+      border-radius: 8px; padding: var(--space-24);
+      display: flex; flex-direction: column; gap: var(--space-16);
     }
-    .peer-item:last-child { border-bottom: none; }
-    .peer-item__text { flex: 1; line-height: 1.4; }
-    .peer-item__time { font-size: 10px; color: rgba(37,32,38,0.4); white-space: nowrap; }
+    .prog-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-16); }
+    .prog-card__code {
+      width: 40px; height: 40px; flex-shrink: 0;
+      display: grid; place-items: center; border-radius: 8px;
+      background: var(--color-surface-ink); color: var(--color-surface-base);
+      font-size: 13px; font-weight: 800;
+    }
+    .prog-card__title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+    .prog-card__school { font-size: 12px; color: rgba(10,10,10,0.55); margin-top: 2px; }
+    .prog-card__meta { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+    .prog-card__module {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-12); padding: var(--space-12) var(--space-16);
+      background: rgba(10,10,10,0.03); border-radius: 6px;
+    }
+    .prog-card__module-name { font-size: 13px; font-weight: 700; }
+    .prog-card__module-count { font-size: 11px; color: rgba(10,10,10,0.55); white-space: nowrap; }
+    .prog-card__next {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding-top: var(--space-16); border-top: 1px solid var(--color-divider);
+    }
+    .prog-card__next-info { flex: 1; min-width: 0; }
+    .prog-card__next-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(10,10,10,0.5); }
+    .prog-card__next-title { font-size: 14px; font-weight: 700; margin: 2px 0; }
+    .prog-card__next-sub { font-size: 12px; color: rgba(10,10,10,0.6); }
 
-    /* Cohort progress */
-    .cohort-progress-card {
-      background: white;
-      border: 1px solid var(--color-divider);
-      border-radius: 8px;
-      padding: var(--space-24);
+    /* ---- Recents / thread rows ---- */
+    .thread-row {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-12) 0; border-bottom: 1px solid var(--color-divider);
+      text-decoration: none; color: inherit;
     }
-    .cohort-meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-20); }
-    .cohort-meta-row h3 { font-size: 14px; font-weight: 700; }
+    .thread-row:last-child { border-bottom: none; }
+    .thread-row:hover .thread-row__title { text-decoration: underline; }
+    .thread-row__icon {
+      width: 30px; height: 30px; flex-shrink: 0; border-radius: 6px;
+      display: grid; place-items: center; background: rgba(10,10,10,0.06);
+    }
+    .thread-row__icon svg { width: 15px; height: 15px; stroke: var(--color-surface-ink); stroke-width: 1.5; fill: none; }
+    .thread-row__body { flex: 1; min-width: 0; }
+    .thread-row__title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .thread-row__sub { font-size: 11px; color: rgba(10,10,10,0.5); }
+    .thread-row__time { font-size: 10px; color: rgba(10,10,10,0.4); white-space: nowrap; }
 
-    @media (max-width: 1100px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .dashboard-rail { display: grid; grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .dashboard-rail { grid-template-columns: 1fr; }
-    }
+    /* ---- Announcements ---- */
+    .ann-item { padding: var(--space-16) 0; border-bottom: 1px solid var(--color-divider); display: flex; gap: var(--space-12); align-items: flex-start; }
+    .ann-item:last-child { border-bottom: none; }
+    .ann-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent-brand); flex-shrink: 0; margin-top: 6px; }
+    .ann-dot--read { background: var(--color-divider); }
+    .ann-item__title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .ann-item__body { font-size: 12px; color: rgba(10,10,10,0.6); line-height: 1.5; }
+    .ann-item__time { font-size: 11px; color: rgba(10,10,10,0.4); margin-top: 4px; }
+
+    @media (max-width: 1100px) { .dash-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 <div class="app-shell">
   <div class="app-layout">
 
-    <!-- Sidebar -->
+    <!-- ========== SIDEBAR (canonical — shared across learner pages) ========== -->
     <aside class="app-sidebar">
       <nav class="sidebar">
-        <a href="#" class="sidebar__brand">
+        <a href="dashboard.html" class="sidebar__brand">
           <div class="sidebar__brand-mark">N</div>
           <div>
             <div class="sidebar__brand-name">NICHE</div>
-            <div class="sidebar__brand-suffix">Learner Portal</div>
+            <div class="sidebar__brand-suffix">Student Portal</div>
           </div>
         </a>
 
         <div class="sidebar__group">
-          <div class="sidebar__group-label">Overview</div>
           <a href="dashboard.html" class="sidebar__item is-active">
             <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
             <span class="sidebar__label">Dashboard</span>
           </a>
+          <a href="chat.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
+            <span class="sidebar__label">Chat</span>
+          </a>
+          <a href="learn.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 3L2 6l7 3 7-3-7-3z"/><path d="M4 8v4c0 1 2.2 2 5 2s5-1 5-2V8"/></svg>
+            <span class="sidebar__label">Learn</span>
+          </a>
+          <a href="progress.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 15V7M8 15V3M13 15v-5"/></svg>
+            <span class="sidebar__label">Progress</span>
+          </a>
+        </div>
+
+        <!-- Program switcher: General / per-program / Career services -->
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Programs</div>
+          <div class="prog-switch">
+            <a href="dashboard.html" class="prog-switch__item is-active">
+              <span class="prog-switch__code">ALL</span>
+              <span>General</span>
+            </a>
+            <a href="progress.html" class="prog-switch__item">
+              <span class="prog-switch__code">SE</span>
+              <span>Sales &amp; Dealmaking</span>
+              <span class="prog-switch__mod">M3</span>
+            </a>
+            <a href="progress.html" class="prog-switch__item">
+              <span class="prog-switch__code">SH</span>
+              <span>Wellness &amp; Spa</span>
+              <span class="prog-switch__mod">M2</span>
+            </a>
+            <a href="#" class="prog-switch__enroll">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 3v8M3 7h8"/></svg>
+              Enroll in another program
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Services</div>
           <a href="#" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
-            <span class="sidebar__label">My Cohort</span>
-          </a>
-        </div>
-
-        <div class="sidebar__group">
-          <div class="sidebar__group-label">Learning</div>
-          <a href="curriculum.html" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12M3 8h8M3 12h10"/></svg>
-            <span class="sidebar__label">Curriculum</span>
-          </a>
-          <a href="schedule.html" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1"/><path d="M6 2v2M12 2v2M2 7h14"/></svg>
-            <span class="sidebar__label">Schedule</span>
-          </a>
-          <a href="assignment-submit.html" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg>
-            <span class="sidebar__label">Assignments</span>
-            <span class="sidebar__item-badge">2</span>
-          </a>
-        </div>
-
-        <div class="sidebar__group">
-          <div class="sidebar__group-label">Career</div>
-          <a href="portfolio.html" class="sidebar__item">
             <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
-            <span class="sidebar__label">Portfolio</span>
-          </a>
-          <a href="resume.html" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M11 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6l-4-4z"/><path d="M11 2v4h4M6 10h6M6 13h4"/></svg>
-            <span class="sidebar__label">Resume</span>
-          </a>
-          <a href="#" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg>
-            <span class="sidebar__label">Certificates</span>
-          </a>
-        </div>
-
-        <div class="sidebar__group">
-          <div class="sidebar__group-label">Account</div>
-          <a href="profile.html" class="sidebar__item">
-            <svg class="sidebar__icon" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
-            <span class="sidebar__label">Profile &amp; Settings</span>
+            <span class="sidebar__label">Career services</span>
           </a>
         </div>
 
         <div class="sidebar__footer">
           <div class="sidebar__user">
-            <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 13px;">AS</div>
+            <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 13px;">AM</div>
             <div style="flex:1; min-width:0;">
-              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Aira Sukcharoen</div>
-              <div style="font-size:11px; color: var(--color-shell-text-mute);">Cohort 1 · Bangkok</div>
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Amara Chaiyo</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">2 programs · Bangkok</div>
             </div>
-            <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;flex-shrink:0;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
-          </div>
-          <div style="margin-top: var(--space-8);">
-            <a href="#" class="sidebar__item" style="font-size:12px;">
-              <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M12 3h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M8 12l4-4-4-4M3 9h9"/></svg>
-              <span class="sidebar__label">Sign out</span>
+            <a href="profile.html" style="display:grid;place-items:center;flex-shrink:0;" aria-label="Profile &amp; settings">
+              <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
             </a>
           </div>
         </div>
       </nav>
     </aside>
 
-    <!-- Topbar -->
+    <!-- ========== TOPBAR ========== -->
     <header class="app-topbar">
       <div class="topbar">
         <div class="topbar__cohort-chip">
           <div class="topbar__cohort-chip-dot"></div>
-          Cohort 1 · Module 4/12
+          General · All programs
         </div>
-        <span class="pace pace--behind" style="margin-left: var(--space-8);">
-          <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;" viewBox="0 0 14 14"><path d="M7 2v5l3 2"/><circle cx="7" cy="7" r="5"/></svg>
-          Behind by 1 session
-        </span>
         <div class="topbar__search">
-          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(242,241,240,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
-          <input type="search" placeholder="Search sessions, materials…" aria-label="Search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search classes, materials, threads…" aria-label="Search">
         </div>
         <div class="topbar__actions">
           <button class="topbar__icon-btn" aria-label="Notifications">
             <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
             <span class="topbar__icon-btn-badge"></span>
           </button>
-          <div class="avatar" style="background: var(--color-accent-brand); color: white; font-size: 12px; cursor: pointer;">AS</div>
+          <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 12px; cursor: pointer;">AM</div>
         </div>
       </div>
     </header>
 
-    <!-- Main content -->
+    <!-- ========== MAIN ========== -->
     <main class="app-main">
       <div class="main">
 
-        <!-- Page header -->
         <div class="page-header">
           <div class="page-header__title">
-            <div class="page-header__eyebrow">Wednesday · Week 4 of 12</div>
-            <h1 class="page-header__heading">Welcome back, Aira.</h1>
-            <p class="page-header__sub">Creative Identity &amp; Storytelling · Cohort 1 · 11–30 Nov 2026</p>
-          </div>
-        </div>
-
-        <!-- At-risk alert -->
-        <div class="alert-card mb-32">
-          <div class="alert-card__icon">
-            <svg viewBox="0 0 18 18"><path d="M9 3L2 15h14L9 3z"/><path d="M9 8v4M9 13.5v.5"/></svg>
-          </div>
-          <div>
-            <div class="alert-card__title">You're 1 session behind.</div>
-            <div class="alert-card__body">You missed Monday's onsite studio. Your mentor can help you catch up — or message them now to reschedule.<br>
-              <a href="#" style="color: var(--color-accent-brand); font-weight: 600; font-size: 13px; text-decoration: none; margin-top: 8px; display: inline-block;">Message your mentor →</a>
+            <div class="page-header__eyebrow">Wednesday · 27 May 2026</div>
+            <h1 class="page-header__heading">Hi Amara.</h1>
+            <div class="status-summary" style="margin-top: var(--space-8);">
+              <span class="status-summary__pip">
+                <span class="status-summary__dot"></span>
+                <strong>2 programs</strong>&nbsp;in progress
+              </span>
+              <span class="status-summary__pip">
+                <span class="status-summary__dot status-summary__dot--live"></span>
+                <strong>1 class</strong>&nbsp;live now
+              </span>
             </div>
           </div>
         </div>
 
-        <div class="dashboard-grid">
+        <div class="dash-grid">
           <!-- Focus column -->
-          <div class="dashboard-focus">
+          <div class="dash-main">
 
-            <!-- Continue card -->
-            <div class="continue-card">
-              <div class="continue-card__eyebrow">Resume your work</div>
-              <div class="continue-card__title">Week 4 · Visual Narrative Lab — Identity Collage</div>
-              <div class="continue-card__meta">
-                <div class="continue-card__meta-item">
-                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="10" rx="1"/><path d="M1 5h12"/></svg>
-                  Session 10 of 36
+            <div style="display:flex;align-items:baseline;justify-content:space-between;">
+              <h2 class="t-h4" style="font-weight:800;">Your programs</h2>
+              <a href="#" style="font-size:13px;font-weight:600;color:var(--color-surface-ink);text-decoration:none;">Enroll in another program →</a>
+            </div>
+
+            <!-- Program 1: SE — live now -->
+            <div class="prog-card">
+              <div class="prog-card__head">
+                <div style="display:flex;gap:var(--space-16);align-items:flex-start;">
+                  <div class="prog-card__code">SE</div>
+                  <div>
+                    <div class="prog-card__title">Sales &amp; Dealmaking</div>
+                    <div class="prog-card__school">School of Business &amp; Entrepreneurship</div>
+                    <div class="prog-card__meta" style="margin-top:var(--space-8);">
+                      <span class="badge badge--neutral">Bootcamp</span>
+                      <span class="badge badge--neutral">3 months</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="continue-card__meta-item">
-                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><path d="M7 1v6l3 2"/><circle cx="7" cy="7" r="6"/></svg>
-                  Onsite · Studio A
-                </div>
-                <div class="continue-card__meta-item">
-                  <svg class="continue-card__meta-icon" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M7 4v3l2 2"/></svg>
-                  09:00 – 13:00 today
-                </div>
+                <span class="status-chip status-chip--live-now"><span class="status-chip__dot"></span>Live now</span>
               </div>
-              <div class="continue-card__actions">
-                <a href="session.html" class="btn btn--primary">Resume your work</a>
-                <a href="curriculum.html" class="btn btn--ghost-on-dark btn--sm">View curriculum</a>
-                <span class="status-chip status-chip--live-now" style="margin-left: auto;">
-                  <span class="status-chip__dot"></span>Live now
-                </span>
+
+              <div class="prog-card__module">
+                <span class="prog-card__module-name">Module 3 — Negotiation &amp; closing</span>
+                <span class="prog-card__module-count">Module 3 of 4</span>
+              </div>
+
+              <div class="prog-card__next">
+                <div class="prog-card__next-info">
+                  <div class="prog-card__next-label">Happening now</div>
+                  <div class="prog-card__next-title">Anchoring &amp; concession ladders</div>
+                  <div class="prog-card__next-sub">Live online · 13:00–15:00 · K. Anan</div>
+                </div>
+                <a href="learn.html" class="btn btn--primary">Join class</a>
               </div>
             </div>
 
-            <!-- KPI strip -->
-            <div class="kpi-strip">
-              <div class="kpi-tile">
-                <div class="kpi-tile__label">Sessions attended</div>
-                <div class="kpi-tile__value">9</div>
-                <div class="kpi-tile__delta kpi-tile__delta--down">of 10 possible</div>
-                <div class="kpi-tile__icon-tile">
-                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M5 9l3 3 5-5"/></svg>
+            <!-- Program 2: SH — next class -->
+            <div class="prog-card">
+              <div class="prog-card__head">
+                <div style="display:flex;gap:var(--space-16);align-items:flex-start;">
+                  <div class="prog-card__code">SH</div>
+                  <div>
+                    <div class="prog-card__title">Wellness &amp; Spa</div>
+                    <div class="prog-card__school">School of Hospitality &amp; Humanities</div>
+                    <div class="prog-card__meta" style="margin-top:var(--space-8);">
+                      <span class="badge badge--neutral">Professional</span>
+                      <span class="badge badge--neutral">12 months</span>
+                    </div>
+                  </div>
                 </div>
+                <span class="badge badge--neutral">On track</span>
               </div>
-              <div class="kpi-tile">
-                <div class="kpi-tile__label">Assignments due</div>
-                <div class="kpi-tile__value">2</div>
-                <div class="kpi-tile__delta kpi-tile__delta--down">this week</div>
-                <div class="kpi-tile__icon-tile">
-                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M10 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M10 2v5h5"/></svg>
-                </div>
+
+              <div class="prog-card__module">
+                <span class="prog-card__module-name">Module 2 — Treatment design</span>
+                <span class="prog-card__module-count">Module 2 of 16</span>
               </div>
-              <div class="kpi-tile">
-                <div class="kpi-tile__label">Onsite hours</div>
-                <div class="kpi-tile__value">36</div>
-                <div class="kpi-tile__delta kpi-tile__delta--up">↑ 4 this week</div>
-                <div class="kpi-tile__icon-tile">
-                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><rect x="2" y="6" width="14" height="10" rx="1"/><path d="M6 6V4a3 3 0 016 0v2"/></svg>
+
+              <div class="prog-card__next">
+                <div class="prog-card__next-info">
+                  <div class="prog-card__next-label">Next class</div>
+                  <div class="prog-card__next-title">Aromatherapy foundations</div>
+                  <div class="prog-card__next-sub">In-person · Tomorrow 10:00 · Studio 2 · K. Ploy</div>
                 </div>
-              </div>
-              <div class="kpi-tile">
-                <div class="kpi-tile__label">Portfolio items</div>
-                <div class="kpi-tile__value">5</div>
-                <div class="kpi-tile__delta kpi-tile__delta--up">↑ 2 new this month</div>
-                <div class="kpi-tile__icon-tile">
-                  <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
-                </div>
+                <a href="learn.html" class="btn btn--secondary">Open</a>
               </div>
             </div>
 
-            <!-- Cohort progress -->
-            <div class="cohort-progress-card">
-              <div class="cohort-meta-row">
-                <h3 class="t-h4">Cohort Progress</h3>
-                <span class="badge badge--neutral">Cohort 1 · 16 learners</span>
-              </div>
-              <div class="progress-row mb-16">
-                <span class="progress-row__label" style="min-width:120px;">Your progress</span>
-                <div class="progress progress--lg"><div class="progress__fill progress__fill--brand" style="width:31%"></div></div>
-                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">9/36</span>
-              </div>
-              <div class="progress-row mb-16">
-                <span class="progress-row__label" style="min-width:120px;">Cohort average</span>
-                <div class="progress progress--lg"><div class="progress__fill progress__fill--moss" style="width:36%"></div></div>
-                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">10/36</span>
-              </div>
-              <div class="progress-row">
-                <span class="progress-row__label" style="min-width:120px;">Top learner</span>
-                <div class="progress progress--lg"><div class="progress__fill" style="width:44%"></div></div>
-                <span style="font-size:12px; font-weight:700; min-width:36px; text-align:right;">11/36</span>
-              </div>
-              <div style="margin-top: var(--space-16); padding-top: var(--space-16); border-top: 1px solid var(--color-divider); display:flex; gap: var(--space-16);">
-                <span class="pillar-tag pillar-tag--creativity t-caption" style="font-size:11px;">Creativity</span>
-                <span style="font-size:12px; color: rgba(37,32,38,0.55);">Bootcamp · 3 months · Nov–Jan</span>
-              </div>
-            </div>
-
-            <!-- Announcements -->
+            <!-- Announcements / updates feed -->
             <div class="card">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--space-16);">
-                <h3 class="t-h4">Announcements</h3>
+                <h3 class="t-h4" style="font-weight:800;">Updates</h3>
                 <span class="badge badge--danger">2 new</span>
               </div>
-              <div class="announcement-item">
-                <div class="announcement-dot"></div>
+              <div class="ann-item">
+                <div class="ann-dot"></div>
                 <div>
-                  <div class="announcement-item__title">Studio B schedule change — Week 5</div>
-                  <div class="announcement-item__body">Wednesday Nov 18 onsite moves to 13:00–17:00 due to equipment maintenance. All other sessions unchanged.</div>
-                  <div class="announcement-item__time">Today, 08:30</div>
+                  <div class="ann-item__title">Module 3 brief is live — Negotiation memo</div>
+                  <div class="ann-item__body">Your first-round offer memo is due Friday 29 May, 23:59. Grounded in this week's anchoring materials.</div>
+                  <div class="ann-item__time">Today, 08:30 · SE Sales &amp; Dealmaking</div>
                 </div>
               </div>
-              <div class="announcement-item">
-                <div class="announcement-dot"></div>
+              <div class="ann-item">
+                <div class="ann-dot"></div>
                 <div>
-                  <div class="announcement-item__title">Assignment #4 brief is live</div>
-                  <div class="announcement-item__body">Your Brand Manifesto brief is now available. Submission deadline: Friday Nov 13, 23:59.</div>
-                  <div class="announcement-item__time">Yesterday, 14:00</div>
+                  <div class="ann-item__title">Studio 2 session moved to 10:00</div>
+                  <div class="ann-item__body">Tomorrow's aromatherapy class shifts one hour earlier. All other sessions unchanged.</div>
+                  <div class="ann-item__time">Yesterday, 14:00 · SH Wellness &amp; Spa</div>
                 </div>
               </div>
-              <div class="announcement-item">
-                <div class="announcement-dot announcement-dot--read"></div>
+              <div class="ann-item">
+                <div class="ann-dot ann-dot--read"></div>
                 <div>
-                  <div class="announcement-item__title">Welcome to Week 4</div>
-                  <div class="announcement-item__body">This week we move into visual narrative. Come prepared with your identity mood board from Week 3.</div>
-                  <div class="announcement-item__time">Mon Nov 9, 09:00</div>
+                  <div class="ann-item__title">New portfolio piece unlocked</div>
+                  <div class="ann-item__body">Your Module 2 outreach sequence was auto-added to your portfolio. Review it before it goes to your Career page.</div>
+                  <div class="ann-item__time">Mon 25 May · SE Sales &amp; Dealmaking</div>
                 </div>
               </div>
             </div>
 
-          </div><!-- /focus -->
+          </div><!-- /main -->
 
           <!-- Right rail -->
-          <div class="dashboard-rail">
+          <div class="dash-rail">
 
-            <!-- Today's schedule -->
-            <div class="card">
-              <h3 class="t-h4" style="margin-bottom: var(--space-16);">Today's Schedule</h3>
-              <div class="schedule-item">
-                <div class="schedule-time">09:00</div>
-                <div class="schedule-icon schedule-icon--onsite" style="color:var(--color-surface-ink);">
-                  <svg viewBox="0 0 16 16"><rect x="2" y="6" width="12" height="8" rx="1"/><path d="M5 6V4a3 3 0 016 0v2"/><rect x="6" y="10" width="4" height="4"/></svg>
-                </div>
-                <div class="schedule-info">
-                  <div class="schedule-info__name">Visual Narrative Lab</div>
-                  <div class="schedule-info__sub">Onsite · Studio A · 4h</div>
-                </div>
-              </div>
-              <div class="schedule-item">
-                <div class="schedule-time">14:00</div>
-                <div class="schedule-icon schedule-icon--async" style="color:var(--color-accent-brand);">
-                  <svg viewBox="0 0 16 16"><path d="M3 3h10a1 1 0 011 1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M5 7h6M5 10h4"/></svg>
-                </div>
-                <div class="schedule-info">
-                  <div class="schedule-info__name">Reading: Semiotic Systems</div>
-                  <div class="schedule-info__sub">Async · ~45 min</div>
-                </div>
-              </div>
-              <div style="margin-top: var(--space-16);">
-                <a href="schedule.html" class="btn btn--ghost btn--sm" style="width:100%; justify-content:center;">Full schedule</a>
-              </div>
+            <!-- NICHE Tutor prompt -->
+            <div class="card card--dark">
+              <div class="t-caption" style="color:var(--color-shell-text-mute);letter-spacing:0.12em;">NICHE Tutor</div>
+              <div style="font-size:15px;font-weight:700;line-height:1.35;margin:var(--space-8) 0 var(--space-16);">Stuck on anchoring? Practice a live negotiation scenario grounded in your Module 3 materials.</div>
+              <a href="chat.html" class="btn btn--ghost-on-dark btn--sm" style="width:100%;justify-content:center;">Open Chat</a>
             </div>
 
-            <!-- Cohort peers -->
+            <!-- Recents (recent chat threads) -->
             <div class="card">
-              <h3 class="t-h4" style="margin-bottom: var(--space-16);">Cohort Activity</h3>
-              <div class="peer-item">
-                <div class="avatar avatar--sm" style="background: rgba(74,92,51,0.15); color: var(--color-accent-secondary-shade);">M</div>
-                <div class="peer-item__text">
-                  <strong>Mika</strong> submitted Week 3 brief
-                </div>
-                <div class="peer-item__time">2h ago</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-8);">
+                <h3 class="t-h4" style="font-weight:800;">Recents</h3>
+                <a href="chat.html" style="font-size:12px;font-weight:600;color:var(--color-surface-ink);text-decoration:none;">View all →</a>
               </div>
-              <div class="peer-item">
-                <div class="avatar avatar--sm" style="background: rgba(254,29,37,0.1); color: var(--color-accent-brand);">T</div>
-                <div class="peer-item__text">
-                  <strong>Tanwarin</strong> completed Session 10
+              <a href="chat.html" class="thread-row">
+                <div class="thread-row__icon"><svg viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg></div>
+                <div class="thread-row__body">
+                  <div class="thread-row__title">Anchoring tactics — practice scenarios</div>
+                  <div class="thread-row__sub">SE Sales &amp; Dealmaking · 14 messages</div>
                 </div>
-                <div class="peer-item__time">3h ago</div>
-              </div>
-              <div class="peer-item">
-                <div class="avatar avatar--sm" style="background: rgba(37,32,38,0.08);">+5</div>
-                <div class="peer-item__text">
-                  5 classmates checked in to today's onsite
+                <div class="thread-row__time">2h ago</div>
+              </a>
+              <a href="chat.html" class="thread-row">
+                <div class="thread-row__icon"><svg viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg></div>
+                <div class="thread-row__body">
+                  <div class="thread-row__title">Essential-oil safety for sensitive skin</div>
+                  <div class="thread-row__sub">SH Wellness &amp; Spa · 6 messages</div>
                 </div>
-                <div class="peer-item__time">09:05</div>
-              </div>
-              <div class="peer-item">
-                <div class="avatar avatar--sm" style="background: rgba(74,92,51,0.15); color: var(--color-accent-secondary-shade);">P</div>
-                <div class="peer-item__text">
-                  <strong>Praew</strong> added to portfolio
+                <div class="thread-row__time">Yesterday</div>
+              </a>
+              <a href="chat.html" class="thread-row">
+                <div class="thread-row__icon"><svg viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg></div>
+                <div class="thread-row__body">
+                  <div class="thread-row__title">How do I frame a first offer?</div>
+                  <div class="thread-row__sub">SE Sales &amp; Dealmaking · 9 messages</div>
                 </div>
-                <div class="peer-item__time">Yesterday</div>
-              </div>
+                <div class="thread-row__time">Mon</div>
+              </a>
             </div>
 
-            <!-- Quick links -->
+            <!-- Today at a glance -->
             <div class="card">
-              <h3 class="t-h4" style="margin-bottom: var(--space-12);">Quick access</h3>
-              <div style="display:flex; flex-direction:column; gap: var(--space-8);">
-                <a href="assignment-submit.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
-                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 2H4a1 1 0 00-1 1v8a1 1 0 001 1h6a1 1 0 001-1V2z"/><path d="M4 5h6M4 8h4"/></svg>
-                  Assignment #4 brief
-                  <span class="badge badge--warning" style="margin-left:auto;">Due Fri</span>
-                </a>
-                <a href="session.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
-                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><polygon points="5,4 11,7 5,10"/></svg>
-                  Session 10 — live now
-                </a>
-                <a href="portfolio.html" class="btn btn--ghost btn--sm" style="justify-content:flex-start; gap: var(--space-8);">
-                  <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M4 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
-                  Portfolio (5 items)
-                </a>
+              <h3 class="t-h4" style="font-weight:800;margin-bottom:var(--space-16);">Today</h3>
+              <div class="thread-row">
+                <div class="thread-row__icon"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="6"/><path d="M9 6v3l2 2"/></svg></div>
+                <div class="thread-row__body">
+                  <div class="thread-row__title">Anchoring &amp; concession ladders</div>
+                  <div class="thread-row__sub">Live online · SE · K. Anan</div>
+                </div>
+                <div class="thread-row__time">13:00</div>
               </div>
+              <div class="thread-row">
+                <div class="thread-row__icon"><svg viewBox="0 0 18 18"><path d="M3 3h10a1 1 0 011 1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M5 7h6M5 10h4"/></svg></div>
+                <div class="thread-row__body">
+                  <div class="thread-row__title">Reading: BATNA &amp; reservation price</div>
+                  <div class="thread-row__sub">Async · SE · ~30 min</div>
+                </div>
+                <div class="thread-row__time">Anytime</div>
+              </div>
+              <a href="learn.html" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;margin-top:var(--space-16);">Go to Learn</a>
             </div>
 
           </div><!-- /rail -->

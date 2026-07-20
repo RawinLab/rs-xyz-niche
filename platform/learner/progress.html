@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Progress — NICHE Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* ---- Program switcher (sidebar) — shared with dashboard ---- */
+    .prog-switch { display: flex; flex-direction: column; gap: 2px; }
+    .prog-switch__item {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-8) var(--space-12);
+      border-radius: 6px; text-decoration: none;
+      color: var(--color-shell-text-mute);
+      font-size: 13px; font-weight: 500;
+    }
+    .prog-switch__item:hover { background: var(--color-shell-active); color: var(--color-shell-text); }
+    .prog-switch__item.is-active { background: var(--color-shell-active); color: var(--color-shell-text); font-weight: 600; }
+    .prog-switch__code {
+      width: 22px; height: 22px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.02em;
+    }
+    .prog-switch__mod {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      background: var(--color-shell-text); color: var(--color-shell-bg);
+      padding: 1px 6px; border-radius: 10px;
+    }
+    .prog-switch__enroll {
+      display: flex; align-items: center; gap: var(--space-8);
+      padding: var(--space-8) var(--space-12);
+      color: var(--color-shell-text-mute); font-size: 12px; text-decoration: none;
+    }
+    .prog-switch__enroll:hover { color: var(--color-shell-text); }
+
+    /* ---- Program tabs (General / per-program) ---- */
+    .subnav { display: flex; gap: 2px; border-bottom: 1px solid var(--color-divider); margin-bottom: var(--space-24); }
+    .subnav__tab {
+      appearance: none; background: none; border: none; cursor: pointer; font: inherit;
+      padding: var(--space-12) var(--space-16); font-size: 14px; font-weight: 600;
+      color: rgba(10,10,10,0.5); border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .subnav__tab:hover { color: var(--color-surface-ink); }
+    .subnav__tab.is-active { color: var(--color-surface-ink); border-bottom-color: var(--color-surface-ink); }
+    .prog-view { display: none; }
+    .prog-view.is-active { display: block; }
+
+    /* ---- Progress overview header ---- */
+    .prog-summary {
+      background: white; border: 1px solid var(--color-divider); border-radius: 12px;
+      padding: var(--space-24); margin-bottom: var(--space-24);
+    }
+    .prog-summary__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-16); margin-bottom: var(--space-20); }
+    .prog-summary__code {
+      width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border-radius: 8px;
+      background: var(--color-surface-ink); color: var(--color-surface-base); font-size: 14px; font-weight: 800;
+    }
+    .prog-summary__title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+    .prog-summary__school { font-size: 12px; color: rgba(10,10,10,0.55); margin-top: 2px; }
+
+    .pbar { height: 10px; border-radius: 6px; background: rgba(10,10,10,0.08); overflow: hidden; }
+    .pbar__fill { height: 100%; background: var(--color-surface-ink); border-radius: 6px; }
+    .pbar-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-8); }
+    .pbar-pct { font-size: 15px; font-weight: 800; }
+    .pbar-mod { font-size: 12px; color: rgba(10,10,10,0.55); }
+
+    .prog-stats { display: flex; gap: var(--space-32); margin-top: var(--space-20); flex-wrap: wrap; }
+    .prog-stat__label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(10,10,10,0.45); }
+    .prog-stat__value { font-size: 16px; font-weight: 800; margin-top: 4px; }
+    .prog-stat__sub { font-size: 12px; color: rgba(10,10,10,0.55); font-weight: 500; }
+
+    /* ---- Section heading ---- */
+    .sec-head { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; margin: var(--space-32) 0 var(--space-16); }
+
+    /* ---- Module journey (vertical) ---- */
+    .journey { position: relative; padding-left: var(--space-24); }
+    .journey::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--color-divider); }
+    .journey-node { position: relative; padding-bottom: var(--space-24); }
+    .journey-node:last-child { padding-bottom: 0; }
+    .journey-node__dot {
+      position: absolute; left: calc(-1 * var(--space-24) + 1px); top: 2px;
+      width: 16px; height: 16px; border-radius: 50%; background: white;
+      border: 2px solid var(--color-divider); display: grid; place-items: center;
+    }
+    .journey-node--done .journey-node__dot { background: var(--color-surface-ink); border-color: var(--color-surface-ink); }
+    .journey-node--done .journey-node__dot svg { width: 9px; height: 9px; stroke: white; stroke-width: 2.5; fill: none; }
+    .journey-node--current .journey-node__dot { border-color: var(--color-surface-ink); }
+    .journey-node--current .journey-node__dot::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-surface-ink); }
+    .journey-node__title { font-size: 14px; font-weight: 700; }
+    .journey-node--locked .journey-node__title { color: rgba(10,10,10,0.4); }
+    .journey-node__meta { font-size: 12px; color: rgba(10,10,10,0.55); margin-top: 2px; }
+    .journey-note {
+      display: flex; gap: var(--space-12); align-items: flex-start;
+      margin-top: var(--space-12); padding: var(--space-12) var(--space-16);
+      background: rgba(10,10,10,0.03); border-radius: 8px; border-left: 2px solid var(--color-surface-ink);
+    }
+    .journey-note__avatar { width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background: var(--color-surface-ink); color: var(--color-surface-base); display: grid; place-items: center; font-size: 10px; font-weight: 800; }
+    .journey-note__who { font-size: 11px; font-weight: 700; }
+    .journey-note__text { font-size: 12px; color: rgba(10,10,10,0.7); line-height: 1.5; margin-top: 2px; }
+
+    /* ---- Portfolio pieces ---- */
+    .port-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-16); }
+    .port-card { background: white; border: 1px solid var(--color-divider); border-radius: 10px; padding: var(--space-16); display: flex; flex-direction: column; gap: var(--space-8); }
+    .port-card__auto { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(10,10,10,0.45); display: flex; align-items: center; gap: 5px; }
+    .port-card__auto svg { width: 12px; height: 12px; stroke: rgba(10,10,10,0.45); stroke-width: 1.5; fill: none; }
+    .port-card__title { font-size: 14px; font-weight: 700; line-height: 1.25; }
+    .port-card__sub { font-size: 11px; color: rgba(10,10,10,0.55); }
+    .port-card__foot { margin-top: auto; padding-top: var(--space-8); }
+    .port-generate {
+      border: 1px dashed rgba(10,10,10,0.25); background: transparent; border-radius: 10px;
+      padding: var(--space-16); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: var(--space-8); text-align: center; cursor: pointer; color: rgba(10,10,10,0.6); text-decoration: none;
+    }
+    .port-generate:hover { border-color: var(--color-surface-ink); color: var(--color-surface-ink); }
+    .port-generate svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    /* ---- Job portal cards ---- */
+    .job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-16); }
+    .job-card { background: white; border: 1px solid var(--color-divider); border-radius: 10px; padding: var(--space-20); display: flex; flex-direction: column; gap: var(--space-12); }
+    .job-card__head { display: flex; align-items: center; gap: var(--space-12); }
+    .job-card__logo { width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px; background: rgba(10,10,10,0.06); display: grid; place-items: center; font-size: 12px; font-weight: 800; }
+    .job-card__co { font-size: 14px; font-weight: 700; }
+    .job-card__role { font-size: 12px; color: rgba(10,10,10,0.6); }
+    .job-card__meta { font-size: 12px; color: rgba(10,10,10,0.6); }
+
+    @media (max-width: 900px) { .prog-stats { gap: var(--space-20); } }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- ========== SIDEBAR (canonical — shared across learner pages) ========== -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="dashboard.html" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Student Portal</div>
+          </div>
+        </a>
+
+        <div class="sidebar__group">
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="chat.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
+            <span class="sidebar__label">Chat</span>
+          </a>
+          <a href="learn.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 3L2 6l7 3 7-3-7-3z"/><path d="M4 8v4c0 1 2.2 2 5 2s5-1 5-2V8"/></svg>
+            <span class="sidebar__label">Learn</span>
+          </a>
+          <a href="progress.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 15V7M8 15V3M13 15v-5"/></svg>
+            <span class="sidebar__label">Progress</span>
+          </a>
+        </div>
+
+        <!-- Program switcher: General / per-program / Career services -->
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Programs</div>
+          <div class="prog-switch">
+            <a href="progress.html" class="prog-switch__item is-active">
+              <span class="prog-switch__code">ALL</span>
+              <span>General</span>
+            </a>
+            <a href="progress.html" class="prog-switch__item">
+              <span class="prog-switch__code">SE</span>
+              <span>Sales &amp; Dealmaking</span>
+              <span class="prog-switch__mod">M3</span>
+            </a>
+            <a href="progress.html" class="prog-switch__item">
+              <span class="prog-switch__code">SH</span>
+              <span>Wellness &amp; Spa</span>
+              <span class="prog-switch__mod">M2</span>
+            </a>
+            <a href="#" class="prog-switch__enroll">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 3v8M3 7h8"/></svg>
+              Enroll in another program
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Services</div>
+          <a href="#job-portal" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+            <span class="sidebar__label">Career services</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 13px;">AM</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Amara Chaiyo</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">2 programs · Bangkok</div>
+            </div>
+            <a href="profile.html" style="display:grid;place-items:center;flex-shrink:0;" aria-label="Profile &amp; settings">
+              <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ========== TOPBAR ========== -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          General · All programs
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search modules &amp; portfolio…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
+            <span class="topbar__icon-btn-badge"></span>
+          </button>
+          <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 12px; cursor: pointer;">AM</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== MAIN ========== -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Your journey</div>
+            <h1 class="page-header__heading">Progress</h1>
+          </div>
+        </div>
+
+        <!-- Program switcher tabs: General overview vs per-program -->
+        <div class="subnav" role="tablist">
+          <button class="subnav__tab is-active" onclick="showProg(event,'general')">General</button>
+          <button class="subnav__tab" onclick="showProg(event,'se')">SE · Sales &amp; Dealmaking</button>
+          <button class="subnav__tab" onclick="showProg(event,'sh')">SH · Wellness &amp; Spa</button>
+        </div>
+
+        <!-- =============== GENERAL (all programs overview) =============== -->
+        <section id="prog-general" class="prog-view is-active">
+
+          <!-- SE summary -->
+          <div class="prog-summary">
+            <div class="prog-summary__top">
+              <div style="display:flex;gap:var(--space-16);align-items:center;">
+                <div class="prog-summary__code">SE</div>
+                <div>
+                  <div class="prog-summary__title">Sales &amp; Dealmaking</div>
+                  <div class="prog-summary__school">School of Business &amp; Entrepreneurship · Bootcamp</div>
+                </div>
+              </div>
+              <span class="badge badge--ink">Standing: Exceeding</span>
+            </div>
+            <div class="pbar-row"><span class="pbar-pct">62%</span><span class="pbar-mod">Module 3 of 4 · Negotiation &amp; closing</span></div>
+            <div class="pbar"><div class="pbar__fill" style="width:62%;"></div></div>
+            <div class="prog-stats">
+              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">92% <span class="prog-stat__sub">· 11 of 12 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Submissions</div><div class="prog-stat__value">5 <span class="prog-stat__sub">· 1 in 1:1 review</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Portfolio pieces</div><div class="prog-stat__value">3 auto-created</div></div>
+            </div>
+          </div>
+
+          <!-- SH summary -->
+          <div class="prog-summary">
+            <div class="prog-summary__top">
+              <div style="display:flex;gap:var(--space-16);align-items:center;">
+                <div class="prog-summary__code">SH</div>
+                <div>
+                  <div class="prog-summary__title">Wellness &amp; Spa</div>
+                  <div class="prog-summary__school">School of Hospitality &amp; Humanities · Professional</div>
+                </div>
+              </div>
+              <span class="badge badge--neutral">Standing: Meeting</span>
+            </div>
+            <div class="pbar-row"><span class="pbar-pct">14%</span><span class="pbar-mod">Module 2 of 16 · Treatment design</span></div>
+            <div class="pbar"><div class="pbar__fill" style="width:14%;"></div></div>
+            <div class="prog-stats">
+              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">100% <span class="prog-stat__sub">· 6 of 6 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Submissions</div><div class="prog-stat__value">2 <span class="prog-stat__sub">· all reviewed</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Portfolio pieces</div><div class="prog-stat__value">1 auto-created</div></div>
+            </div>
+          </div>
+
+          <p style="font-size:13px;color:rgba(10,10,10,0.55);">Open a program tab above for its full module journey, instructor notes, and portfolio.</p>
+        </section>
+
+        <!-- =============== SE — full journey =============== -->
+        <section id="prog-se" class="prog-view">
+
+          <div class="prog-summary">
+            <div class="prog-summary__top">
+              <div style="display:flex;gap:var(--space-16);align-items:center;">
+                <div class="prog-summary__code">SE</div>
+                <div>
+                  <div class="prog-summary__title">Sales &amp; Dealmaking</div>
+                  <div class="prog-summary__school">School of Business &amp; Entrepreneurship · Bootcamp · 3 months</div>
+                </div>
+              </div>
+              <span class="badge badge--ink">Standing: Exceeding</span>
+            </div>
+            <div class="pbar-row"><span class="pbar-pct">62%</span><span class="pbar-mod">Module 3 of 4</span></div>
+            <div class="pbar"><div class="pbar__fill" style="width:62%;"></div></div>
+            <div class="prog-stats">
+              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">92% <span class="prog-stat__sub">· 11 of 12 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Standing</div><div class="prog-stat__value">Exceeding</div></div>
+            </div>
+          </div>
+
+          <div class="sec-head">Module journey</div>
+          <div class="journey">
+            <div class="journey-node journey-node--done">
+              <div class="journey-node__dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg></div>
+              <div class="journey-node__title">Module 1 — Foundations of the deal</div>
+              <div class="journey-node__meta">Completed · Meeting expectations</div>
+              <div class="journey-note">
+                <div class="journey-note__avatar">AN</div>
+                <div>
+                  <div class="journey-note__who">K. Anan · instructor note</div>
+                  <div class="journey-note__text">Strong grasp of discovery questioning. Push yourself to slow down before proposing — you jumped to solutions twice in the role-play.</div>
+                </div>
+              </div>
+            </div>
+            <div class="journey-node journey-node--done">
+              <div class="journey-node__dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg></div>
+              <div class="journey-node__title">Module 2 — Prospecting &amp; outreach</div>
+              <div class="journey-node__meta">Completed · Exceeding · 1:1 held</div>
+              <div class="journey-note">
+                <div class="journey-note__avatar">AN</div>
+                <div>
+                  <div class="journey-note__who">K. Anan · 1:1 note</div>
+                  <div class="journey-note__text">Your outreach sequence was the sharpest in the cohort. In our 1:1 we agreed you'll mentor two peers on subject-line testing next module.</div>
+                </div>
+              </div>
+            </div>
+            <div class="journey-node journey-node--current">
+              <div class="journey-node__dot"></div>
+              <div class="journey-node__title">Module 3 — Negotiation &amp; closing</div>
+              <div class="journey-node__meta">In progress · 2 of 3 classes done · memo due Fri</div>
+            </div>
+            <div class="journey-node journey-node--locked">
+              <div class="journey-node__dot"></div>
+              <div class="journey-node__title">Module 4 — Account expansion</div>
+              <div class="journey-node__meta">Locked · unlocks after Module 3</div>
+            </div>
+          </div>
+
+          <div class="sec-head">Portfolio</div>
+          <div class="port-grid">
+            <div class="port-card">
+              <div class="port-card__auto"><svg viewBox="0 0 12 12"><path d="M6 1l1.5 3L11 5 8.5 7 9 11 6 9 3 11l.5-4L1 5l3.5-1z"/></svg>Auto-created</div>
+              <div class="port-card__title">Cold outreach sequence</div>
+              <div class="port-card__sub">From Module 2 · reviewed</div>
+              <div class="port-card__foot"><a href="#" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">View piece</a></div>
+            </div>
+            <div class="port-card">
+              <div class="port-card__auto"><svg viewBox="0 0 12 12"><path d="M6 1l1.5 3L11 5 8.5 7 9 11 6 9 3 11l.5-4L1 5l3.5-1z"/></svg>Auto-created</div>
+              <div class="port-card__title">Discovery-call framework</div>
+              <div class="port-card__sub">From Module 1 · reviewed</div>
+              <div class="port-card__foot"><a href="#" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">View piece</a></div>
+            </div>
+            <a href="#" class="port-generate">
+              <svg viewBox="0 0 22 22"><path d="M11 5v12M5 11h12"/></svg>
+              <div style="font-size:13px;font-weight:700;">Generate a portfolio piece</div>
+              <div style="font-size:11px;">From your Module 3 work</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- =============== SH — full journey =============== -->
+        <section id="prog-sh" class="prog-view">
+
+          <div class="prog-summary">
+            <div class="prog-summary__top">
+              <div style="display:flex;gap:var(--space-16);align-items:center;">
+                <div class="prog-summary__code">SH</div>
+                <div>
+                  <div class="prog-summary__title">Wellness &amp; Spa</div>
+                  <div class="prog-summary__school">School of Hospitality &amp; Humanities · Professional · 12 months</div>
+                </div>
+              </div>
+              <span class="badge badge--neutral">Standing: Meeting</span>
+            </div>
+            <div class="pbar-row"><span class="pbar-pct">14%</span><span class="pbar-mod">Module 2 of 16</span></div>
+            <div class="pbar"><div class="pbar__fill" style="width:14%;"></div></div>
+            <div class="prog-stats">
+              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">100% <span class="prog-stat__sub">· 6 of 6 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label">Standing</div><div class="prog-stat__value">Meeting</div></div>
+            </div>
+          </div>
+
+          <div class="sec-head">Module journey</div>
+          <div class="journey">
+            <div class="journey-node journey-node--done">
+              <div class="journey-node__dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg></div>
+              <div class="journey-node__title">Module 1 — Client &amp; consultation</div>
+              <div class="journey-node__meta">Completed · Meeting expectations</div>
+              <div class="journey-note">
+                <div class="journey-note__avatar">PL</div>
+                <div>
+                  <div class="journey-note__who">K. Ploy · instructor note</div>
+                  <div class="journey-note__text">Warm, attentive consultation manner. Tighten your contraindication checklist — you missed a citrus-oil flag in the practical.</div>
+                </div>
+              </div>
+            </div>
+            <div class="journey-node journey-node--current">
+              <div class="journey-node__dot"></div>
+              <div class="journey-node__title">Module 2 — Treatment design</div>
+              <div class="journey-node__meta">In progress · 2 of 8 classes done</div>
+            </div>
+            <div class="journey-node journey-node--locked">
+              <div class="journey-node__dot"></div>
+              <div class="journey-node__title">Module 3 — Hydrotherapy &amp; body</div>
+              <div class="journey-node__meta">Locked · unlocks after Module 2</div>
+            </div>
+          </div>
+
+          <div class="sec-head">Portfolio</div>
+          <div class="port-grid">
+            <div class="port-card">
+              <div class="port-card__auto"><svg viewBox="0 0 12 12"><path d="M6 1l1.5 3L11 5 8.5 7 9 11 6 9 3 11l.5-4L1 5l3.5-1z"/></svg>Auto-created</div>
+              <div class="port-card__title">Client persona brief</div>
+              <div class="port-card__sub">From Module 1 · reviewed</div>
+              <div class="port-card__foot"><a href="#" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">View piece</a></div>
+            </div>
+            <a href="#" class="port-generate">
+              <svg viewBox="0 0 22 22"><path d="M11 5v12M5 11h12"/></svg>
+              <div style="font-size:13px;font-weight:700;">Generate a portfolio piece</div>
+              <div style="font-size:11px;">From your Module 2 work</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- =============== JOB PORTAL (career services link target) =============== -->
+        <div id="job-portal" style="margin-top: var(--space-32);">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;">
+            <div class="sec-head" style="margin:0;">Career &amp; job portal</div>
+            <a href="#" style="font-size:13px;font-weight:600;color:var(--color-surface-ink);text-decoration:none;">Open Career services →</a>
+          </div>
+          <p style="font-size:13px;color:rgba(10,10,10,0.55);margin:var(--space-8) 0 var(--space-16);">Roles matched to your portfolio and program standing. Your portfolio is shared with employers only when you choose.</p>
+          <div class="job-grid">
+            <div class="job-card">
+              <div class="job-card__head">
+                <div class="job-card__logo">RV</div>
+                <div><div class="job-card__co">Rivet Ventures</div><div class="job-card__role">Junior Account Executive</div></div>
+              </div>
+              <div class="job-card__meta">Bangkok · Full-time · From your SE portfolio</div>
+              <div><span class="badge badge--ink">Strong match</span></div>
+              <a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">View role</a>
+            </div>
+            <div class="job-card">
+              <div class="job-card__head">
+                <div class="job-card__logo">LM</div>
+                <div><div class="job-card__co">Lumen Spa Group</div><div class="job-card__role">Spa Therapist (Trainee)</div></div>
+              </div>
+              <div class="job-card__meta">Bangkok · Full-time · From your SH portfolio</div>
+              <div><span class="badge badge--neutral">Growing match</span></div>
+              <a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">View role</a>
+            </div>
+            <div class="job-card">
+              <div class="job-card__head">
+                <div class="job-card__logo">NX</div>
+                <div><div class="job-card__co">Nexa SaaS</div><div class="job-card__role">SDR Internship</div></div>
+              </div>
+              <div class="job-card__meta">Remote · Internship · From your SE portfolio</div>
+              <div><span class="badge badge--neutral">Emerging match</span></div>
+              <a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">View role</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+
+<script>
+  function showProg(e, id) {
+    document.querySelectorAll('.subnav')[0].querySelectorAll('.subnav__tab').forEach(t => t.classList.remove('is-active'));
+    e.currentTarget.classList.add('is-active');
+    ['general','se','sh'].forEach(s => document.getElementById('prog-' + s).classList.toggle('is-active', s === id));
+  }
+</script>
+</body>
+</html>

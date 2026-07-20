@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Learn — NICHE Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="../shared/platform.css">
+  <style>
+    /* ---- Program switcher (sidebar) — shared with dashboard ---- */
+    .prog-switch { display: flex; flex-direction: column; gap: 2px; }
+    .prog-switch__item {
+      display: flex; align-items: center; gap: var(--space-12);
+      padding: var(--space-8) var(--space-12);
+      border-radius: 6px; text-decoration: none;
+      color: var(--color-shell-text-mute);
+      font-size: 13px; font-weight: 500;
+    }
+    .prog-switch__item:hover { background: var(--color-shell-active); color: var(--color-shell-text); }
+    .prog-switch__item.is-active { background: var(--color-shell-active); color: var(--color-shell-text); font-weight: 600; }
+    .prog-switch__code {
+      width: 22px; height: 22px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.02em;
+    }
+    .prog-switch__mod {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      background: var(--color-shell-text); color: var(--color-shell-bg);
+      padding: 1px 6px; border-radius: 10px;
+    }
+    .prog-switch__enroll {
+      display: flex; align-items: center; gap: var(--space-8);
+      padding: var(--space-8) var(--space-12);
+      color: var(--color-shell-text-mute); font-size: 12px; text-decoration: none;
+    }
+    .prog-switch__enroll:hover { color: var(--color-shell-text); }
+
+    /* ---- Learn sub-nav (single nav entry, in-page sections) ---- */
+    .subnav { display: flex; gap: 2px; border-bottom: 1px solid var(--color-divider); margin-bottom: var(--space-24); }
+    .subnav__tab {
+      appearance: none; background: none; border: none; cursor: pointer; font: inherit;
+      padding: var(--space-12) var(--space-16); font-size: 14px; font-weight: 600;
+      color: rgba(10,10,10,0.5); border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .subnav__tab:hover { color: var(--color-surface-ink); }
+    .subnav__tab.is-active { color: var(--color-surface-ink); border-bottom-color: var(--color-surface-ink); }
+    .subnav__tab .badge { margin-left: 6px; }
+
+    .learn-section { display: none; }
+    .learn-section.is-active { display: block; }
+
+    .date-head { font-size: 13px; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: rgba(10,10,10,0.55); margin: var(--space-24) 0 var(--space-12); }
+    .date-head:first-child { margin-top: 0; }
+
+    /* Class card */
+    .class-card {
+      display: flex; align-items: center; gap: var(--space-16);
+      background: white; border: 1px solid var(--color-divider); border-radius: 10px;
+      padding: var(--space-16) var(--space-20); margin-bottom: var(--space-12);
+    }
+    .class-card--live { border-color: var(--color-surface-ink); box-shadow: inset 3px 0 0 var(--color-surface-ink); }
+    .class-card__time { width: 74px; flex-shrink: 0; }
+    .class-card__time-start { font-size: 15px; font-weight: 800; }
+    .class-card__time-end { font-size: 11px; color: rgba(10,10,10,0.45); }
+    .class-card__body { flex: 1; min-width: 0; }
+    .class-card__title { font-size: 15px; font-weight: 700; }
+    .class-card__sub { font-size: 12px; color: rgba(10,10,10,0.6); margin-top: 3px; }
+    .class-card__meta { display: flex; gap: var(--space-8); align-items: center; margin-top: var(--space-8); flex-wrap: wrap; }
+    .class-card__actions { flex-shrink: 0; display: flex; align-items: center; gap: var(--space-12); }
+    .attend-check { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: rgba(10,10,10,0.55); }
+    .attend-check svg { width: 15px; height: 15px; stroke: var(--color-surface-ink); stroke-width: 2; fill: none; }
+
+    /* Submissions */
+    .subm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-16); }
+    .subm-card { background: white; border: 1px solid var(--color-divider); border-radius: 10px; padding: var(--space-20); display: flex; flex-direction: column; gap: var(--space-12); }
+    .subm-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12); }
+    .subm-card__title { font-size: 15px; font-weight: 700; line-height: 1.2; }
+    .subm-card__prog { font-size: 12px; color: rgba(10,10,10,0.55); margin-top: 4px; }
+    .subm-card__due { font-size: 12px; color: rgba(10,10,10,0.6); display: flex; align-items: center; gap: 6px; }
+    .subm-card__due svg { width: 13px; height: 13px; stroke: rgba(10,10,10,0.5); stroke-width: 1.5; fill: none; }
+    .subm-card__foot { margin-top: auto; }
+
+    /* Materials */
+    .filter-row { display: flex; gap: var(--space-8); margin-bottom: var(--space-20); flex-wrap: wrap; }
+    .filter-chip {
+      appearance: none; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-divider);
+      background: white; color: rgba(10,10,10,0.6);
+    }
+    .filter-chip:hover { border-color: var(--color-surface-ink); color: var(--color-surface-ink); }
+    .filter-chip.is-active { background: var(--color-surface-ink); color: var(--color-surface-base); border-color: var(--color-surface-ink); }
+
+    .mat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-16); }
+    .mat-card { background: white; border: 1px solid var(--color-divider); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+    .mat-card__thumb { height: 96px; background: rgba(10,10,10,0.04); display: grid; place-items: center; position: relative; }
+    .mat-card__thumb svg { width: 30px; height: 30px; stroke: rgba(10,10,10,0.35); stroke-width: 1.5; fill: none; }
+    .mat-card__dur { position: absolute; bottom: 8px; right: 8px; font-size: 10px; font-weight: 700; background: var(--color-surface-ink); color: var(--color-surface-base); padding: 2px 7px; border-radius: 4px; }
+    .mat-card__body { padding: var(--space-16); display: flex; flex-direction: column; gap: var(--space-8); flex: 1; }
+    .mat-card__title { font-size: 14px; font-weight: 700; line-height: 1.25; }
+    .mat-card__sub { font-size: 11px; color: rgba(10,10,10,0.55); }
+    .mat-card__foot { margin-top: auto; padding-top: var(--space-8); }
+
+    @media (max-width: 720px) { .class-card { flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="app-layout">
+
+    <!-- ========== SIDEBAR (canonical — shared across learner pages) ========== -->
+    <aside class="app-sidebar">
+      <nav class="sidebar">
+        <a href="dashboard.html" class="sidebar__brand">
+          <div class="sidebar__brand-mark">N</div>
+          <div>
+            <div class="sidebar__brand-name">NICHE</div>
+            <div class="sidebar__brand-suffix">Student Portal</div>
+          </div>
+        </a>
+
+        <div class="sidebar__group">
+          <a href="dashboard.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+            <span class="sidebar__label">Dashboard</span>
+          </a>
+          <a href="chat.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
+            <span class="sidebar__label">Chat</span>
+          </a>
+          <a href="learn.html" class="sidebar__item is-active">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M9 3L2 6l7 3 7-3-7-3z"/><path d="M4 8v4c0 1 2.2 2 5 2s5-1 5-2V8"/></svg>
+            <span class="sidebar__label">Learn</span>
+          </a>
+          <a href="progress.html" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><path d="M3 15V7M8 15V3M13 15v-5"/></svg>
+            <span class="sidebar__label">Progress</span>
+          </a>
+        </div>
+
+        <!-- Program switcher: General / per-program / Career services -->
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Programs</div>
+          <div class="prog-switch">
+            <a href="learn.html" class="prog-switch__item is-active">
+              <span class="prog-switch__code">ALL</span>
+              <span>General</span>
+            </a>
+            <a href="learn.html" class="prog-switch__item">
+              <span class="prog-switch__code">SE</span>
+              <span>Sales &amp; Dealmaking</span>
+              <span class="prog-switch__mod">M3</span>
+            </a>
+            <a href="learn.html" class="prog-switch__item">
+              <span class="prog-switch__code">SH</span>
+              <span>Wellness &amp; Spa</span>
+              <span class="prog-switch__mod">M2</span>
+            </a>
+            <a href="#" class="prog-switch__enroll">
+              <svg style="width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M7 3v8M3 7h8"/></svg>
+              Enroll in another program
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Services</div>
+          <a href="#" class="sidebar__item">
+            <svg class="sidebar__icon" viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="10" rx="1"/><path d="M6 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+            <span class="sidebar__label">Career services</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="sidebar__user">
+            <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 13px;">AM</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:600; color: var(--color-shell-text);">Amara Chaiyo</div>
+              <div style="font-size:11px; color: var(--color-shell-text-mute);">2 programs · Bangkok</div>
+            </div>
+            <a href="profile.html" style="display:grid;place-items:center;flex-shrink:0;" aria-label="Profile &amp; settings">
+              <svg style="width:14px;height:14px;stroke:var(--color-shell-text-mute);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><path d="M10 7H4M8 9l2-2-2-2"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ========== TOPBAR ========== -->
+    <header class="app-topbar">
+      <div class="topbar">
+        <div class="topbar__cohort-chip">
+          <div class="topbar__cohort-chip-dot"></div>
+          General · All programs
+        </div>
+        <div class="topbar__search">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:rgba(255,255,255,0.4);stroke-width:1.5;fill:none;" viewBox="0 0 14 14"><circle cx="6" cy="6" r="4"/><path d="M10 10l2 2"/></svg>
+          <input type="search" placeholder="Search classes &amp; materials…" aria-label="Search">
+        </div>
+        <div class="topbar__actions">
+          <button class="topbar__icon-btn" aria-label="Notifications">
+            <svg style="width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;" viewBox="0 0 18 18"><path d="M9 2a5 5 0 00-5 5v3l-1.5 2h13L14 10V7a5 5 0 00-5-5z"/><path d="M7 15a2 2 0 004 0"/></svg>
+            <span class="topbar__icon-btn-badge"></span>
+          </button>
+          <div class="avatar" style="background: var(--color-shell-text); color: var(--color-shell-bg); font-size: 12px; cursor: pointer;">AM</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== MAIN ========== -->
+    <main class="app-main">
+      <div class="main">
+
+        <div class="page-header">
+          <div class="page-header__title">
+            <div class="page-header__eyebrow">Wednesday · 27 May 2026</div>
+            <h1 class="page-header__heading">Learn</h1>
+          </div>
+        </div>
+
+        <!-- Single nav entry, four in-page sections -->
+        <div class="subnav" role="tablist">
+          <button class="subnav__tab is-active" role="tab" onclick="showLearn(event,'today')">Today &amp; schedule</button>
+          <button class="subnav__tab" role="tab" onclick="showLearn(event,'submissions')">Submissions<span class="badge badge--danger">2 due</span></button>
+          <button class="subnav__tab" role="tab" onclick="showLearn(event,'materials')">Course materials</button>
+        </div>
+
+        <!-- =============== TODAY & SCHEDULE =============== -->
+        <section id="learn-today" class="learn-section is-active">
+
+          <div class="date-head">Today · Wednesday 27 May</div>
+
+          <div class="class-card class-card--live">
+            <div class="class-card__time">
+              <div class="class-card__time-start">13:00</div>
+              <div class="class-card__time-end">15:00</div>
+            </div>
+            <div class="class-card__body">
+              <div class="class-card__title">Anchoring &amp; concession ladders</div>
+              <div class="class-card__sub">SE Sales &amp; Dealmaking · Module 3.2 · K. Anan</div>
+              <div class="class-card__meta">
+                <span class="badge badge--ink">Live online</span>
+                <span class="status-chip status-chip--live-now"><span class="status-chip__dot"></span>Live now</span>
+              </div>
+            </div>
+            <div class="class-card__actions">
+              <a href="#" class="btn btn--primary">Join class</a>
+            </div>
+          </div>
+
+          <div class="class-card">
+            <div class="class-card__time">
+              <div class="class-card__time-start">—</div>
+              <div class="class-card__time-end">~30 min</div>
+            </div>
+            <div class="class-card__body">
+              <div class="class-card__title">Reading: BATNA &amp; reservation price</div>
+              <div class="class-card__sub">SE Sales &amp; Dealmaking · Module 3.1 · Self-paced</div>
+              <div class="class-card__meta">
+                <span class="badge badge--neutral">Async</span>
+              </div>
+            </div>
+            <div class="class-card__actions">
+              <a href="#" class="btn btn--secondary">Open</a>
+            </div>
+          </div>
+
+          <!-- Upcoming / Previous tabs -->
+          <div class="subnav" style="margin-top: var(--space-32);">
+            <button class="subnav__tab is-active" onclick="showSched(event,'upcoming')">Upcoming</button>
+            <button class="subnav__tab" onclick="showSched(event,'previous')">Previous</button>
+          </div>
+
+          <div id="sched-upcoming" class="learn-section is-active">
+            <div class="date-head">Tomorrow · Thursday 28 May</div>
+            <div class="class-card">
+              <div class="class-card__time"><div class="class-card__time-start">10:00</div><div class="class-card__time-end">12:00</div></div>
+              <div class="class-card__body">
+                <div class="class-card__title">Aromatherapy foundations</div>
+                <div class="class-card__sub">SH Wellness &amp; Spa · Module 2.1 · K. Ploy · Studio 2</div>
+                <div class="class-card__meta"><span class="badge badge--neutral">In-person</span></div>
+              </div>
+              <div class="class-card__actions"><a href="#" class="btn btn--secondary">Details</a></div>
+            </div>
+            <div class="date-head">Friday 29 May</div>
+            <div class="class-card">
+              <div class="class-card__time"><div class="class-card__time-start">13:00</div><div class="class-card__time-end">15:00</div></div>
+              <div class="class-card__body">
+                <div class="class-card__title">Objection handling clinic</div>
+                <div class="class-card__sub">SE Sales &amp; Dealmaking · Module 3.3 · K. Anan</div>
+                <div class="class-card__meta"><span class="badge badge--ink">Live online</span></div>
+              </div>
+              <div class="class-card__actions"><a href="#" class="btn btn--secondary">Details</a></div>
+            </div>
+          </div>
+
+          <div id="sched-previous" class="learn-section">
+            <div class="date-head">Monday 25 May</div>
+            <div class="class-card">
+              <div class="class-card__time"><div class="class-card__time-start">13:00</div><div class="class-card__time-end">15:00</div></div>
+              <div class="class-card__body">
+                <div class="class-card__title">Opening the negotiation</div>
+                <div class="class-card__sub">SE Sales &amp; Dealmaking · Module 3.1 · K. Anan</div>
+                <div class="class-card__meta"><span class="badge badge--ink">Live online</span></div>
+              </div>
+              <div class="class-card__actions">
+                <span class="attend-check"><svg viewBox="0 0 15 15"><path d="M3 8l3 3 6-7"/></svg>Attended</span>
+                <a href="#" class="btn btn--ghost btn--sm">Watch replay</a>
+              </div>
+            </div>
+            <div class="date-head">Thursday 21 May</div>
+            <div class="class-card">
+              <div class="class-card__time"><div class="class-card__time-start">10:00</div><div class="class-card__time-end">12:00</div></div>
+              <div class="class-card__body">
+                <div class="class-card__title">Intro to treatment design</div>
+                <div class="class-card__sub">SH Wellness &amp; Spa · Module 1.4 · K. Ploy · Studio 2</div>
+                <div class="class-card__meta"><span class="badge badge--neutral">In-person</span></div>
+              </div>
+              <div class="class-card__actions">
+                <span class="attend-check"><svg viewBox="0 0 15 15"><path d="M3 8l3 3 6-7"/></svg>Attended</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- =============== SUBMISSIONS =============== -->
+        <section id="learn-submissions" class="learn-section">
+          <div class="subm-grid">
+
+            <!-- Due -->
+            <div class="subm-card">
+              <div class="subm-card__head">
+                <div>
+                  <div class="subm-card__title">First-round offer memo</div>
+                  <div class="subm-card__prog">SE Sales &amp; Dealmaking · Module 3</div>
+                </div>
+                <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>Due soon</span>
+              </div>
+              <div class="subm-card__due"><svg viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5"/><path d="M6.5 4v3l2 1"/></svg>Due Fri 29 May · 23:59</div>
+              <div class="subm-card__foot"><a href="#" class="btn btn--primary btn--sm" style="width:100%;justify-content:center;">Start submission</a></div>
+            </div>
+
+            <!-- Open -->
+            <div class="subm-card">
+              <div class="subm-card__head">
+                <div>
+                  <div class="subm-card__title">Treatment plan draft</div>
+                  <div class="subm-card__prog">SH Wellness &amp; Spa · Module 2</div>
+                </div>
+                <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>Open</span>
+              </div>
+              <div class="subm-card__due"><svg viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5"/><path d="M6.5 4v3l2 1"/></svg>Due Mon 2 Jun · 23:59</div>
+              <div class="subm-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Continue draft</a></div>
+            </div>
+
+            <!-- Submitted -->
+            <div class="subm-card">
+              <div class="subm-card__head">
+                <div>
+                  <div class="subm-card__title">Cold outreach sequence</div>
+                  <div class="subm-card__prog">SE Sales &amp; Dealmaking · Module 2</div>
+                </div>
+                <span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Submitted</span>
+              </div>
+              <div class="subm-card__due"><svg viewBox="0 0 13 13"><path d="M2 7l3 3 6-7"/></svg>Submitted Mon 25 May · awaiting review</div>
+              <div class="subm-card__foot"><a href="#" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">View submission</a></div>
+            </div>
+
+            <!-- Reviewed (needs 1:1 — restyled) -->
+            <div class="subm-card">
+              <div class="subm-card__head">
+                <div>
+                  <div class="subm-card__title">Discovery-call role-play</div>
+                  <div class="subm-card__prog">SE Sales &amp; Dealmaking · Module 2</div>
+                </div>
+                <span class="status-chip status-chip--needs-revision"><span class="status-chip__dot"></span>1:1 requested</span>
+              </div>
+              <div class="subm-card__due"><svg viewBox="0 0 13 13"><path d="M2 7l3 3 6-7"/></svg>Reviewed · K. Anan booked a 1:1 for Thu</div>
+              <div class="subm-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">See feedback &amp; slot</a></div>
+            </div>
+
+            <!-- Reviewed pass -->
+            <div class="subm-card">
+              <div class="subm-card__head">
+                <div>
+                  <div class="subm-card__title">Client persona brief</div>
+                  <div class="subm-card__prog">SH Wellness &amp; Spa · Module 1</div>
+                </div>
+                <span class="status-chip status-chip--complete"><span class="status-chip__dot"></span>Reviewed</span>
+              </div>
+              <div class="subm-card__due"><svg viewBox="0 0 13 13"><path d="M2 7l3 3 6-7"/></svg>Meeting expectations · added to portfolio</div>
+              <div class="subm-card__foot"><a href="#" class="btn btn--ghost btn--sm" style="width:100%;justify-content:center;">View feedback</a></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =============== COURSE MATERIALS =============== -->
+        <section id="learn-materials" class="learn-section">
+          <div class="filter-row">
+            <button class="filter-chip is-active" onclick="filterMat(event,'all')">All</button>
+            <button class="filter-chip" onclick="filterMat(event,'video')">Videos</button>
+            <button class="filter-chip" onclick="filterMat(event,'slides')">Slides</button>
+            <button class="filter-chip" onclick="filterMat(event,'reading')">Readings</button>
+            <button class="filter-chip" onclick="filterMat(event,'dataset')">Datasets</button>
+          </div>
+
+          <div class="mat-grid">
+            <!-- Video -->
+            <div class="mat-card" data-type="video">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>
+                <span class="mat-card__dur">18:24</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">Anchoring &amp; the credible range</div>
+                <div class="mat-card__sub">SE Sales &amp; Dealmaking · Module 3.2</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Watch</a></div>
+              </div>
+            </div>
+            <!-- Reading -->
+            <div class="mat-card" data-type="reading">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M16 4v4h4"/><path d="M8 12h8M8 16h6"/></svg>
+                <span class="mat-card__dur">~30 min</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">BATNA &amp; reservation price</div>
+                <div class="mat-card__sub">SE Sales &amp; Dealmaking · Module 3.1</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Open</a></div>
+              </div>
+            </div>
+            <!-- Slides -->
+            <div class="mat-card" data-type="slides">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M9 20h6M12 16v4"/></svg>
+                <span class="mat-card__dur">32 slides</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">Concession ladders — deck</div>
+                <div class="mat-card__sub">SE Sales &amp; Dealmaking · Module 3.2</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Open</a></div>
+              </div>
+            </div>
+            <!-- Dataset -->
+            <div class="mat-card" data-type="dataset">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+                <span class="mat-card__dur">CSV</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">Deal-outcome sample data</div>
+                <div class="mat-card__sub">SE Sales &amp; Dealmaking · Module 3.3</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Download</a></div>
+              </div>
+            </div>
+            <!-- Video (SH) -->
+            <div class="mat-card" data-type="video">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>
+                <span class="mat-card__dur">12:07</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">Essential-oil safety basics</div>
+                <div class="mat-card__sub">SH Wellness &amp; Spa · Module 2.1</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Watch</a></div>
+              </div>
+            </div>
+            <!-- Reading (SH) -->
+            <div class="mat-card" data-type="reading">
+              <div class="mat-card__thumb">
+                <svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M16 4v4h4"/><path d="M8 12h8M8 16h6"/></svg>
+                <span class="mat-card__dur">~20 min</span>
+              </div>
+              <div class="mat-card__body">
+                <div class="mat-card__title">Carrier-oil dilution reference</div>
+                <div class="mat-card__sub">SH Wellness &amp; Spa · Module 2.1</div>
+                <div class="mat-card__foot"><a href="#" class="btn btn--secondary btn--sm" style="width:100%;justify-content:center;">Open</a></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Learner</div>
+
+<script>
+  function showLearn(e, id) {
+    document.querySelectorAll('.subnav')[0].querySelectorAll('.subnav__tab').forEach(t => t.classList.remove('is-active'));
+    e.currentTarget.classList.add('is-active');
+    ['today','submissions','materials'].forEach(s => document.getElementById('learn-' + s).classList.toggle('is-active', s === id));
+  }
+  function showSched(e, id) {
+    e.currentTarget.parentElement.querySelectorAll('.subnav__tab').forEach(t => t.classList.remove('is-active'));
+    e.currentTarget.classList.add('is-active');
+    document.getElementById('sched-upcoming').classList.toggle('is-active', id === 'upcoming');
+    document.getElementById('sched-previous').classList.toggle('is-active', id === 'previous');
+  }
+  function filterMat(e, type) {
+    e.currentTarget.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('is-active'));
+    e.currentTarget.classList.add('is-active');
+    document.querySelectorAll('.mat-card').forEach(c => {
+      c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
