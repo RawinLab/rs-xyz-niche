@@ -20,9 +20,22 @@ There is **no Figma source-of-truth file**. Design tokens live in `brand-book/cs
 
 When asked for design changes, prefer editing tokens or component classes in `*.css` over editing many HTML files.
 
-### The 5-color palette is locked. Don't add new colors.
+### Brand V2 (current) — black/white/gray + pillar floods, Libre Franklin
 
-`#252026` ink · `#f2f1f0` cream · `#cccecd` warm gray · `#fe1d25` red · `#779152` moss green (+ shade and tint scales for green). Any color outside this set is a brand violation. The WCAG 2.2 AA audit + usage rules are in `BRAND_BOOK_RESEARCH.md` §4 — red is display-only (never body text), gray is decorative-only (never text).
+As of 2026-07, **Brand V2 supersedes the v1 palette and type system** — see `design/REBRAND_V2_BRIEF.md` for the full spec (source: https://carmochest.github.io/niche/brand/). v1 details below are historical; `brand-book/` content still documents v1 pending a leadership decision on whether to rebuild it for V2.
+
+**Color — locked, 6 values:** `#0A0A0A` black · `#FFFFFF` white · `#757575` gray (+ derived neutrals via opacity, e.g. `rgba(10,10,10,0.08)`, for borders/disabled) · `#FF4000` creativity · `#E50695` humanity · `#0533F3` entrepreneurship. **The rule: UI chrome is black on white with gray support only. A pillar color appears ONLY as a full-section flood or inside the NICHE mark — never as an accent, tint, or decoration on a button/badge/chip.** One pillar color per surface.
+
+**Typography — one family, Libre Franklin, all nine weights.** Hierarchy is weight + scale only, never a second typeface: Display Black 900 (−4.5% tracking) → H1 ExtraBold 800 (−3%) → H2 Bold 700 (−2%) → Body Regular 400 (0) → Caption SemiBold 600 (+14%, all caps).
+
+Tokens for both systems live in `brand-book/css/tokens.css` / `platform/shared/tokens.css`: legacy custom property names (`--color-accent-brand`, `--color-surface-ink`, etc.) are kept for backward compatibility with the 38 platform screens' inline `var(--color-*)` usage, but their **values** now resolve to V2 colors — don't reintroduce v1 hex values under these names.
+
+<details>
+<summary>v1 palette (superseded, historical reference only)</summary>
+
+`#252026` ink · `#f2f1f0` cream · `#cccecd` warm gray · `#fe1d25` red · `#779152` moss green (+ shade and tint scales for green). The WCAG 2.2 AA audit + usage rules are in `BRAND_BOOK_RESEARCH.md` §4.
+
+</details>
 
 ### Voice rules (from `BRAND_BOOK_RESEARCH.md` §7)
 
@@ -87,7 +100,7 @@ Push to `main`. The `.github/workflows/pages.yml` workflow auto-deploys `platfor
 
 ## What NOT to do
 
-- ❌ Add new colors outside the 5-color palette + green tints
+- ❌ Add new colors outside the Brand V2 6-color set (black/white/gray + 3 pillar colors) + derived grays; never use a pillar color as a UI accent/tint/decoration
 - ❌ Use generic edtech voice ("unlock your potential", "transformative")
 - ❌ Rename existing CSS classes used across the 38 HTML files
 - ❌ Introduce a Figma source-of-truth file (we explicitly chose code-first; see `design/UI_PATTERNS.md` §5)

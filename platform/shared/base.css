@@ -183,7 +183,7 @@ pre {
 }
 
 code {
-  background: rgba(37, 32, 38, 0.08);
+  background: rgba(10, 10, 10, 0.08);
   padding: 0.1em 0.35em;
   border-radius: 2px;
 }
@@ -240,7 +240,7 @@ tr:last-child td { border-bottom: none; }
 }
 
 .section--dark p { color: var(--color-surface-base); }
-.section--dark .t-eyebrow { color: var(--color-accent-brand); }
+.section--dark .t-eyebrow { color: var(--color-surface-base); }
 
 /* Grid helpers */
 .grid-2 {

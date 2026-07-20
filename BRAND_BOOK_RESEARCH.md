@@ -8,6 +8,8 @@
 
 This document consolidates three parallel research streams (brand-book structure, logo selection, typography/color/motion) into a single decision-ready brief for the NICHE brand. Every recommendation here is opinionated. Treat it as the working draft of the brand book's editorial backbone — not as neutral background reading.
 
+> **⚠️ Superseded by Brand V2 (2026-07):** the color system (§4) and type pairing (§3) below describe **v1** (ink/cream/red/moss, Fraunces + Bai Jamjuree). Brand V2 replaces both with black/white/gray + 3 pillar flood colors and a single Libre Franklin family — see `design/REBRAND_V2_BRIEF.md` for the current spec. This document remains the historical record for v1 and is not being rewritten pending a leadership decision on whether to rebuild the brand book for V2 (see `design/REBRAND_V2_BRIEF.md` §4 impact map).
+
 ---
 
 ## 0. Executive Summary (TL;DR)
