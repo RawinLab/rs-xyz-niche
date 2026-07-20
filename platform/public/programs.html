@@ -10,41 +10,46 @@
   <link rel="stylesheet" href="../shared/platform.css">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <style>
-    /* NAV */
     .public-nav {
-      background: var(--color-surface-base);
+      background: var(--color-white);
       border-bottom: 1px solid var(--color-divider);
     }
-    .public-nav__brand { color: var(--color-surface-ink); }
+    .public-nav__brand { color: var(--color-black); }
     .public-nav__brand img { height: 28px; width: auto; }
 
-    /* PAGE HEADER */
     .page-masthead {
-      background: var(--color-surface-ink);
-      color: var(--color-surface-base);
+      background: var(--color-black);
+      color: var(--color-white);
       padding: var(--space-80) var(--space-32) var(--space-64);
     }
     .page-masthead__inner {
       max-width: var(--max-width-wide);
       margin-inline: auto;
     }
+    .page-masthead__eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: var(--space-16);
+    }
     .page-masthead__headline {
       font-family: var(--font-display);
       font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 700;
+      font-weight: 900;
       line-height: 0.97;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.045em;
       margin-bottom: var(--space-16);
     }
     .page-masthead__sub {
       font-size: var(--type-body-l-size);
-      color: rgba(242,241,240,0.55);
-      max-width: 520px;
+      color: rgba(255,255,255,0.55);
+      max-width: 540px;
     }
 
-    /* FILTER BAR */
     .filter-bar {
-      background: var(--color-surface-base);
+      background: var(--color-white);
       border-bottom: 1px solid var(--color-divider);
       padding: var(--space-16) var(--space-32);
       position: sticky;
@@ -56,13 +61,10 @@
       margin-inline: auto;
       display: flex;
       align-items: center;
-      gap: var(--space-32);
+      gap: var(--space-16);
       flex-wrap: wrap;
     }
-    .filter-group {
-      display: flex;
-      gap: var(--space-4);
-    }
+    .filter-group { display: flex; gap: var(--space-4); flex-wrap: wrap; }
     .filter-btn {
       padding: var(--space-8) var(--space-16);
       font-family: var(--font-body);
@@ -70,77 +72,77 @@
       font-weight: 600;
       border: 1px solid var(--color-divider);
       background: transparent;
-      color: rgba(37,32,38,0.6);
+      color: var(--color-gray);
       cursor: pointer;
       border-radius: 4px;
       transition: all var(--motion-quick) var(--ease-standard);
       text-decoration: none;
     }
-    .filter-btn:hover { color: var(--color-surface-ink); border-color: var(--color-surface-ink); }
+    .filter-btn:hover { color: var(--color-black); border-color: var(--color-black); }
     .filter-btn.is-active {
-      background: var(--color-surface-ink);
-      color: var(--color-surface-base);
-      border-color: var(--color-surface-ink);
-    }
-    .filter-btn.is-active--creativity {
-      background: var(--color-accent-brand);
-      border-color: var(--color-accent-brand);
-      color: var(--color-surface-base);
-    }
-    .filter-btn.is-active--humanity {
-      background: var(--color-accent-secondary-shade);
-      border-color: var(--color-accent-secondary-shade);
-      color: var(--color-surface-base);
-    }
-    .filter-divider {
-      width: 1px;
-      height: 24px;
-      background: var(--color-divider);
+      background: var(--color-black);
+      color: var(--color-white);
+      border-color: var(--color-black);
     }
     .filter-count {
       margin-left: auto;
       font-size: 12px;
-      color: rgba(37,32,38,0.45);
+      color: var(--color-gray);
       font-weight: 600;
     }
 
-    /* PROGRAM SECTION */
     .programs-content {
       padding: var(--space-64) var(--space-32);
+      background: var(--color-white);
     }
     .programs-content__inner {
       max-width: var(--max-width-wide);
       margin-inline: auto;
     }
-    .pillar-section {
+    .school-section {
       margin-bottom: var(--space-80);
     }
-    .pillar-section__header {
+    .school-section__header {
       display: flex;
-      align-items: center;
-      gap: var(--space-16);
+      align-items: flex-start;
+      gap: var(--space-24);
       margin-bottom: var(--space-32);
       padding-bottom: var(--space-16);
-      border-bottom: 2px solid var(--color-surface-ink);
+      border-bottom: 2px solid var(--color-black);
     }
-    .pillar-section__number {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 800;
-      line-height: 1;
-      color: var(--color-accent-brand);
+    .school-section__label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-4);
     }
-    .pillar-section__title {
+    .school-section__title {
       font-family: var(--font-display);
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .pillar-section__desc {
+    .school-section__desc {
       font-size: 14px;
-      color: rgba(37,32,38,0.6);
-      max-width: 480px;
+      color: var(--color-gray);
+      max-width: 420px;
       line-height: 1.6;
+      margin-top: var(--space-8);
     }
+    .school-section__count {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      white-space: nowrap;
+      padding-top: var(--space-8);
+    }
+
     .program-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -148,7 +150,7 @@
     }
     .program-card-full {
       border: 1px solid var(--color-divider);
-      background: white;
+      background: var(--color-white);
       padding: var(--space-32);
       display: flex;
       flex-direction: column;
@@ -160,25 +162,36 @@
       color: inherit;
     }
     .program-card-full:hover {
-      background: var(--color-surface-ink);
-      border-color: var(--color-surface-ink);
+      background: var(--color-black);
+      border-color: var(--color-black);
       transform: translateY(-2px);
-      color: var(--color-surface-base);
+      color: var(--color-white);
       opacity: 1;
     }
-    .program-card-full:hover .program-card-full__desc { color: rgba(242,241,240,0.55); }
-    .program-card-full:hover .program-card-full__cohort { color: rgba(242,241,240,0.45); }
-    .program-card-full:hover .program-card-full__footer { border-top-color: rgba(242,241,240,0.1); }
-    .program-card-full:hover .badge--neutral { background: rgba(242,241,240,0.1); color: var(--color-surface-base); }
+    .program-card-full:hover .program-card-full__desc,
+    .program-card-full:hover .program-card-full__school { color: rgba(255,255,255,0.55); }
+    .program-card-full:hover .program-card-full__footer { border-top-color: rgba(255,255,255,0.12); }
+    .program-card-full:hover .badge--neutral {
+      background: rgba(255,255,255,0.1);
+      color: var(--color-white);
+    }
+    .program-card-full__school {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+    }
     .program-card-full__title {
       font-family: var(--font-display);
       font-size: 1.375rem;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       line-height: 1.2;
     }
     .program-card-full__desc {
       font-size: 14px;
-      color: rgba(37,32,38,0.6);
+      color: var(--color-gray);
       line-height: 1.6;
       flex: 1;
     }
@@ -186,38 +199,73 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-12);
+      flex-wrap: wrap;
       padding-top: var(--space-16);
       border-top: 1px solid var(--color-divider);
     }
-    .program-card-full__cohort {
-      font-size: 11px;
+    .program-card-full__pathways {
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+    .program-card-full__cta {
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: rgba(37,32,38,0.4);
     }
 
-    /* FOOTER */
+    .pathways-strip {
+      max-width: var(--max-width-wide);
+      margin: 0 auto var(--space-64);
+      padding: var(--space-32);
+      border: 1px solid var(--color-divider);
+      display: grid;
+      grid-template-columns: auto 1fr 1fr 1fr;
+      gap: var(--space-24);
+      align-items: center;
+    }
+    .pathways-strip__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+    }
+    .pathways-strip__item strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .pathways-strip__item span {
+      font-size: 12px;
+      color: var(--color-gray);
+    }
+
     .public-footer {
-      background: var(--color-surface-ink);
-      color: rgba(242,241,240,0.55);
+      background: var(--color-black);
+      color: rgba(255,255,255,0.55);
       padding: var(--space-48) var(--space-32);
       text-align: center;
     }
     .public-footer a {
-      color: rgba(242,241,240,0.55);
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
       font-size: 13px;
     }
-    .public-footer a:hover { color: var(--color-surface-base); opacity: 1; }
+    .public-footer a:hover { color: var(--color-white); opacity: 1; }
 
     @media (max-width: 900px) {
-      .filter-bar__inner { gap: var(--space-16); }
       .program-grid { grid-template-columns: 1fr; }
+      .pathways-strip { grid-template-columns: 1fr 1fr; }
+      .school-section__header { flex-direction: column; gap: var(--space-8); }
+      .school-section__count { margin-left: 0; }
     }
     @media (max-width: 600px) {
-      .filter-group { flex-wrap: wrap; }
       .programs-content { padding: var(--space-32) var(--space-24); }
+      .pathways-strip { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -228,42 +276,32 @@
       <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
     </a>
     <ul class="public-nav__menu">
-      <li><a href="programs.html" style="color: var(--color-surface-ink); font-weight: 700;">Programs</a></li>
+      <li><a href="programs.html" style="color: var(--color-black); font-weight: 700;">Programs</a></li>
+      <li><a href="index.html#pathways">Pathways</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="faculty.html">Faculty</a></li>
       <li><a href="faq.html">FAQ</a></li>
     </ul>
     <div class="public-nav__cta">
-      <a href="apply.html" class="btn btn--primary btn--sm">Apply — Cohort 1</a>
+      <a href="apply.html" class="btn btn--primary btn--sm">Soft launch 2026</a>
     </div>
   </nav>
 
   <div class="page-masthead">
     <div class="page-masthead__inner">
-      <div class="cohort-countdown-chip" style="margin-bottom: var(--space-24);">
-        <span class="cohort-countdown-chip__dot"></span>
-        Cohort 1 · 11–30 Nov 2026 · 11 seats remaining
-      </div>
-      <h1 class="page-masthead__headline">12 programs.<br>One direction.</h1>
-      <p class="page-masthead__sub">Three pillars, three levels, one cohort per year. Each program is designed for someone who already knows what they want — and needs the tools to get there.</p>
+      <p class="page-masthead__eyebrow">School → Program → Pathway</p>
+      <h1 class="page-masthead__headline">12 programs.<br>Three schools.</h1>
+      <p class="page-masthead__sub">Pick a school, then a program. Every program offers Bootcamp, Studio, and Professional pathways — start at 3 months and extend by adding modules.</p>
     </div>
   </div>
 
-  <!-- FILTER BAR -->
   <div class="filter-bar" role="navigation" aria-label="Program filters">
     <div class="filter-bar__inner">
-      <div class="filter-group" role="group" aria-label="Filter by pillar">
-        <button class="filter-btn is-active" onclick="filterPillar('all', this)">All pillars</button>
-        <button class="filter-btn" onclick="filterPillar('creativity', this)">Creativity</button>
-        <button class="filter-btn" onclick="filterPillar('humanity', this)">Humanity</button>
-        <button class="filter-btn" onclick="filterPillar('entrepreneurship', this)">Entrepreneurship</button>
-      </div>
-      <div class="filter-divider"></div>
-      <div class="filter-group" role="group" aria-label="Filter by level">
-        <button class="filter-btn is-active" onclick="filterLevel('all-levels', this)">All levels</button>
-        <button class="filter-btn" onclick="filterLevel('bootcamp', this)">Bootcamp</button>
-        <button class="filter-btn" onclick="filterLevel('studio', this)">Studio</button>
-        <button class="filter-btn" onclick="filterLevel('degree', this)">Degree</button>
+      <div class="filter-group" role="group" aria-label="Filter by school">
+        <button type="button" class="filter-btn is-active" data-school="all" onclick="filterSchool('all', this)">All schools</button>
+        <button type="button" class="filter-btn" data-school="business" onclick="filterSchool('business', this)">Business</button>
+        <button type="button" class="filter-btn" data-school="creativity" onclick="filterSchool('creativity', this)">Creativity</button>
+        <button type="button" class="filter-btn" data-school="hospitality" onclick="filterSchool('hospitality', this)">Hospitality</button>
       </div>
       <span class="filter-count" id="program-count">12 programs</span>
     </div>
@@ -272,148 +310,215 @@
   <main class="programs-content">
     <div class="programs-content__inner">
 
-      <!-- CREATIVITY -->
-      <section class="pillar-section" id="creativity" data-pillar="creativity">
-        <div class="pillar-section__header">
-          <span class="pillar-section__number">01</span>
-          <div>
-            <h2 class="pillar-section__title">Creativity</h2>
-            <p class="pillar-section__desc">The craft of making things people remember.</p>
-          </div>
+      <div class="pathways-strip" aria-label="Pathway pricing overview">
+        <p class="pathways-strip__label">Every program</p>
+        <div class="pathways-strip__item">
+          <strong>Bootcamp / Lab</strong>
+          <span>3 mo · ฿15,000</span>
         </div>
-        <div class="program-grid">
-          <a href="program-detail.html" class="program-card-full" data-level="studio">
-            <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-            <h3 class="program-card-full__title">AI × Content Engine Studio</h3>
-            <p class="program-card-full__desc">Most creators hit a ceiling — great ideas, no system. This studio teaches you to build production pipelines powered by AI that still sound like you. You'll ship a working content engine before you graduate.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Studio · 6 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="studio">
-            <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-            <h3 class="program-card-full__title">Product &amp; Experience Design Studio</h3>
-            <p class="program-card-full__desc">Design is not decoration — it's decisions made visible. This studio covers the full arc from user research to working prototype, with a bias toward things that ship, not things that impress juries.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Studio · 6 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-            <h3 class="program-card-full__title">Creative Identity &amp; Storytelling</h3>
-            <p class="program-card-full__desc">What makes your work yours? This bootcamp is a 12-week excavation of creative voice — how to find it, articulate it, and use it to build work that can't be mistaken for anyone else's.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-            <h3 class="program-card-full__title">The Business of Craft</h3>
-            <p class="program-card-full__desc">Most craft businesses fail not because the maker isn't good — but because the business model doesn't work. This bootcamp fixes that. Pricing, positioning, channels, margins.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
+        <div class="pathways-strip__item">
+          <strong>Studio</strong>
+          <span>6 mo · ฿30,000</span>
         </div>
-      </section>
+        <div class="pathways-strip__item">
+          <strong>Professional</strong>
+          <span>12 mo · ฿65,000</span>
+        </div>
+      </div>
 
-      <!-- HUMANITY -->
-      <section class="pillar-section" id="humanity" data-pillar="humanity">
-        <div class="pillar-section__header">
-          <span class="pillar-section__number">02</span>
+      <!-- BUSINESS -->
+      <section class="school-section" id="business" data-school="business">
+        <div class="school-section__header">
           <div>
-            <h2 class="pillar-section__title">Humanity</h2>
-            <p class="pillar-section__desc">Businesses built around people, not platforms.</p>
+            <p class="school-section__label">School of</p>
+            <h2 class="school-section__title">Business &amp; Entrepreneurship</h2>
+            <p class="school-section__desc">Build businesses, generate revenue, and operate in the modern economy.</p>
           </div>
+          <span class="school-section__count">04 programs</span>
         </div>
         <div class="program-grid">
-          <a href="program-detail.html" class="program-card-full" data-level="degree">
-            <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-            <h3 class="program-card-full__title">New Hospitality</h3>
-            <p class="program-card-full__desc">The hospitality industry is being remade. Boutique properties, micro-experiences, community-first spaces — this degree covers the design, operations, and business of hospitality that doesn't feel like hospitality.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Degree · 12 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="studio">
-            <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-            <h3 class="program-card-full__title">Event &amp; Experience Design</h3>
-            <p class="program-card-full__desc">Events are the highest-leverage marketing that exists — if they're designed right. This studio teaches the full craft: concept, production, audience psychology, and the economics of memorable experiences.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Studio · 6 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-            <h3 class="program-card-full__title">Food Business 3.0</h3>
-            <p class="program-card-full__desc">The next decade will kill most food businesses that don't adapt. This bootcamp is for founders building food ventures with a real model — not for people chasing trends.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-            <h3 class="program-card-full__title">Community &amp; Localization</h3>
-            <p class="program-card-full__desc">The best businesses in Southeast Asia run on community trust, not advertising budgets. This bootcamp teaches the systems behind building and monetizing local communities at scale.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-        </div>
-      </section>
-
-      <!-- ENTREPRENEURSHIP -->
-      <section class="pillar-section" id="entrepreneurship" data-pillar="entrepreneurship">
-        <div class="pillar-section__header">
-          <span class="pillar-section__number">03</span>
-          <div>
-            <h2 class="pillar-section__title">Entrepreneurship</h2>
-            <p class="pillar-section__desc">The mechanics of building something real.</p>
-          </div>
-        </div>
-        <div class="program-grid">
-          <a href="program-detail.html" class="program-card-full" data-level="degree">
-            <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-            <h3 class="program-card-full__title">AI-native Business Builder</h3>
-            <p class="program-card-full__desc">The businesses winning in the next five years are being built today by small teams with AI leverage. This degree teaches you to be one of those builders — from market thesis to working product to revenue.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Degree · 12 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="studio">
-            <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-            <h3 class="program-card-full__title">SME Automation Lab</h3>
-            <p class="program-card-full__desc">Most SMEs are stuck in ops hell. This studio maps your business and automates what's eating your margin — hiring, inventory, fulfillment, customer service. You leave with working automations.</p>
-            <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Studio · 6 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
-            </div>
-          </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
+          <a href="program-detail.html?program=sales-dealmaking" class="program-card-full">
+            <span class="program-card-full__school">Business &amp; Entrepreneurship</span>
             <h3 class="program-card-full__title">Sales &amp; Dealmaking</h3>
-            <p class="program-card-full__desc">Sales is the most valuable skill an independent person can have. This bootcamp is not about scripts — it's about understanding why people buy and how to be the person they buy from.</p>
+            <p class="program-card-full__desc">Learn to close deals and build relationships that compound. Not scripts — the judgment behind why people buy and how to be the person they buy from.</p>
             <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
             </div>
           </a>
-          <a href="program-detail.html" class="program-card-full" data-level="bootcamp">
-            <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-            <h3 class="program-card-full__title">First Venture Bootcamp</h3>
-            <p class="program-card-full__desc">Zero to first paying customer in 12 weeks. No theory. You pick your idea in week one, validate it by week four, and launch by week twelve. The goal is revenue, not a deck.</p>
+          <a href="program-detail.html?program=online-store" class="program-card-full">
+            <span class="program-card-full__school">Business &amp; Entrepreneurship</span>
+            <h3 class="program-card-full__title">Online Store &amp; E-Commerce</h3>
+            <p class="program-card-full__desc">Build and run an online store that actually sells — product, storefront, fulfillment, and growth systems for the independent operator.</p>
             <div class="program-card-full__footer">
-              <span class="badge badge--neutral">Bootcamp · 3 months</span>
-              <span class="program-card-full__cohort">Nov 2026</span>
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=business-ai" class="program-card-full">
+            <span class="program-card-full__school">Business &amp; Entrepreneurship</span>
+            <h3 class="program-card-full__title">Running a Business with AI</h3>
+            <p class="program-card-full__desc">Operate a lean business with AI leverage — from ops and customer service to decision support. Leave with working automations, not slide decks.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=start-build" class="program-card-full">
+            <span class="program-card-full__school">Business &amp; Entrepreneurship</span>
+            <h3 class="program-card-full__title">Start &amp; Build Your Business</h3>
+            <p class="program-card-full__desc">From zero to first paying customer. Validate an idea, ship a real offer, and build the operating rhythm of a founder who ships.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- CREATIVITY -->
+      <section class="school-section" id="creativity" data-school="creativity">
+        <div class="school-section__header">
+          <div>
+            <p class="school-section__label">School of</p>
+            <h2 class="school-section__title">Creativity</h2>
+            <p class="school-section__desc">Create products, brands, content, and audiences.</p>
+          </div>
+          <span class="school-section__count">04 programs</span>
+        </div>
+        <div class="program-grid">
+          <a href="program-detail.html?program=content-creator" class="program-card-full">
+            <span class="program-card-full__school">Creativity</span>
+            <h3 class="program-card-full__title">Content Creator Studio</h3>
+            <p class="program-card-full__desc">Build production pipelines that still sound like you. Systems for ideation, production, distribution, and monetization — not one-off posts.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=branding-design" class="program-card-full">
+            <span class="program-card-full__school">Creativity</span>
+            <h3 class="program-card-full__title">Branding &amp; Design</h3>
+            <p class="program-card-full__desc">Design brands people remember — identity systems, visual language, and the craft decisions that separate signal from noise.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=digital-marketing" class="program-card-full">
+            <span class="program-card-full__school">Creativity</span>
+            <h3 class="program-card-full__title">Digital Marketing for Growth</h3>
+            <p class="program-card-full__desc">Growth that compounds. Channels, creative testing, measurement, and the judgment to spend where it actually moves the business. Co-developed with Chulalongkorn Business School.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=craft-product" class="program-card-full">
+            <span class="program-card-full__school">Creativity</span>
+            <h3 class="program-card-full__title">Craft &amp; Product Making</h3>
+            <p class="program-card-full__desc">Turn maker skills into a sustainable practice — product, pricing, channels, and the business model behind things people want to own.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- HOSPITALITY -->
+      <section class="school-section" id="hospitality" data-school="hospitality">
+        <div class="school-section__header">
+          <div>
+            <p class="school-section__label">School of</p>
+            <h2 class="school-section__title">Hospitality &amp; Humanities</h2>
+            <p class="school-section__desc">Build careers and businesses around hospitality, wellness, service, and human experience.</p>
+          </div>
+          <span class="school-section__count">04 programs</span>
+        </div>
+        <div class="program-grid">
+          <a href="program-detail.html?program=coffee" class="program-card-full">
+            <span class="program-card-full__school">Hospitality &amp; Humanities</span>
+            <h3 class="program-card-full__title">Coffee: From Bean to Café</h3>
+            <p class="program-card-full__desc">The full craft and business of coffee — sourcing, roasting, service, and running a café people return to. Co-developed with [coffee partner].</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=wellness-spa" class="program-card-full">
+            <span class="program-card-full__school">Hospitality &amp; Humanities</span>
+            <h3 class="program-card-full__title">Wellness &amp; Spa</h3>
+            <p class="program-card-full__desc">Design and operate wellness experiences that last — service craft, space, and the business of care.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=pet-care" class="program-card-full">
+            <span class="program-card-full__school">Hospitality &amp; Humanities</span>
+            <h3 class="program-card-full__title">Pet Care &amp; Business</h3>
+            <p class="program-card-full__desc">Build a pet-care practice or business — service excellence, operations, and the trust models that turn one visit into a relationship.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
+            </div>
+          </a>
+          <a href="program-detail.html?program=hospitality-service" class="program-card-full">
+            <span class="program-card-full__school">Hospitality &amp; Humanities</span>
+            <h3 class="program-card-full__title">Hospitality &amp; Service Excellence</h3>
+            <p class="program-card-full__desc">Rethink guest experience for a world that expects more — boutique service, micro-experiences, and hospitality that doesn't feel like a script.</p>
+            <div class="program-card-full__footer">
+              <div class="program-card-full__pathways">
+                <span class="badge badge--neutral">Bootcamp</span>
+                <span class="badge badge--neutral">Studio</span>
+                <span class="badge badge--neutral">Professional</span>
+              </div>
+              <span class="program-card-full__cta">View pathways →</span>
             </div>
           </a>
         </div>
@@ -424,46 +529,32 @@
 
   <footer class="public-footer">
     <a href="index.html">NICHE</a> &nbsp;&mdash;&nbsp;
-    <a href="apply.html">Apply for Cohort 1</a> &nbsp;&mdash;&nbsp;
+    <a href="apply.html">Soft launch 2026</a> &nbsp;&mdash;&nbsp;
     <a href="about.html">About</a> &nbsp;&mdash;&nbsp;
     <a href="faq.html">FAQ</a>
-    <p style="margin-top: var(--space-16); font-size: 11px; color: rgba(242,241,240,0.3);">&copy; 2026 NICHE · Bangkok, Thailand</p>
+    <p style="margin-top: var(--space-16); font-size: 11px; color: rgba(255,255,255,0.3);">Draft prototype — indicative dates &amp; pricing · &copy; 2026 NICHE</p>
   </footer>
 
   <div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Public</div>
 
   <script>
-    let activePillar = 'all';
-    let activeLevel = 'all-levels';
-
-    function filterPillar(pillar, btn) {
-      activePillar = pillar;
-      document.querySelectorAll('.filter-group:first-child .filter-btn').forEach(b => b.classList.remove('is-active'));
+    function filterSchool(school, btn) {
+      document.querySelectorAll('.filter-group .filter-btn').forEach(b => b.classList.remove('is-active'));
       btn.classList.add('is-active');
-      applyFilters();
-    }
-
-    function filterLevel(level, btn) {
-      activeLevel = level;
-      document.querySelectorAll('.filter-group:last-of-type .filter-btn').forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      applyFilters();
-    }
-
-    function applyFilters() {
       let visible = 0;
-      document.querySelectorAll('.pillar-section').forEach(section => {
-        const pillarMatch = activePillar === 'all' || section.dataset.pillar === activePillar;
-        section.style.display = pillarMatch ? '' : 'none';
-        if (pillarMatch) {
-          section.querySelectorAll('.program-card-full').forEach(card => {
-            const levelMatch = activeLevel === 'all-levels' || card.dataset.level === activeLevel;
-            card.style.display = levelMatch ? '' : 'none';
-            if (levelMatch) visible++;
-          });
-        }
+      document.querySelectorAll('.school-section').forEach(section => {
+        const match = school === 'all' || section.dataset.school === school;
+        section.style.display = match ? '' : 'none';
+        if (match) visible += section.querySelectorAll('.program-card-full').length;
       });
       document.getElementById('program-count').textContent = visible + ' program' + (visible !== 1 ? 's' : '');
+    }
+
+    // Deep-link hash support (#business, #creativity, #hospitality)
+    const hash = (location.hash || '').replace('#', '');
+    if (hash && ['business', 'creativity', 'hospitality'].includes(hash)) {
+      const btn = document.querySelector('.filter-btn[data-school="' + hash + '"]');
+      if (btn) filterSchool(hash, btn);
     }
   </script>
 </body>

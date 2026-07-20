@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Apply — NICHE Cohort 1</title>
+  <title>Apply — NICHE Soft launch 2026</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css">
   <link rel="stylesheet" href="../shared/platform.css">
@@ -317,19 +317,19 @@
     <!-- LEFT PANEL -->
     <aside class="apply-left" aria-label="Application context">
       <div>
-        <p class="apply-left__eyebrow">Cohort 1 · 2026</p>
+        <p class="apply-left__eyebrow">Soft launch · 2026</p>
         <h1 class="apply-left__heading">Apply to NICHE.</h1>
-        <p class="apply-left__sub">Applications are reviewed manually. You'll hear back within 5 business days of submission.</p>
+        <p class="apply-left__sub">Applications are reviewed manually. You'll hear back within 5 business days of submission. Draft prototype — indicative dates &amp; pricing.</p>
       </div>
       <div class="apply-scarcity">
         <span class="apply-scarcity__dot"></span>
-        <span class="apply-scarcity__text">11 seats remaining across all programs. Applications close when each program fills.</span>
+        <span class="apply-scarcity__text">September 2026 intake · Limited seats · 0% installment available</span>
       </div>
       <div class="apply-timeline">
         <p class="apply-timeline__heading">Key dates</p>
         <div class="apply-timeline__item">
           <span class="apply-timeline__dot apply-timeline__dot--active"></span>
-          <div class="apply-timeline__label"><strong>Applications open now</strong>Rolling basis until filled</div>
+          <div class="apply-timeline__label"><strong>Applications open now</strong>Soft launch 2026</div>
         </div>
         <div class="apply-timeline__item">
           <span class="apply-timeline__dot"></span>
@@ -337,11 +337,11 @@
         </div>
         <div class="apply-timeline__item">
           <span class="apply-timeline__dot"></span>
-          <div class="apply-timeline__label"><strong>Cohort begins</strong>11 November 2026 · Bangkok</div>
+          <div class="apply-timeline__label"><strong>Intake begins</strong>September 2026 · Bangkok</div>
         </div>
         <div class="apply-timeline__item">
           <span class="apply-timeline__dot"></span>
-          <div class="apply-timeline__label"><strong>Residency ends</strong>30 November 2026</div>
+          <div class="apply-timeline__label"><strong>Professional pathways</strong>Annually each June from 2027</div>
         </div>
       </div>
     </aside>
@@ -381,8 +381,8 @@
       <div class="form-section">
         <p class="form-section__heading">Step 1 — Program selected</p>
         <div class="selected-program-display">
-          <span class="selected-program-display__text">AI × Content Engine Studio &nbsp;·&nbsp; Creativity &nbsp;·&nbsp; Studio · 6 months</span>
-          <button class="selected-program-display__change" onclick="alert('In production, this returns to step 1.')">Change</button>
+          <span class="selected-program-display__text" id="selected-program-text">Content Creator Studio &nbsp;·&nbsp; Creativity &nbsp;·&nbsp; Studio · 6 months · ฿30,000</span>
+          <button class="selected-program-display__change" onclick="location.href='programs.html'">Change</button>
         </div>
       </div>
 
@@ -528,6 +528,33 @@
         opt.querySelector('input[type="radio"]').checked = true;
       });
     });
+
+    const PROGRAMS = {
+      'sales-dealmaking': { name: 'Sales & Dealmaking', school: 'Business & Entrepreneurship' },
+      'online-store': { name: 'Online Store & E-Commerce', school: 'Business & Entrepreneurship' },
+      'business-ai': { name: 'Running a Business with AI', school: 'Business & Entrepreneurship' },
+      'start-build': { name: 'Start & Build Your Business', school: 'Business & Entrepreneurship' },
+      'content-creator': { name: 'Content Creator Studio', school: 'Creativity' },
+      'branding-design': { name: 'Branding & Design', school: 'Creativity' },
+      'digital-marketing': { name: 'Digital Marketing for Growth', school: 'Creativity' },
+      'craft-product': { name: 'Craft & Product Making', school: 'Creativity' },
+      'coffee': { name: 'Coffee: From Bean to Café', school: 'Hospitality & Humanities' },
+      'wellness-spa': { name: 'Wellness & Spa', school: 'Hospitality & Humanities' },
+      'pet-care': { name: 'Pet Care & Business', school: 'Hospitality & Humanities' },
+      'hospitality-service': { name: 'Hospitality & Service Excellence', school: 'Hospitality & Humanities' }
+    };
+    const PATHWAYS = {
+      bootcamp: { name: 'Bootcamp / Lab', meta: '3 months · ฿15,000' },
+      studio: { name: 'Studio', meta: '6 months · ฿30,000' },
+      professional: { name: 'Professional', meta: '12 months · ฿65,000' }
+    };
+    const params = new URLSearchParams(location.search);
+    const prog = PROGRAMS[params.get('program')] || PROGRAMS['content-creator'];
+    const path = PATHWAYS[params.get('pathway')] || PATHWAYS.studio;
+    const el = document.getElementById('selected-program-text');
+    if (el) {
+      el.textContent = prog.name + '  ·  ' + prog.school + '  ·  ' + path.name + ' · ' + path.meta;
+    }
   </script>
 </body>
 </html>

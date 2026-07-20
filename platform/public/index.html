@@ -4,348 +4,523 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>NICHE — New Institute of Creativity, Humanity &amp; Entrepreneurship</title>
+  <title>NICHE — Find your niche</title>
   <link rel="stylesheet" href="../shared/tokens.css">
   <link rel="stylesheet" href="../shared/base.css">
   <link rel="stylesheet" href="../shared/platform.css">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <style>
-    /* ---- NAV ---- */
     .public-nav {
-      background: var(--color-surface-ink);
-      border-bottom-color: rgba(242,241,240,0.1);
+      background: var(--color-black);
+      border-bottom-color: rgba(255,255,255,0.1);
     }
-    .public-nav__brand { color: var(--color-surface-base); }
+    .public-nav__brand { color: var(--color-white); }
     .public-nav__brand img { height: 32px; width: auto; display: block; }
-    .public-nav__menu a { color: rgba(242,241,240,0.6); }
-    .public-nav__menu a:hover { color: var(--color-surface-base); }
+    .public-nav__menu a { color: rgba(255,255,255,0.6); }
+    .public-nav__menu a:hover { color: var(--color-white); }
 
     /* ---- HERO ---- */
     .page-hero {
-      background: var(--color-surface-ink);
-      color: var(--color-surface-base);
+      background: var(--color-black);
+      color: var(--color-white);
       padding: var(--space-128) var(--space-32) var(--space-96);
-      overflow: hidden;
-      position: relative;
-    }
-    .page-hero::before {
-      content: '';
-      position: absolute;
-      top: -80px; right: -80px;
-      width: 480px; height: 480px;
-      border: 1px solid rgba(254,29,37,0.12);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .page-hero::after {
-      content: '';
-      position: absolute;
-      top: 40px; right: 40px;
-      width: 240px; height: 240px;
-      border: 1px solid rgba(254,29,37,0.08);
-      border-radius: 50%;
-      pointer-events: none;
     }
     .hero-inner {
       max-width: var(--max-width-wide);
       margin-inline: auto;
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: var(--space-64);
-      align-items: center;
       position: relative;
       z-index: 1;
     }
+    .hero-eyebrow {
+      font-size: var(--type-caption-size);
+      font-weight: var(--type-caption-weight);
+      letter-spacing: var(--type-caption-ls);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: var(--space-24);
+    }
+    .hero-eyebrow span { color: rgba(255,255,255,0.75); }
     .hero-headline {
       font-family: var(--font-display);
       font-size: clamp(4rem, 10vw, 9rem);
-      font-weight: 800;
+      font-weight: 900;
       line-height: 0.92;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.045em;
       margin-bottom: var(--space-32);
     }
     .hero-headline em {
-      font-style: italic;
-      color: var(--color-accent-brand);
+      font-style: normal;
+      font-weight: 100;
     }
     .hero-sub {
       font-size: var(--type-body-l-size);
-      color: rgba(242,241,240,0.65);
-      max-width: 520px;
+      color: rgba(255,255,255,0.65);
+      max-width: 540px;
       margin-bottom: var(--space-40);
     }
     .hero-actions {
       display: flex;
       gap: var(--space-12);
       flex-wrap: wrap;
-      margin-top: var(--space-32);
+      margin-bottom: var(--space-64);
     }
-    .hero-provocation {
-      background: rgba(254,29,37,0.08);
-      border: 1px solid rgba(254,29,37,0.2);
-      padding: var(--space-32);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-24);
-    }
-    .hero-provocation__q {
-      font-family: var(--font-display);
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
-      font-weight: 700;
-      line-height: 1.15;
-      color: var(--color-surface-base);
-    }
-    .hero-provocation__divider {
-      width: 40px;
-      height: 2px;
-      background: var(--color-accent-brand);
-    }
-    .hero-provocation__answer {
-      font-size: 14px;
-      color: rgba(242,241,240,0.55);
-      line-height: 1.6;
-    }
-    .hero-stat {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--color-accent-brand);
-      margin-top: var(--space-24);
-    }
-
-    /* ---- THREE PILLARS ---- */
-    .pillars-section {
-      padding: var(--space-96) var(--space-32);
-      background: var(--color-surface-base);
-    }
-    .pillars-grid {
-      max-width: var(--max-width-wide);
-      margin-inline: auto;
+    .hero-school-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: var(--color-surface-muted);
-      border: 1px solid var(--color-surface-muted);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      max-width: var(--max-width-wide);
     }
-    .pillar-block {
-      background: var(--color-surface-base);
-      padding: var(--space-48) var(--space-32);
+    .hero-school-link {
+      background: var(--color-black);
+      color: var(--color-white);
+      text-decoration: none;
+      padding: var(--space-24);
       display: flex;
       flex-direction: column;
-      gap: var(--space-16);
+      gap: var(--space-8);
       transition: background var(--motion-base) var(--ease-standard);
     }
-    .pillar-block:hover { background: var(--color-surface-ink); color: var(--color-surface-base); }
-    .pillar-block:hover .pillar-block__count { color: var(--color-accent-brand); }
-    .pillar-block:hover .pillar-block__desc { color: rgba(242,241,240,0.55); }
-    .pillar-block:hover .pillar-block__list { color: rgba(242,241,240,0.7); }
-    .pillar-block__count {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: var(--color-accent-brand);
-      line-height: 1;
-    }
-    .pillar-block__title {
-      font-family: var(--font-display);
-      font-size: 1.75rem;
-      font-weight: 700;
-      line-height: 1.1;
-    }
-    .pillar-block__desc {
-      font-size: 14px;
-      color: rgba(37,32,38,0.6);
-      line-height: 1.6;
-    }
-    .pillar-block__list {
-      font-size: 12px;
+    .hero-school-link:hover { background: rgba(255,255,255,0.06); opacity: 1; }
+    .hero-school-link__label {
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      color: rgba(37,32,38,0.5);
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      line-height: 2;
+      color: rgba(255,255,255,0.4);
+    }
+    .hero-school-link__name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
     }
 
-    /* ---- PROGRAM GRID ---- */
-    .programs-section {
+    /* ---- HOW IT WORKS ---- */
+    .how-section {
       padding: var(--space-96) var(--space-32);
-      background: var(--color-surface-base);
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .how-inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-48);
+      margin-top: var(--space-48);
+    }
+    .how-step__num {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--color-gray);
+      margin-bottom: var(--space-16);
+    }
+    .how-step__title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-12);
+      line-height: 1.15;
+    }
+    .how-step__desc {
+      font-size: 14px;
+      color: var(--color-gray);
+      line-height: 1.6;
+    }
+    .ticker {
+      margin-top: var(--space-64);
+      overflow: hidden;
+      border-top: 1px solid var(--color-divider);
+      border-bottom: 1px solid var(--color-divider);
+      padding: var(--space-16) 0;
+    }
+    .ticker__track {
+      display: flex;
+      gap: var(--space-48);
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+      width: max-content;
+    }
+    .ticker__item {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+    }
+    .ticker__item strong { color: var(--color-black); font-weight: 700; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ---- SCHOOLS ---- */
+    .schools-section {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-white);
+    }
+    .section-label {
+      font-size: var(--type-caption-size);
+      font-weight: var(--type-caption-weight);
+      letter-spacing: var(--type-caption-ls);
+      text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-16);
     }
     .section-header {
       max-width: var(--max-width-wide);
       margin-inline: auto;
       margin-bottom: var(--space-48);
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
     }
-    .program-grid {
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    .schools-grid {
       max-width: var(--max-width-wide);
       margin-inline: auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: var(--space-24);
     }
-    .program-card {
-      background: white;
+    .school-card {
       border: 1px solid var(--color-divider);
-      padding: var(--space-24);
+      background: var(--color-white);
+      padding: var(--space-32);
       display: flex;
       flex-direction: column;
-      gap: var(--space-12);
-      transition: background var(--motion-base) var(--ease-standard),
-                  border-color var(--motion-base) var(--ease-standard),
-                  transform var(--motion-quick) var(--ease-entrance);
-      text-decoration: none;
-      color: inherit;
+      min-height: 420px;
     }
-    .program-card:hover {
-      background: var(--color-surface-ink);
-      border-color: var(--color-surface-ink);
-      transform: translateY(-2px);
-      color: var(--color-surface-base);
-      opacity: 1;
-    }
-    .program-card:hover .program-card__desc { color: rgba(242,241,240,0.55); }
-    .program-card:hover .program-card__meta { color: rgba(242,241,240,0.45); }
-    .program-card:hover .badge--neutral { background: rgba(242,241,240,0.1); color: var(--color-surface-base); }
-    .program-card__title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-top: var(--space-8);
-    }
-    .program-card__desc {
-      font-size: 14px;
-      color: rgba(37,32,38,0.6);
-      line-height: 1.55;
-      flex: 1;
-    }
-    .program-card__footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: var(--space-8);
-      padding-top: var(--space-12);
-      border-top: 1px solid var(--color-divider);
-    }
-    .program-card:hover .program-card__footer { border-top-color: rgba(242,241,240,0.1); }
-    .program-card__meta {
+    .school-card__label {
       font-size: 11px;
-      color: rgba(37,32,38,0.45);
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-8);
     }
-
-    /* ---- VOICE QUOTES ---- */
-    .quotes-section {
-      padding: var(--space-96) var(--space-32);
-      background: var(--color-surface-ink);
-      color: var(--color-surface-base);
-    }
-    .quotes-grid {
-      max-width: var(--max-width-wide);
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-48);
-    }
-    .quote-item__mark {
+    .school-card__name {
       font-family: var(--font-display);
-      font-size: 4rem;
-      color: var(--color-accent-brand);
-      line-height: 0.8;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
       margin-bottom: var(--space-16);
     }
-    .quote-item__text {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: var(--space-16);
+    .school-card__desc {
+      font-size: 14px;
+      color: var(--color-gray);
+      line-height: 1.6;
+      margin-bottom: var(--space-24);
     }
-    .quote-item__attr {
-      font-size: 12px;
+    .school-card__count {
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(242,241,240,0.45);
-    }
-
-    /* ---- OUTCOMES ---- */
-    .outcomes-section {
-      padding: var(--space-96) var(--space-32);
-      background: var(--color-surface-base);
-    }
-    .outcomes-split {
-      max-width: var(--max-width-wide);
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-96);
-      align-items: center;
-    }
-    .outcomes-stat-row {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-32);
-    }
-    .outcome-stat {
-      display: flex;
-      gap: var(--space-24);
-      align-items: flex-start;
-      padding-bottom: var(--space-32);
+      color: var(--color-black);
+      margin-bottom: var(--space-16);
+      padding-bottom: var(--space-16);
       border-bottom: 1px solid var(--color-divider);
     }
-    .outcome-stat:last-child { border-bottom: none; padding-bottom: 0; }
-    .outcome-stat__num {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1;
-      color: var(--color-accent-brand);
-      flex-shrink: 0;
-      min-width: 80px;
+    .school-card__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      flex: 1;
     }
-    .outcome-stat__label {
+    .school-card__list a {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-12);
+      padding: var(--space-12) 0;
+      text-decoration: none;
+      color: var(--color-black);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--motion-micro) var(--ease-standard);
+    }
+    .school-card__list a:hover {
+      border-bottom-color: var(--color-black);
+      opacity: 1;
+    }
+    .school-card__list-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-gray);
+      min-width: 1.5rem;
+    }
+    .school-card__list-name {
+      flex: 1;
       font-size: 14px;
-      line-height: 1.6;
-      color: rgba(37,32,38,0.7);
-      padding-top: var(--space-4);
+      font-weight: 600;
     }
-    .outcome-stat__label strong {
-      display: block;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--color-surface-ink);
-      margin-bottom: var(--space-4);
+    .school-card__list-arrow {
+      font-size: 14px;
+      color: var(--color-gray);
     }
 
-    /* ---- CTA BANNER ---- */
+    /* ---- SCHEDULE ---- */
+    .schedule-section {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-black);
+      color: var(--color-white);
+    }
+    .schedule-inner {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+    }
+    .schedule-section .section-label { color: rgba(255,255,255,0.45); }
+    .schedule-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: var(--space-12);
+    }
+    .schedule-lead {
+      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+      margin-bottom: var(--space-48);
+      max-width: 520px;
+    }
+    .schedule-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    .schedule-table th,
+    .schedule-table td {
+      padding: var(--space-16) var(--space-12);
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+    }
+    .schedule-table th {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.03);
+    }
+    .schedule-table td { color: rgba(255,255,255,0.85); vertical-align: middle; }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-prog-name {
+      font-weight: 700;
+      color: var(--color-white);
+      display: block;
+    }
+    .schedule-prog-note {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .schedule-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .schedule-school-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      background: var(--color-white);
+    }
+    .schedule-school-dot--biz { background: var(--color-pillar-entrepreneurship); }
+    .schedule-school-dot--cre { background: var(--color-pillar-creativity); }
+    .schedule-school-dot--hos { background: var(--color-pillar-humanity); }
+    .schedule-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-24);
+      margin-top: var(--space-24);
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+    .schedule-legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .schedule-note {
+      margin-top: var(--space-32);
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+    }
+    .schedule-actions {
+      display: flex;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+      margin-top: var(--space-40);
+    }
+
+    /* ---- PATHWAYS ---- */
+    .pathways-section {
+      padding: var(--space-96) var(--space-32);
+      background: var(--color-white);
+    }
+    .pathways-grid {
+      max-width: var(--max-width-wide);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-24);
+      margin-top: var(--space-48);
+    }
+    .pathway-card {
+      border: 1px solid var(--color-divider);
+      padding: var(--space-32);
+      display: flex;
+      flex-direction: column;
+      background: var(--color-white);
+    }
+    .pathway-card--featured {
+      background: var(--color-black);
+      color: var(--color-white);
+      border-color: var(--color-black);
+    }
+    .pathway-card__tier {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-8);
+    }
+    .pathway-card--featured .pathway-card__tier { color: rgba(255,255,255,0.5); }
+    .pathway-card__hours {
+      font-size: 12px;
+      color: var(--color-gray);
+      margin-bottom: var(--space-16);
+    }
+    .pathway-card--featured .pathway-card__hours { color: rgba(255,255,255,0.45); }
+    .pathway-card__name {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-8);
+      line-height: 1.1;
+    }
+    .pathway-card__meta {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--space-16);
+    }
+    .pathway-card__desc {
+      font-size: 14px;
+      color: var(--color-gray);
+      line-height: 1.55;
+      margin-bottom: var(--space-24);
+      flex: 1;
+    }
+    .pathway-card--featured .pathway-card__desc { color: rgba(255,255,255,0.55); }
+    .pathway-card__includes-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-12);
+    }
+    .pathway-card--featured .pathway-card__includes-label { color: rgba(255,255,255,0.4); }
+    .pathway-card__includes {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--space-32);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+    .pathway-card__includes li {
+      font-size: 14px;
+      font-weight: 500;
+      padding-left: var(--space-20);
+      position: relative;
+    }
+    .pathway-card__includes li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+    }
+    .pathway-card__price-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gray);
+      margin-bottom: var(--space-4);
+    }
+    .pathway-card--featured .pathway-card__price-label { color: rgba(255,255,255,0.4); }
+    .pathway-card__price {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-8);
+    }
+    .pathway-card__installment {
+      font-size: 12px;
+      color: var(--color-gray);
+    }
+    .pathway-card--featured .pathway-card__installment { color: rgba(255,255,255,0.5); }
+    .pathways-footnote {
+      max-width: var(--max-width-wide);
+      margin: var(--space-40) auto 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-black);
+    }
+
+    /* ---- CTA ---- */
     .cta-banner {
-      background: var(--color-accent-brand);
-      color: var(--color-surface-base);
+      background: var(--color-black);
+      color: var(--color-white);
       padding: var(--space-96) var(--space-32);
       text-align: center;
     }
-    .cta-banner__inner {
-      max-width: 720px;
-      margin-inline: auto;
-    }
+    .cta-banner__inner { max-width: 720px; margin-inline: auto; }
     .cta-banner__headline {
       font-family: var(--font-display);
       font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
+      font-weight: 900;
       line-height: 1.0;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.045em;
       margin-bottom: var(--space-24);
     }
     .cta-banner__sub {
       font-size: var(--type-body-l-size);
-      color: rgba(242,241,240,0.75);
+      color: rgba(255,255,255,0.6);
       margin-bottom: var(--space-40);
     }
     .cta-banner__actions {
@@ -355,22 +530,24 @@
       flex-wrap: wrap;
     }
     .btn--white {
-      background: var(--color-surface-base);
-      color: var(--color-accent-brand);
+      background: var(--color-white);
+      color: var(--color-black);
       font-weight: 700;
     }
-    .btn--white:hover { background: white; }
-    .btn--ghost-red {
+    .btn--white:hover { background: rgba(255,255,255,0.9); }
+    .btn--ghost-light {
       background: transparent;
-      color: var(--color-surface-base);
-      border: 1px solid rgba(242,241,240,0.35);
+      color: var(--color-white);
+      border: 1px solid rgba(255,255,255,0.35);
     }
+    .btn--ghost-light:hover { background: rgba(255,255,255,0.06); }
 
     /* ---- FOOTER ---- */
     .public-footer {
-      background: var(--color-surface-ink);
-      color: rgba(242,241,240,0.55);
+      background: var(--color-black);
+      color: rgba(255,255,255,0.55);
       padding: var(--space-64) var(--space-32);
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
     .footer-inner {
       max-width: var(--max-width-wide);
@@ -382,19 +559,19 @@
     .footer-brand__tagline {
       font-size: 13px;
       margin-top: var(--space-12);
-      color: rgba(242,241,240,0.45);
+      color: rgba(255,255,255,0.45);
     }
     .footer-brand__legal {
       font-size: 11px;
       margin-top: var(--space-32);
-      color: rgba(242,241,240,0.3);
+      color: rgba(255,255,255,0.3);
     }
     .footer-col__heading {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(242,241,240,0.3);
+      color: rgba(255,255,255,0.3);
       margin-bottom: var(--space-16);
     }
     .footer-col ul {
@@ -407,24 +584,28 @@
     .footer-col a {
       font-size: 13px;
       text-decoration: none;
-      color: rgba(242,241,240,0.55);
+      color: rgba(255,255,255,0.55);
       transition: color var(--motion-micro) var(--ease-standard);
     }
-    .footer-col a:hover { color: var(--color-surface-base); opacity: 1; }
+    .footer-col a:hover { color: var(--color-white); opacity: 1; }
+    .draft-note {
+      max-width: var(--max-width-wide);
+      margin: var(--space-32) auto 0;
+      padding-top: var(--space-24);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.04em;
+    }
 
-    /* ---- RESPONSIVE ---- */
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-provocation { display: none; }
-      .pillars-grid { grid-template-columns: 1fr; }
-      .program-grid { grid-template-columns: repeat(2, 1fr); }
-      .quotes-grid { grid-template-columns: 1fr; gap: var(--space-32); }
-      .outcomes-split { grid-template-columns: 1fr; gap: var(--space-48); }
+      .hero-school-row { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; gap: var(--space-32); }
+      .schools-grid { grid-template-columns: 1fr; }
+      .pathways-grid { grid-template-columns: 1fr; }
       .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--space-32); }
     }
     @media (max-width: 600px) {
-      .program-grid { grid-template-columns: 1fr; }
-      .section-header { flex-direction: column; align-items: flex-start; gap: var(--space-16); }
       .footer-inner { grid-template-columns: 1fr; }
       .page-hero { padding: var(--space-64) var(--space-24) var(--space-64); }
     }
@@ -432,303 +613,334 @@
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="public-nav" role="navigation" aria-label="Main navigation">
     <a href="index.html" class="public-nav__brand" aria-label="NICHE home">
       <img src="../shared/logos/logo-opt-02-on-dark.png" alt="NICHE">
     </a>
     <ul class="public-nav__menu">
-      <li><a href="programs.html">Programs</a></li>
+      <li><a href="#schools">Schools</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#pathways">Pathways</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="faculty.html">Faculty</a></li>
       <li><a href="faq.html">FAQ</a></li>
     </ul>
     <div class="public-nav__cta">
-      <a href="apply.html" class="btn btn--primary btn--sm">Apply — Cohort 1</a>
+      <a href="apply.html" class="btn btn--primary btn--sm">Soft launch 2026</a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section class="page-hero" aria-label="Hero">
+  <section class="page-hero" aria-label="Hero" id="top">
     <div class="hero-inner">
-      <div class="hero-content">
-        <div class="cohort-countdown-chip">
-          <span class="cohort-countdown-chip__dot"></span>
-          Cohort 1 · 11–30 Nov 2026 · 11 seats left
-        </div>
-        <h1 class="hero-headline">Find your<br><em>niche.</em></h1>
-        <p class="hero-sub">12 programs across Creativity, Humanity &amp; Entrepreneurship. One cohort per year. Bangkok.</p>
-        <p class="t-eyebrow" style="color:rgba(242,241,240,0.3); margin-bottom: var(--space-8);">Most schools teach trends. We teach judgment.</p>
-        <div class="hero-actions">
-          <a href="programs.html" class="btn btn--primary">See the programs</a>
-          <a href="apply.html" class="btn btn--ghost-on-dark">Apply for Cohort 1</a>
-        </div>
-        <p class="hero-stat">1 cohort per year — enrollment closes when it fills</p>
+      <p class="hero-eyebrow"><span>01</span> &nbsp; New Institute of Creativity, Humanity &amp; Entrepreneurship</p>
+      <h1 class="hero-headline">Find your<br><em>niche.</em></h1>
+      <p class="hero-sub">Build skills, careers, and businesses through hands-on, cohort-based learning.</p>
+      <div class="hero-actions">
+        <a href="#schools" class="btn btn--primary">Explore Schools →</a>
+        <a href="#pathways" class="btn btn--ghost-on-dark">View Pathways</a>
       </div>
-      <div class="hero-provocation" role="complementary">
-        <p class="hero-provocation__q">Are you learning the wrong way?</p>
-        <div class="hero-provocation__divider"></div>
-        <p class="hero-provocation__answer">Most curricula were designed for industrial hiring. NICHE is built for the independent — the person who wants to build something real, not just get a better job at someone else's company.</p>
-        <div>
-          <span class="badge badge--danger">All Eyes on Independents</span>
+      <div class="hero-school-row" aria-label="Three schools">
+        <a href="#school-business" class="hero-school-link">
+          <span class="hero-school-link__label">School of</span>
+          <span class="hero-school-link__name">Business &amp; Entrepreneurship</span>
+        </a>
+        <a href="#school-creativity" class="hero-school-link">
+          <span class="hero-school-link__label">School of</span>
+          <span class="hero-school-link__name">Creativity</span>
+        </a>
+        <a href="#school-hospitality" class="hero-school-link">
+          <span class="hero-school-link__label">School of</span>
+          <span class="hero-school-link__name">Hospitality &amp; Humanities</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" aria-label="How enrollment works" id="how">
+    <div class="how-inner">
+      <div class="how-grid">
+        <div class="how-step">
+          <p class="how-step__num">01</p>
+          <h3 class="how-step__title">Choose a School</h3>
+          <p class="how-step__desc">Your area of interest. Three broad fields to choose from.</p>
+        </div>
+        <div class="how-step">
+          <p class="how-step__num">02</p>
+          <h3 class="how-step__title">Choose a Program</h3>
+          <p class="how-step__desc">Your chosen field of study — a focused professional domain.</p>
+        </div>
+        <div class="how-step">
+          <p class="how-step__num">03</p>
+          <h3 class="how-step__title">Choose a Pathway</h3>
+          <p class="how-step__desc">Your depth of learning — and what you actually enroll in.</p>
+        </div>
+      </div>
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span class="ticker__item"><strong>Applications open now</strong></span>
+          <span class="ticker__item">September 2026 intake</span>
+          <span class="ticker__item">Limited seats</span>
+          <span class="ticker__item">0% installment available</span>
+          <span class="ticker__item"><strong>Applications open now</strong></span>
+          <span class="ticker__item">September 2026 intake</span>
+          <span class="ticker__item">Limited seats</span>
+          <span class="ticker__item">0% installment available</span>
+          <span class="ticker__item"><strong>Applications open now</strong></span>
+          <span class="ticker__item">September 2026 intake</span>
+          <span class="ticker__item">Limited seats</span>
+          <span class="ticker__item">0% installment available</span>
+          <span class="ticker__item"><strong>Applications open now</strong></span>
+          <span class="ticker__item">September 2026 intake</span>
+          <span class="ticker__item">Limited seats</span>
+          <span class="ticker__item">0% installment available</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- THREE PILLARS -->
-  <section class="pillars-section" aria-label="Three pillars">
-    <div style="max-width: var(--max-width-wide); margin-inline: auto; margin-bottom: var(--space-48);">
-      <span class="t-eyebrow" style="color: var(--color-accent-brand);">Three pillars</span>
-      <h2 class="t-h2" style="margin-top: var(--space-8);">What we teach.</h2>
-    </div>
-    <div class="pillars-grid">
-      <div class="pillar-block">
-        <span class="pillar-block__count">01</span>
-        <h3 class="pillar-block__title">Creativity</h3>
-        <p class="pillar-block__desc">The craft of making things that matter. From content engines to product design — learning how to build a distinct creative identity.</p>
-        <div class="pillar-block__list">
-          AI × Content Engine Studio<br>
-          Product &amp; Experience Design<br>
-          Creative Identity &amp; Storytelling<br>
-          The Business of Craft
-        </div>
-      </div>
-      <div class="pillar-block">
-        <span class="pillar-block__count">02</span>
-        <h3 class="pillar-block__title">Humanity</h3>
-        <p class="pillar-block__desc">Businesses built around people. Hospitality, food, events, community — the industries where human judgment cannot be automated away.</p>
-        <div class="pillar-block__list">
-          New Hospitality<br>
-          Event &amp; Experience Design<br>
-          Food Business 3.0<br>
-          Community &amp; Localization
-        </div>
-      </div>
-      <div class="pillar-block">
-        <span class="pillar-block__count">03</span>
-        <h3 class="pillar-block__title">Entrepreneurship</h3>
-        <p class="pillar-block__desc">The mechanics of building a business. From first venture to AI-native operations — learning the skills that make you dangerous.</p>
-        <div class="pillar-block__list">
-          AI-native Business Builder<br>
-          SME Automation Lab<br>
-          Sales &amp; Dealmaking<br>
-          First Venture Bootcamp
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROGRAM GRID -->
-  <section class="programs-section" aria-label="Program catalog">
+  <!-- SCHOOLS & PROGRAMS -->
+  <section class="schools-section" aria-label="Schools and programs" id="schools">
     <div class="section-header">
-      <div>
-        <span class="t-eyebrow" style="color: var(--color-accent-brand);">12 programs</span>
-        <h2 class="t-h2" style="margin-top: var(--space-8);">Pick your track.</h2>
-      </div>
+      <p class="section-label">02 · Schools &amp; programs</p>
+      <h2>Three schools.<br>Twelve programs.</h2>
+    </div>
+    <div class="schools-grid">
+
+      <article class="school-card" id="school-business">
+        <p class="school-card__label">School of</p>
+        <h3 class="school-card__name">Business &amp; Entrepreneurship</h3>
+        <p class="school-card__desc">Build businesses, generate revenue, and operate in the modern economy.</p>
+        <p class="school-card__count">04 Programs</p>
+        <ul class="school-card__list">
+          <li><a href="program-detail.html?program=sales-dealmaking"><span class="school-card__list-num">01</span><span class="school-card__list-name">Sales &amp; Dealmaking</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=online-store"><span class="school-card__list-num">02</span><span class="school-card__list-name">Online Store &amp; E-Commerce</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=business-ai"><span class="school-card__list-num">03</span><span class="school-card__list-name">Running a Business with AI</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=start-build"><span class="school-card__list-num">04</span><span class="school-card__list-name">Start &amp; Build Your Business</span><span class="school-card__list-arrow">→</span></a></li>
+        </ul>
+      </article>
+
+      <article class="school-card" id="school-creativity">
+        <p class="school-card__label">School of</p>
+        <h3 class="school-card__name">Creativity</h3>
+        <p class="school-card__desc">Create products, brands, content, and audiences.</p>
+        <p class="school-card__count">04 Programs</p>
+        <ul class="school-card__list">
+          <li><a href="program-detail.html?program=content-creator"><span class="school-card__list-num">01</span><span class="school-card__list-name">Content Creator Studio</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=branding-design"><span class="school-card__list-num">02</span><span class="school-card__list-name">Branding &amp; Design</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=digital-marketing"><span class="school-card__list-num">03</span><span class="school-card__list-name">Digital Marketing for Growth</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=craft-product"><span class="school-card__list-num">04</span><span class="school-card__list-name">Craft &amp; Product Making</span><span class="school-card__list-arrow">→</span></a></li>
+        </ul>
+      </article>
+
+      <article class="school-card" id="school-hospitality">
+        <p class="school-card__label">School of</p>
+        <h3 class="school-card__name">Hospitality &amp; Humanities</h3>
+        <p class="school-card__desc">Build careers and businesses around hospitality, wellness, service, and human experience.</p>
+        <p class="school-card__count">04 Programs</p>
+        <ul class="school-card__list">
+          <li><a href="program-detail.html?program=coffee"><span class="school-card__list-num">01</span><span class="school-card__list-name">Coffee: From Bean to Café</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=wellness-spa"><span class="school-card__list-num">02</span><span class="school-card__list-name">Wellness &amp; Spa</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=pet-care"><span class="school-card__list-num">03</span><span class="school-card__list-name">Pet Care &amp; Business</span><span class="school-card__list-arrow">→</span></a></li>
+          <li><a href="program-detail.html?program=hospitality-service"><span class="school-card__list-num">04</span><span class="school-card__list-name">Hospitality &amp; Service Excellence</span><span class="school-card__list-arrow">→</span></a></li>
+        </ul>
+      </article>
+
+    </div>
+    <div style="max-width: var(--max-width-wide); margin: var(--space-40) auto 0; text-align: center;">
       <a href="programs.html" class="btn btn--ghost">Browse all programs</a>
     </div>
-    <div class="program-grid">
-
-      <!-- Creativity -->
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-        <h3 class="program-card__title">AI × Content Engine Studio</h3>
-        <p class="program-card__desc">Build systems that produce content at scale without losing your voice.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Studio · 6 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-        <h3 class="program-card__title">Product &amp; Experience Design Studio</h3>
-        <p class="program-card__desc">Design digital and physical products people actually want to use.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Studio · 6 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-        <h3 class="program-card__title">Creative Identity &amp; Storytelling</h3>
-        <p class="program-card__desc">Develop the singular voice that separates you from everyone else.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--creativity t-eyebrow">Creativity</span>
-        <h3 class="program-card__title">The Business of Craft</h3>
-        <p class="program-card__desc">Turn maker skills into a sustainable independent practice.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-
-      <!-- Humanity -->
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-        <h3 class="program-card__title">New Hospitality</h3>
-        <p class="program-card__desc">Rethink guest experience for a world that expects more.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Degree · 12 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-        <h3 class="program-card__title">Event &amp; Experience Design</h3>
-        <p class="program-card__desc">Design moments that people talk about for years.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Studio · 6 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-        <h3 class="program-card__title">Food Business 3.0</h3>
-        <p class="program-card__desc">Build a food venture that survives the next decade of disruption.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--humanity t-eyebrow">Humanity</span>
-        <h3 class="program-card__title">Community &amp; Localization</h3>
-        <p class="program-card__desc">Build the kind of community that makes outsiders want in.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-
-      <!-- Entrepreneurship -->
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-        <h3 class="program-card__title">AI-native Business Builder</h3>
-        <p class="program-card__desc">Build a business that runs on AI leverage from day one.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Degree · 12 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-        <h3 class="program-card__title">SME Automation Lab</h3>
-        <p class="program-card__desc">Automate the operations keeping your business from scaling.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Studio · 6 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-        <h3 class="program-card__title">Sales &amp; Dealmaking</h3>
-        <p class="program-card__desc">Learn to close deals and build relationships that compound.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-      <a href="program-detail.html" class="program-card">
-        <span class="pillar-tag pillar-tag--entrepreneurship t-eyebrow">Entrepreneurship</span>
-        <h3 class="program-card__title">First Venture Bootcamp</h3>
-        <p class="program-card__desc">From zero to your first paying customer in 12 weeks.</p>
-        <div class="program-card__footer">
-          <span class="badge badge--neutral">Bootcamp · 3 months</span>
-          <span class="program-card__meta">Nov 2026</span>
-        </div>
-      </a>
-
-    </div>
   </section>
 
-  <!-- VOICE QUOTES -->
-  <section class="quotes-section" aria-label="Voices">
-    <div class="quotes-grid">
-      <div class="quote-item">
-        <div class="quote-item__mark">"</div>
-        <p class="quote-item__text">I didn't need another certificate. I needed to stop second-guessing my instincts.</p>
-        <p class="quote-item__attr">— Pimchanok S., Food Business 3.0</p>
+  <!-- OPENING SCHEDULE -->
+  <section class="schedule-section" aria-label="Opening schedule" id="schedule">
+    <div class="schedule-inner">
+      <p class="section-label">03 · Opening schedule</p>
+      <h2>Upcoming intakes.</h2>
+      <p class="schedule-lead">Six programs open across two waves for the 2026 soft launch.</p>
+
+      <div class="schedule-table-wrap">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Program</th>
+              <th>School</th>
+              <th>Wave</th>
+              <th>Intake</th>
+              <th>Pathways</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Sales &amp; Dealmaking</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--biz" aria-hidden="true"></span>Business</td>
+              <td>Wave 1</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Online Store &amp; E-Commerce</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--biz" aria-hidden="true"></span>Business</td>
+              <td>Wave 1</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M / 6M</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Pet Care &amp; Business</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--hos" aria-hidden="true"></span>Hospitality</td>
+              <td>Wave 1</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M / 6M</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Content Creator Studio</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--cre" aria-hidden="true"></span>Creativity</td>
+              <td>Wave 2</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Digital Marketing for Growth</span>
+                <span class="schedule-prog-note">Co-developed with Chulalongkorn Business School</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--cre" aria-hidden="true"></span>Creativity</td>
+              <td>Wave 2</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span class="schedule-prog-name">Coffee: From Bean to Café</span>
+                <span class="schedule-prog-note">Co-developed with [coffee partner]</span>
+              </td>
+              <td><span class="schedule-school-dot schedule-school-dot--hos" aria-hidden="true"></span>Hospitality</td>
+              <td>Wave 2</td>
+              <td>Sep 2026</td>
+              <td><span class="schedule-pill">3M / 6M</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="quote-item">
-        <div class="quote-item__mark">"</div>
-        <p class="quote-item__text">NICHE is the only place where being self-taught was an advantage, not a liability.</p>
-        <p class="quote-item__attr">— Rafael M., First Venture Bootcamp</p>
+
+      <div class="schedule-legend">
+        <span><span class="schedule-school-dot schedule-school-dot--biz"></span>Business &amp; Entrepreneurship</span>
+        <span><span class="schedule-school-dot schedule-school-dot--cre"></span>Creativity</span>
+        <span><span class="schedule-school-dot schedule-school-dot--hos"></span>Hospitality &amp; Humanities</span>
       </div>
-      <div class="quote-item">
-        <div class="quote-item__mark">"</div>
-        <p class="quote-item__text">The cohort model means you go through the hard parts with real people who have real skin in the game.</p>
-        <p class="quote-item__attr">— Arisa K., AI × Content Engine Studio</p>
+
+      <p class="schedule-note">
+        New cohorts open on a rolling basis.<br>
+        12-month Professional pathways open annually each June from 2027.<br>
+        <em>Draft prototype — indicative dates &amp; pricing.</em>
+      </p>
+
+      <div class="schedule-actions">
+        <a href="apply.html" class="btn btn--primary">Enroll Now →</a>
+        <a href="faq.html" class="btn btn--ghost-on-dark">Talk to Us</a>
       </div>
     </div>
   </section>
 
-  <!-- OUTCOMES -->
-  <section class="outcomes-section" aria-label="Program outcomes">
-    <div class="outcomes-split">
-      <div>
-        <span class="t-eyebrow" style="color: var(--color-accent-brand);">Why it works</span>
-        <h2 class="t-h1" style="margin-top: var(--space-8); margin-bottom: var(--space-24);">Small cohort.<br>Big stakes.</h2>
-        <p class="t-body-l" style="color: rgba(37,32,38,0.65);">Every program caps at 11 people. Not because it sounds exclusive — because peer learning only works when everyone is invested. You'll know every name by week two.</p>
-      </div>
-      <div class="outcomes-stat-row">
-        <div class="outcome-stat">
-          <span class="outcome-stat__num">11</span>
-          <div class="outcome-stat__label">
-            <strong>Maximum per cohort</strong>
-            Not a target. A hard limit. When it fills, it fills.
-          </div>
-        </div>
-        <div class="outcome-stat">
-          <span class="outcome-stat__num">1×</span>
-          <div class="outcome-stat__label">
-            <strong>One intake per year</strong>
-            November only. Scarcity is a feature, not a sales tactic.
-          </div>
-        </div>
-        <div class="outcome-stat">
-          <span class="outcome-stat__num">3–12</span>
-          <div class="outcome-stat__label">
-            <strong>Months, depending on level</strong>
-            Bootcamp · Studio · Degree. Pick the depth you're ready for.
-          </div>
-        </div>
-      </div>
+  <!-- PATHWAYS -->
+  <section class="pathways-section" aria-label="Pathway tiers" id="pathways">
+    <div class="section-header">
+      <p class="section-label">04 · Pathways</p>
+      <h2>Choose your depth.</h2>
+      <p style="margin-top: var(--space-16); color: var(--color-gray); max-width: 560px; font-size: 15px; line-height: 1.6;">
+        Every program starts with a 3-month Bootcamp. Go further into Studio or Professional — you only ever add new modules, never repeating what you've learned.
+      </p>
     </div>
+    <div class="pathways-grid">
+
+      <article class="pathway-card">
+        <p class="pathway-card__tier">Foundation</p>
+        <p class="pathway-card__hours">30–42 hrs</p>
+        <h3 class="pathway-card__name">Bootcamp / Lab</h3>
+        <p class="pathway-card__meta">3 months · 4 modules</p>
+        <p class="pathway-card__desc">Get job-ready in one craft or function. Practical, hands-on, immediate.</p>
+        <p class="pathway-card__includes-label">Includes</p>
+        <ul class="pathway-card__includes">
+          <li>Professional Certificate</li>
+          <li>Final Project</li>
+        </ul>
+        <p class="pathway-card__price-label">Tuition</p>
+        <p class="pathway-card__price">฿15,000</p>
+        <p class="pathway-card__installment">0% Installment · Up to 3 months</p>
+      </article>
+
+      <article class="pathway-card pathway-card--featured">
+        <p class="pathway-card__tier">Practitioner</p>
+        <p class="pathway-card__hours">60–84 hrs</p>
+        <h3 class="pathway-card__name">Studio</h3>
+        <p class="pathway-card__meta">6 months · 8 modules</p>
+        <p class="pathway-card__desc">Build and run the real thing — projects, portfolio, and execution.</p>
+        <p class="pathway-card__includes-label">Includes</p>
+        <ul class="pathway-card__includes">
+          <li>Professional Certificate</li>
+          <li>Portfolio Project</li>
+          <li>Industry Mentoring</li>
+        </ul>
+        <p class="pathway-card__price-label">Tuition</p>
+        <p class="pathway-card__price">฿30,000</p>
+        <p class="pathway-card__installment">0% Installment · Up to 6 months</p>
+      </article>
+
+      <article class="pathway-card">
+        <p class="pathway-card__tier">Professional</p>
+        <p class="pathway-card__hours">120–168 hrs</p>
+        <h3 class="pathway-card__name">Professional</h3>
+        <p class="pathway-card__meta">12 months · 16 modules</p>
+        <p class="pathway-card__desc">Deep, career-track specialization with practicum. Selected programs.</p>
+        <p class="pathway-card__includes-label">Includes</p>
+        <ul class="pathway-card__includes">
+          <li>Professional Certificate</li>
+          <li>Practicum Experience</li>
+          <li>Professional Portfolio</li>
+        </ul>
+        <p class="pathway-card__price-label">Tuition</p>
+        <p class="pathway-card__price">฿65,000</p>
+        <p class="pathway-card__installment">0% Installment · Up to 10 months</p>
+      </article>
+
+    </div>
+    <p class="pathways-footnote">Start anywhere. Extend by adding modules.</p>
   </section>
 
-  <!-- CTA BANNER -->
-  <section class="cta-banner" aria-label="Apply call to action">
+  <!-- CTA -->
+  <section class="cta-banner" aria-label="Call to action">
     <div class="cta-banner__inner">
-      <h2 class="cta-banner__headline">Cohort 1 opens<br>November 2026.</h2>
-      <p class="cta-banner__sub">11 seats. One year until the next one. Applications reviewed in the order they arrive.</p>
+      <h2 class="cta-banner__headline">Ready to find<br>your niche?</h2>
+      <p class="cta-banner__sub">Explore our schools, programs, and upcoming intakes.</p>
       <div class="cta-banner__actions">
-        <a href="apply.html" class="btn btn--white">Apply now</a>
-        <a href="faq.html" class="btn btn--ghost-red">Read the FAQ</a>
+        <a href="programs.html" class="btn btn--white">Explore Programs →</a>
+        <a href="apply.html" class="btn btn--ghost-light">Apply now</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="public-footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-brand">
         <img src="../shared/logos/logo-opt-02-on-dark.png" alt="NICHE" style="height: 28px; width: auto;">
         <p class="footer-brand__tagline">New Institute of Creativity, Humanity &amp; Entrepreneurship.<br>Bangkok, Thailand.</p>
-        <p class="footer-brand__legal">&copy; 2026 NICHE. All rights reserved.</p>
+        <p class="footer-brand__legal">&copy; 2026 NICHE · RSXYZ Public Company Limited.</p>
       </div>
       <div class="footer-col">
-        <p class="footer-col__heading">Programs</p>
+        <p class="footer-col__heading">Schools</p>
         <ul>
-          <li><a href="programs.html">All programs</a></li>
+          <li><a href="programs.html#business">Business &amp; Entrepreneurship</a></li>
           <li><a href="programs.html#creativity">Creativity</a></li>
-          <li><a href="programs.html#humanity">Humanity</a></li>
-          <li><a href="programs.html#entrepreneurship">Entrepreneurship</a></li>
+          <li><a href="programs.html#hospitality">Hospitality &amp; Humanities</a></li>
+          <li><a href="programs.html">All programs</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -742,11 +954,13 @@
       <div class="footer-col">
         <p class="footer-col__heading">Apply</p>
         <ul>
-          <li><a href="apply.html">Apply — Cohort 1</a></li>
+          <li><a href="apply.html">Soft launch 2026</a></li>
           <li><a href="faq.html#admissions">Admissions FAQ</a></li>
+          <li><a href="#pathways">Pathways</a></li>
         </ul>
       </div>
     </div>
+    <p class="draft-note">Draft prototype — indicative dates &amp; pricing. For internal review.</p>
   </footer>
 
   <div class="demo-banner"><span class="demo-banner__dot"></span>NICHE Demo · Public</div>
