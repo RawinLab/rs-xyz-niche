@@ -815,6 +815,29 @@
 }
 .mobile-tabbar__item.is-active { color: var(--color-shell-text); }
 
+@media (max-width: 768px) {
+  .app-mobile-tabbar.mobile-tabbar {
+    display: flex;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+  }
+
+  .app-topbar .topbar {
+    gap: var(--space-8);
+    padding: 0 var(--space-16);
+  }
+
+  .app-topbar .topbar__search { display: none; }
+  .app-topbar .topbar__actions { gap: var(--space-4); }
+  .app-topbar .topbar__actions .avatar { display: none; }
+  .app-layout { grid-template-columns: minmax(0, 1fr); }
+  .app-topbar,
+  .app-main { min-width: 0; }
+}
+
 /* ----------------------------------------------------------
    Public site (no shell) — minimal helpers
    ---------------------------------------------------------- */
