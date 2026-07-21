@@ -917,3 +917,10 @@
   background: var(--color-surface-base);
   margin-right: var(--space-8);
 }
+
+@media (max-width: 768px) {
+  .demo-banner {
+    bottom: calc(var(--space-64) + var(--space-8));
+    right: var(--space-8);
+  }
+}
