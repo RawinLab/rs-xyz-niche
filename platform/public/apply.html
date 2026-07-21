@@ -16,6 +16,14 @@
     .public-nav__menu a { color: rgba(242,241,240,0.55); }
     .public-nav__menu a:hover { color: var(--color-surface-base); }
 
+    .public-nav__toggle {
+      color: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.35);
+    }
+    .public-nav.is-open .public-nav__menu {
+      border-top-color: rgba(255,255,255,0.12);
+    }
+
     /* APPLY LAYOUT */
     .apply-shell {
       min-height: calc(100vh - 57px);
@@ -301,7 +309,12 @@
     <a href="index.html" class="public-nav__brand">
       <img src="../shared/logos/logo-opt-02-on-dark.png" alt="NICHE">
     </a>
-    <ul class="public-nav__menu">
+    <button type="button" class="public-nav__toggle" aria-expanded="false" aria-controls="public-nav-menu" aria-label="Open menu">
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+      <span class="public-nav__toggle-bar" aria-hidden="true"></span>
+    </button>
+    <ul class="public-nav__menu" id="public-nav-menu">
       <li><a href="programs.html">Programs</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="faculty.html">Faculty</a></li>
@@ -556,5 +569,24 @@
       el.textContent = prog.name + '  ·  ' + prog.school + '  ·  ' + path.name + ' · ' + path.meta;
     }
   </script>
+
+<script>
+(function () {
+  var nav = document.querySelector('.public-nav');
+  var btn = document.querySelector('.public-nav__toggle');
+  if (!nav || !btn) return;
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  btn.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('is-open'));
+  });
+  window.addEventListener('resize', function () {
+    if (window.matchMedia('(min-width: 721px)').matches) setOpen(false);
+  });
+})();
+</script>
 </body>
 </html>
