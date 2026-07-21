@@ -56,9 +56,10 @@
 
     /* ---- Progress overview header ---- */
     .prog-summary {
-      background: white; border: 1px solid var(--color-divider); border-radius: 12px;
+      border-radius: 12px;
       padding: var(--space-24); margin-bottom: var(--space-24);
     }
+    .prog-summary:not(.prog-summary--flood) { background: white; border: 1px solid var(--color-divider); }
     .prog-summary__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-16); margin-bottom: var(--space-20); }
     .prog-summary__code {
       width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border-radius: 8px;
@@ -66,6 +67,15 @@
     }
     .prog-summary__title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
     .prog-summary__school { font-size: 12px; color: rgba(10,10,10,0.55); margin-top: 2px; }
+
+    /* Per-program tab flood (RSX-557) — the SE/SH full-journey tabs are
+       single-school context, so their summary header may carry the
+       pillar flood. The General (all-programs) overview stays monochrome. */
+    .prog-summary--flood { position: relative; overflow: hidden; color: var(--color-white); border: none; }
+    .prog-summary--flood > * { position: relative; z-index: 2; }
+    .prog-summary--flood .prog-summary__code { background: rgba(255,255,255,0.18); color: var(--color-white); }
+    .prog-summary--flood .prog-summary__school { color: rgba(255,255,255,0.7); }
+    .prog-summary__mk { position: absolute; right: -16px; bottom: -16px; width: 90px; height: 90px; fill: rgba(255,255,255,0.16); z-index: 1; pointer-events: none; }
 
     .pbar { height: 10px; border-radius: 6px; background: rgba(10,10,10,0.08); overflow: hidden; }
     .pbar__fill { height: 100%; background: var(--color-surface-ink); border-radius: 6px; }
@@ -136,6 +146,13 @@
   </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+  <defs>
+    <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+    <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+    <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+  </defs>
+</svg>
 <div class="app-shell">
   <div class="app-layout">
 
@@ -303,7 +320,7 @@
         <!-- =============== SE — full journey =============== -->
         <section id="prog-se" class="prog-view">
 
-          <div class="prog-summary">
+          <div class="prog-summary prog-summary--flood flood--entrepreneurship">
             <div class="prog-summary__top">
               <div style="display:flex;gap:var(--space-16);align-items:center;">
                 <div class="prog-summary__code">SE</div>
@@ -312,14 +329,15 @@
                   <div class="prog-summary__school">School of Business &amp; Entrepreneurship · Bootcamp · 3 months</div>
                 </div>
               </div>
-              <span class="badge badge--ink">Standing: Exceeding</span>
+              <span class="badge badge--ink" style="background:rgba(255,255,255,0.18);color:var(--color-white);">Standing: Exceeding</span>
             </div>
-            <div class="pbar-row"><span class="pbar-pct">62%</span><span class="pbar-mod">Module 3 of 4</span></div>
-            <div class="pbar"><div class="pbar__fill" style="width:62%;"></div></div>
+            <div class="pbar-row"><span class="pbar-pct" style="color:var(--color-white);">62%</span><span class="pbar-mod" style="color:rgba(255,255,255,0.7);">Module 3 of 4</span></div>
+            <div class="pbar" style="background:rgba(255,255,255,0.2);"><div class="pbar__fill" style="width:62%;background:var(--color-white);"></div></div>
             <div class="prog-stats">
-              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">92% <span class="prog-stat__sub">· 11 of 12 classes</span></div></div>
-              <div class="prog-stat"><div class="prog-stat__label">Standing</div><div class="prog-stat__value">Exceeding</div></div>
+              <div class="prog-stat"><div class="prog-stat__label" style="color:rgba(255,255,255,0.6);">Attendance</div><div class="prog-stat__value">92% <span class="prog-stat__sub" style="color:rgba(255,255,255,0.6);">· 11 of 12 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label" style="color:rgba(255,255,255,0.6);">Standing</div><div class="prog-stat__value">Exceeding</div></div>
             </div>
+            <svg class="prog-summary__mk" aria-hidden="true"><use href="#m-tri"/></svg>
           </div>
 
           <div class="sec-head">Module journey</div>
@@ -385,7 +403,7 @@
         <!-- =============== SH — full journey =============== -->
         <section id="prog-sh" class="prog-view">
 
-          <div class="prog-summary">
+          <div class="prog-summary prog-summary--flood flood--humanity">
             <div class="prog-summary__top">
               <div style="display:flex;gap:var(--space-16);align-items:center;">
                 <div class="prog-summary__code">SH</div>
@@ -394,14 +412,15 @@
                   <div class="prog-summary__school">School of Hospitality &amp; Humanities · Professional · 12 months</div>
                 </div>
               </div>
-              <span class="badge badge--neutral">Standing: Meeting</span>
+              <span class="badge badge--neutral" style="background:rgba(255,255,255,0.18);color:var(--color-white);">Standing: Meeting</span>
             </div>
-            <div class="pbar-row"><span class="pbar-pct">14%</span><span class="pbar-mod">Module 2 of 16</span></div>
-            <div class="pbar"><div class="pbar__fill" style="width:14%;"></div></div>
+            <div class="pbar-row"><span class="pbar-pct">14%</span><span class="pbar-mod" style="color:rgba(255,255,255,0.7);">Module 2 of 16</span></div>
+            <div class="pbar" style="background:rgba(255,255,255,0.2);"><div class="pbar__fill" style="width:14%;background:var(--color-white);"></div></div>
             <div class="prog-stats">
-              <div class="prog-stat"><div class="prog-stat__label">Attendance</div><div class="prog-stat__value">100% <span class="prog-stat__sub">· 6 of 6 classes</span></div></div>
-              <div class="prog-stat"><div class="prog-stat__label">Standing</div><div class="prog-stat__value">Meeting</div></div>
+              <div class="prog-stat"><div class="prog-stat__label" style="color:rgba(255,255,255,0.6);">Attendance</div><div class="prog-stat__value">100% <span class="prog-stat__sub" style="color:rgba(255,255,255,0.6);">· 6 of 6 classes</span></div></div>
+              <div class="prog-stat"><div class="prog-stat__label" style="color:rgba(255,255,255,0.6);">Standing</div><div class="prog-stat__value">Meeting</div></div>
             </div>
+            <svg class="prog-summary__mk" aria-hidden="true"><use href="#m-circ"/></svg>
           </div>
 
           <div class="sec-head">Module journey</div>

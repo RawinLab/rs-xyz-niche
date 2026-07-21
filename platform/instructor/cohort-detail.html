@@ -12,12 +12,17 @@
   <link rel="stylesheet" href="../shared/base.css">
   <link rel="stylesheet" href="../shared/platform.css">
   <style>
+    /* Cohort hero flood (RSX-557) — full-bleed pillar color for the
+       cohort's single school. Tabs/table below stay monochrome. */
     .cohort-hero {
-      background: var(--color-surface-ink);
+      position: relative;
+      overflow: hidden;
       color: var(--color-surface-base);
       padding: var(--space-32) var(--space-48);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+    .cohort-hero > * { position: relative; z-index: 2; }
+    .cohort-hero__mk { position: absolute; right: -20px; bottom: -20px; width: 120px; height: 120px; fill: rgba(255,255,255,0.14); z-index: 1; pointer-events: none; }
     .cohort-hero__top {
       display: flex;
       align-items: flex-start;
@@ -216,6 +221,13 @@
   </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+  <defs>
+    <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+    <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+    <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+  </defs>
+</svg>
 <div class="app-shell">
   <div class="app-layout">
 
@@ -312,12 +324,12 @@
 
     <!-- Main -->
     <main class="app-main">
-      <!-- Cohort Hero -->
-      <div class="cohort-hero">
+      <!-- Cohort Hero — flood, one pillar color (Creativity) for this single-school cohort -->
+      <div class="cohort-hero flood--creativity">
         <div class="cohort-hero__top">
           <div>
             <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);">
-              <span class="pillar-tag pillar-tag--creativity" style="background:rgba(10,10,10,0.2);color:#0A0A0A;">Creativity</span>
+              <span class="pillar-tag pillar-tag--creativity" style="background:rgba(255,255,255,0.18);color:var(--color-white);border-color:rgba(255,255,255,0.3);">Creativity</span>
               <span class="status-chip status-chip--current">Active</span>
             </div>
             <div class="cohort-hero__name">Cohort 1 — Creative Identity &amp; Storytelling</div>
@@ -353,6 +365,7 @@
           </button>
           <button class="btn btn--ghost-on-dark btn--sm">Edit Cohort</button>
         </div>
+        <svg class="cohort-hero__mk" aria-hidden="true"><use href="#m-blob"/></svg>
       </div>
 
       <!-- Tabs (dark bg) -->

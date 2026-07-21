@@ -108,9 +108,28 @@
     .mat-card__foot { margin-top: auto; padding-top: var(--space-8); }
 
     @media (max-width: 720px) { .class-card { flex-wrap: wrap; } }
+
+    /* Live-now flood band (RSX-557) — full-bleed, one pillar color for
+       the school of the class currently in session. Flood-only; not an
+       accent on the class card below. */
+    .live-flood { margin: 0 0 var(--space-24); border-radius: 10px; }
+    .live-flood .flood-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); flex-wrap: wrap; }
+    .live-flood__eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px; }
+    .live-flood__eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse-dot 2s var(--ease-standard) infinite; }
+    .live-flood__title { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; margin-top: var(--space-4); }
+    .live-flood__sub { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+    .live-flood { padding: var(--space-20) var(--space-24); }
+    .live-flood .flood-wm { right: -40px; bottom: -40px; width: 160px; height: 160px; }
   </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+  <defs>
+    <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+    <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+    <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+  </defs>
+</svg>
 <div class="app-shell">
   <div class="app-layout">
 
@@ -219,6 +238,19 @@
             <h1 class="page-header__heading">Learn</h1>
           </div>
         </div>
+
+        <!-- Live-now flood band — School of Business & Entrepreneurship (SE class in session) -->
+        <section class="flood flood--entrepreneurship live-flood">
+          <div class="flood-inner">
+            <div>
+              <div class="live-flood__eyebrow"><span class="live-flood__eyebrow-dot"></span>Live now · SE Sales &amp; Dealmaking</div>
+              <div class="live-flood__title">Anchoring &amp; concession ladders</div>
+              <div class="live-flood__sub">13:00–15:00 · K. Anan · School of Business &amp; Entrepreneurship</div>
+            </div>
+            <a href="#" class="btn btn--ghost-on-dark">Join class</a>
+          </div>
+          <svg class="flood-wm" aria-hidden="true"><use href="#m-tri"/></svg>
+        </section>
 
         <!-- Single nav entry, four in-page sections -->
         <div class="subnav" role="tablist">
