@@ -172,7 +172,6 @@
 
     /* ---- SCHOOLS ---- */
     .schools-section {
-      padding: var(--space-96) var(--space-32);
       background: var(--color-white);
     }
     .section-label {
@@ -186,7 +185,7 @@
     .section-header {
       max-width: var(--max-width-wide);
       margin-inline: auto;
-      margin-bottom: var(--space-48);
+      padding: var(--space-96) var(--space-32) var(--space-48);
     }
     .section-header h2 {
       font-family: var(--font-display);
@@ -195,91 +194,88 @@
       letter-spacing: -0.03em;
       line-height: 1.05;
     }
-    .schools-grid {
-      max-width: var(--max-width-wide);
-      margin-inline: auto;
+    /* Full-section pillar floods (RSX-556) — one school, one pillar
+       color, per surface. .flood / .flood--* / .flood-wm / .flood-mk
+       are shared primitives from platform.css; the grid + list layout
+       below is page-specific to this stacked school band pattern. */
+    .school-flood-inner {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-24);
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: clamp(32px, 5vw, 80px);
+      align-items: start;
     }
-    .school-card {
-      border: 1px solid var(--color-divider);
-      background: var(--color-white);
-      padding: var(--space-32);
-      display: flex;
-      flex-direction: column;
-      min-height: 420px;
-    }
-    .school-card__label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-gray);
-      margin-bottom: var(--space-8);
-    }
-    .school-card__name {
-      font-family: var(--font-display);
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: var(--space-16);
-    }
-    .school-card__desc {
-      font-size: 14px;
-      color: var(--color-gray);
-      line-height: 1.6;
+    .school-flood-head .flood-mk {
+      width: clamp(50px, 5vw, 72px);
+      height: clamp(50px, 5vw, 72px);
       margin-bottom: var(--space-24);
     }
-    .school-card__count {
+    .school-flood-cap {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.82;
+    }
+    .school-flood-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      margin-top: var(--space-8);
+    }
+    .school-flood-desc {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      margin-top: var(--space-24);
+      max-width: 32ch;
+      opacity: 0.94;
+      line-height: 1.45;
+    }
+    .school-flood-count {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--color-black);
+      opacity: 0.7;
       margin-bottom: var(--space-16);
-      padding-bottom: var(--space-16);
-      border-bottom: 1px solid var(--color-divider);
     }
-    .school-card__list {
+    .school-flood-list {
       list-style: none;
       padding: 0;
       margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      flex: 1;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
     }
-    .school-card__list a {
+    .school-flood-list li {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .school-flood-list a {
       display: flex;
-      align-items: baseline;
-      gap: var(--space-12);
-      padding: var(--space-12) 0;
+      align-items: center;
+      gap: var(--space-16);
+      width: 100%;
+      padding: clamp(12px, 1.8vw, 20px) 0;
+      color: inherit;
       text-decoration: none;
-      color: var(--color-black);
-      border-bottom: 1px solid transparent;
-      transition: border-color var(--motion-micro) var(--ease-standard);
+      font-weight: 700;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      letter-spacing: -0.01em;
     }
-    .school-card__list a:hover {
-      border-bottom-color: var(--color-black);
-      opacity: 1;
-    }
-    .school-card__list-num {
+    .school-flood-list-num {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
-      color: var(--color-gray);
-      min-width: 1.5rem;
+      opacity: 0.7;
+      min-width: 2ch;
     }
-    .school-card__list-name {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 600;
+    .school-flood-list-name { flex: 1; }
+    .school-flood-list-arrow {
+      opacity: 0.7;
+      font-weight: 400;
+      transition: opacity var(--motion-micro) var(--ease-standard);
     }
-    .school-card__list-arrow {
-      font-size: 14px;
-      color: var(--color-gray);
+    .school-flood-list a:hover .school-flood-list-arrow { opacity: 1; }
+    @media (max-width: 900px) {
+      .school-flood-inner { grid-template-columns: 1fr; }
     }
 
     /* ---- SCHEDULE ---- */
@@ -353,18 +349,21 @@
       letter-spacing: 0.04em;
       white-space: nowrap;
     }
+    /* Monochrome shape marks (RSX-556) — school identity is carried
+       by shape, not a pillar-color accent dot (flood-only rule). Shapes
+       echo the m-tri/m-blob/m-circ marks used in the school floods. */
     .schedule-school-dot {
       display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 9px;
+      height: 9px;
       margin-right: 8px;
       vertical-align: middle;
       background: var(--color-white);
+      border-radius: 50%;
     }
-    .schedule-school-dot--biz { background: var(--color-pillar-entrepreneurship); }
-    .schedule-school-dot--cre { background: var(--color-pillar-creativity); }
-    .schedule-school-dot--hos { background: var(--color-pillar-humanity); }
+    .schedule-school-dot--biz { border-radius: 0; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+    .schedule-school-dot--cre { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; }
+    .schedule-school-dot--hos { border-radius: 50%; }
     .schedule-legend {
       display: flex;
       flex-wrap: wrap;
@@ -621,6 +620,14 @@
 </head>
 <body>
 
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+      <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+      <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+    </defs>
+  </svg>
+
   <nav class="public-nav" role="navigation" aria-label="Main navigation">
     <a href="index.html" class="public-nav__brand" aria-label="NICHE home">
       <img src="../shared/logos/logo-opt-02-on-dark.png" alt="NICHE">
@@ -718,49 +725,71 @@
       <p class="section-label">02 · Schools &amp; programs</p>
       <h2>Three schools.<br>Twelve programs.</h2>
     </div>
-    <div class="schools-grid">
 
-      <article class="school-card" id="school-business">
-        <p class="school-card__label">School of</p>
-        <h3 class="school-card__name">Business &amp; Entrepreneurship</h3>
-        <p class="school-card__desc">Build businesses, generate revenue, and operate in the modern economy.</p>
-        <p class="school-card__count">04 Programs</p>
-        <ul class="school-card__list">
-          <li><a href="program-detail.html?program=sales-dealmaking"><span class="school-card__list-num">01</span><span class="school-card__list-name">Sales &amp; Dealmaking</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=online-store"><span class="school-card__list-num">02</span><span class="school-card__list-name">Online Store &amp; E-Commerce</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=business-ai"><span class="school-card__list-num">03</span><span class="school-card__list-name">Running a Business with AI</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=start-build"><span class="school-card__list-num">04</span><span class="school-card__list-name">Start &amp; Build Your Business</span><span class="school-card__list-arrow">→</span></a></li>
-        </ul>
-      </article>
+    <section class="flood flood--entrepreneurship" id="school-business" aria-label="School of Business & Entrepreneurship">
+      <div class="flood-inner school-flood-inner">
+        <div class="school-flood-head">
+          <svg class="flood-mk" width="72" height="72" aria-hidden="true"><use href="#m-tri"/></svg>
+          <p class="school-flood-cap">School of</p>
+          <h3 class="school-flood-name">Business &amp; Entrepreneurship</h3>
+          <p class="school-flood-desc">Build businesses, generate revenue, and operate in the modern economy.</p>
+        </div>
+        <div>
+          <p class="school-flood-count">04 Programs</p>
+          <ul class="school-flood-list">
+            <li><a href="program-detail.html?program=sales-dealmaking"><span class="school-flood-list-num">01</span><span class="school-flood-list-name">Sales &amp; Dealmaking</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=online-store"><span class="school-flood-list-num">02</span><span class="school-flood-list-name">Online Store &amp; E-Commerce</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=business-ai"><span class="school-flood-list-num">03</span><span class="school-flood-list-name">Running a Business with AI</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=start-build"><span class="school-flood-list-num">04</span><span class="school-flood-list-name">Start &amp; Build Your Business</span><span class="school-flood-list-arrow">→</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <svg class="flood-wm" aria-hidden="true"><use href="#m-tri"/></svg>
+    </section>
 
-      <article class="school-card" id="school-creativity">
-        <p class="school-card__label">School of</p>
-        <h3 class="school-card__name">Creativity</h3>
-        <p class="school-card__desc">Create products, brands, content, and audiences.</p>
-        <p class="school-card__count">04 Programs</p>
-        <ul class="school-card__list">
-          <li><a href="program-detail.html?program=content-creator"><span class="school-card__list-num">01</span><span class="school-card__list-name">Content Creator Studio</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=branding-design"><span class="school-card__list-num">02</span><span class="school-card__list-name">Branding &amp; Design</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=digital-marketing"><span class="school-card__list-num">03</span><span class="school-card__list-name">Digital Marketing for Growth</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=craft-product"><span class="school-card__list-num">04</span><span class="school-card__list-name">Craft &amp; Product Making</span><span class="school-card__list-arrow">→</span></a></li>
-        </ul>
-      </article>
+    <section class="flood flood--creativity" id="school-creativity" aria-label="School of Creativity">
+      <div class="flood-inner school-flood-inner">
+        <div class="school-flood-head">
+          <svg class="flood-mk" width="72" height="72" aria-hidden="true"><use href="#m-blob"/></svg>
+          <p class="school-flood-cap">School of</p>
+          <h3 class="school-flood-name">Creativity</h3>
+          <p class="school-flood-desc">Create products, brands, content, and audiences.</p>
+        </div>
+        <div>
+          <p class="school-flood-count">04 Programs</p>
+          <ul class="school-flood-list">
+            <li><a href="program-detail.html?program=content-creator"><span class="school-flood-list-num">01</span><span class="school-flood-list-name">Content Creator Studio</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=branding-design"><span class="school-flood-list-num">02</span><span class="school-flood-list-name">Branding &amp; Design</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=digital-marketing"><span class="school-flood-list-num">03</span><span class="school-flood-list-name">Digital Marketing for Growth</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=craft-product"><span class="school-flood-list-num">04</span><span class="school-flood-list-name">Craft &amp; Product Making</span><span class="school-flood-list-arrow">→</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <svg class="flood-wm" aria-hidden="true"><use href="#m-blob"/></svg>
+    </section>
 
-      <article class="school-card" id="school-hospitality">
-        <p class="school-card__label">School of</p>
-        <h3 class="school-card__name">Hospitality &amp; Humanities</h3>
-        <p class="school-card__desc">Build careers and businesses around hospitality, wellness, service, and human experience.</p>
-        <p class="school-card__count">04 Programs</p>
-        <ul class="school-card__list">
-          <li><a href="program-detail.html?program=coffee"><span class="school-card__list-num">01</span><span class="school-card__list-name">Coffee: From Bean to Café</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=wellness-spa"><span class="school-card__list-num">02</span><span class="school-card__list-name">Wellness &amp; Spa</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=pet-care"><span class="school-card__list-num">03</span><span class="school-card__list-name">Pet Care &amp; Business</span><span class="school-card__list-arrow">→</span></a></li>
-          <li><a href="program-detail.html?program=hospitality-service"><span class="school-card__list-num">04</span><span class="school-card__list-name">Hospitality &amp; Service Excellence</span><span class="school-card__list-arrow">→</span></a></li>
-        </ul>
-      </article>
+    <section class="flood flood--humanity" id="school-hospitality" aria-label="School of Hospitality & Humanities">
+      <div class="flood-inner school-flood-inner">
+        <div class="school-flood-head">
+          <svg class="flood-mk" width="72" height="72" aria-hidden="true"><use href="#m-circ"/></svg>
+          <p class="school-flood-cap">School of</p>
+          <h3 class="school-flood-name">Hospitality &amp; Humanities</h3>
+          <p class="school-flood-desc">Build careers and businesses around hospitality, wellness, service, and human experience.</p>
+        </div>
+        <div>
+          <p class="school-flood-count">04 Programs</p>
+          <ul class="school-flood-list">
+            <li><a href="program-detail.html?program=coffee"><span class="school-flood-list-num">01</span><span class="school-flood-list-name">Coffee: From Bean to Café</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=wellness-spa"><span class="school-flood-list-num">02</span><span class="school-flood-list-name">Wellness &amp; Spa</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=pet-care"><span class="school-flood-list-num">03</span><span class="school-flood-list-name">Pet Care &amp; Business</span><span class="school-flood-list-arrow">→</span></a></li>
+            <li><a href="program-detail.html?program=hospitality-service"><span class="school-flood-list-num">04</span><span class="school-flood-list-name">Hospitality &amp; Service Excellence</span><span class="school-flood-list-arrow">→</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <svg class="flood-wm" aria-hidden="true"><use href="#m-circ"/></svg>
+    </section>
 
-    </div>
-    <div style="max-width: var(--max-width-wide); margin: var(--space-40) auto 0; text-align: center;">
+    <div style="max-width: var(--max-width-wide); margin: var(--space-48) auto 0; padding: 0 var(--space-32); text-align: center;">
       <a href="programs.html" class="btn btn--ghost">Browse all programs</a>
     </div>
   </section>

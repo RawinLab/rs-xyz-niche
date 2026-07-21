@@ -514,6 +514,39 @@
 }
 
 /* ----------------------------------------------------------
+   Pillar color floods (RSX-556) — the one place Brand V2 allows
+   a pillar color: a full-section flood, one color per surface,
+   never an accent/tint/border/badge. Pair with the mark symbols
+   (m-tri / m-blob / m-circ) inlined per-page per repo convention.
+   ---------------------------------------------------------- */
+.flood {
+  position: relative;
+  overflow: hidden;
+  color: var(--color-white);
+  padding: clamp(72px, 12vh, 150px) var(--space-32);
+}
+.flood--entrepreneurship { background: var(--color-pillar-entrepreneurship); }
+.flood--creativity { background: var(--color-pillar-creativity); }
+.flood--humanity { background: var(--color-pillar-humanity); }
+.flood-inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-width-wide);
+  margin-inline: auto;
+}
+.flood-wm {
+  position: absolute;
+  right: -7vw;
+  bottom: -9vw;
+  width: min(56vw, 680px);
+  height: min(56vw, 680px);
+  fill: rgba(255, 255, 255, 0.13);
+  z-index: 1;
+  pointer-events: none;
+}
+.flood-mk { display: block; fill: currentColor; }
+
+/* ----------------------------------------------------------
    Data table
    ---------------------------------------------------------- */
 .data-table {

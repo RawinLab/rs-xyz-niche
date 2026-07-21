@@ -102,20 +102,34 @@
     .school-section {
       margin-bottom: var(--space-80);
     }
+    /* Full-bleed pillar flood hero band (RSX-556) — breaks out of the
+       centered .programs-content__inner column while keeping the
+       heading content aligned to the same max-width column. Uses the
+       shared .flood--* background + .flood-wm/.flood-mk primitives
+       from platform.css; one pillar color per school, flood-only. */
     .school-section__header {
+      position: relative;
+      overflow: hidden;
+      color: var(--color-white);
       display: flex;
       align-items: flex-start;
       gap: var(--space-24);
+      flex-wrap: wrap;
       margin-bottom: var(--space-32);
-      padding-bottom: var(--space-16);
-      border-bottom: 2px solid var(--color-black);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: clamp(40px, 6vw, 64px) max(var(--space-32), calc(50% - var(--max-width-wide) / 2));
+      box-sizing: border-box;
     }
+    .school-section__header > div { position: relative; z-index: 2; }
+    .school-section__header .school-section__count { position: relative; z-index: 2; }
     .school-section__label {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--color-gray);
+      opacity: 0.82;
       margin-bottom: var(--space-4);
     }
     .school-section__title {
@@ -127,7 +141,7 @@
     }
     .school-section__desc {
       font-size: 14px;
-      color: var(--color-gray);
+      opacity: 0.94;
       max-width: 420px;
       line-height: 1.6;
       margin-top: var(--space-8);
@@ -138,9 +152,15 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--color-gray);
+      opacity: 0.82;
       white-space: nowrap;
       padding-top: var(--space-8);
+    }
+    .school-section__header .flood-mk {
+      position: relative;
+      z-index: 2;
+      width: clamp(40px, 4vw, 56px);
+      height: clamp(40px, 4vw, 56px);
     }
 
     .program-grid {
@@ -271,6 +291,14 @@
 </head>
 <body>
 
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+      <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+      <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+    </defs>
+  </svg>
+
   <nav class="public-nav" role="navigation" aria-label="Main navigation">
     <a href="index.html" class="public-nav__brand">
       <img src="../shared/logos/opt-02-primary-pair.png" alt="NICHE">
@@ -333,13 +361,15 @@
 
       <!-- BUSINESS -->
       <section class="school-section" id="business" data-school="business">
-        <div class="school-section__header">
+        <div class="school-section__header flood--entrepreneurship">
+          <svg class="flood-mk" aria-hidden="true"><use href="#m-tri"/></svg>
           <div>
             <p class="school-section__label">School of</p>
             <h2 class="school-section__title">Business &amp; Entrepreneurship</h2>
             <p class="school-section__desc">Build businesses, generate revenue, and operate in the modern economy.</p>
           </div>
           <span class="school-section__count">04 programs</span>
+          <svg class="flood-wm" aria-hidden="true"><use href="#m-tri"/></svg>
         </div>
         <div class="program-grid">
           <a href="program-detail.html?program=sales-dealmaking" class="program-card-full">
@@ -399,13 +429,15 @@
 
       <!-- CREATIVITY -->
       <section class="school-section" id="creativity" data-school="creativity">
-        <div class="school-section__header">
+        <div class="school-section__header flood--creativity">
+          <svg class="flood-mk" aria-hidden="true"><use href="#m-blob"/></svg>
           <div>
             <p class="school-section__label">School of</p>
             <h2 class="school-section__title">Creativity</h2>
             <p class="school-section__desc">Create products, brands, content, and audiences.</p>
           </div>
           <span class="school-section__count">04 programs</span>
+          <svg class="flood-wm" aria-hidden="true"><use href="#m-blob"/></svg>
         </div>
         <div class="program-grid">
           <a href="program-detail.html?program=content-creator" class="program-card-full">
@@ -465,13 +497,15 @@
 
       <!-- HOSPITALITY -->
       <section class="school-section" id="hospitality" data-school="hospitality">
-        <div class="school-section__header">
+        <div class="school-section__header flood--humanity">
+          <svg class="flood-mk" aria-hidden="true"><use href="#m-circ"/></svg>
           <div>
             <p class="school-section__label">School of</p>
             <h2 class="school-section__title">Hospitality &amp; Humanities</h2>
             <p class="school-section__desc">Build careers and businesses around hospitality, wellness, service, and human experience.</p>
           </div>
           <span class="school-section__count">04 programs</span>
+          <svg class="flood-wm" aria-hidden="true"><use href="#m-circ"/></svg>
         </div>
         <div class="program-grid">
           <a href="program-detail.html?program=coffee" class="program-card-full">
