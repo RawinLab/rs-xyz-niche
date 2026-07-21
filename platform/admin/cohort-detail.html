@@ -16,15 +16,26 @@
       background: white;
       border: 1px solid var(--color-divider);
       border-radius: 8px;
-      padding: var(--space-24);
+      overflow: hidden;
       margin-bottom: var(--space-24);
     }
+    /* Cohort hero flood band (RSX-557) — admin is cross-school chrome
+       everywhere else; this single-cohort header is the one context
+       with a single school, so it may carry the pillar flood. Meta
+       row, table and settings below stay monochrome. */
+    .cohort-hero__flood {
+      position: relative; overflow: hidden;
+      color: var(--color-white);
+      padding: var(--space-24);
+    }
+    .cohort-hero__flood > * { position: relative; z-index: 2; }
+    .cohort-hero__mk { position: absolute; right: -18px; bottom: -18px; width: 100px; height: 100px; fill: rgba(255,255,255,0.16); z-index: 1; pointer-events: none; }
+    .cohort-hero__body { padding: 0 var(--space-24) var(--space-24); }
     .cohort-hero__top {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: var(--space-24);
-      margin-bottom: var(--space-20);
       flex-wrap: wrap;
     }
     .cohort-hero__meta {
@@ -54,6 +65,13 @@
   </style>
 </head>
 <body class="app-shell">
+<svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+  <defs>
+    <symbol id="m-tri" viewBox="0 0 80 80"><path d="M20 12 L66 40 L20 68 Z"/></symbol>
+    <symbol id="m-blob" viewBox="0 0 80 80"><path d="M40 6 C55 4 72 14 73 31 C74 45 64 53 56 62 C47 71 33 75 22 67 C11 59 5 44 9 30 C13 17 26 8 40 6 Z"/></symbol>
+    <symbol id="m-circ" viewBox="0 0 80 80"><circle cx="40" cy="40" r="33"/></symbol>
+  </defs>
+</svg>
 
 <div class="app-layout">
 
@@ -129,45 +147,50 @@
   <!-- MAIN -->
   <main class="app-main main">
 
-    <!-- COHORT HERO CARD -->
+    <!-- COHORT HERO CARD — flood header, one pillar color (Creativity) for this single-school cohort -->
     <div class="cohort-hero">
-      <div class="cohort-hero__top">
-        <div>
-          <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);flex-wrap:wrap;">
-            <h1 style="font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-0.01em;line-height:1.1;">Cohort 1 — Bootcamp Creative ID&amp;ST</h1>
-            <span class="pillar-tag pillar-tag--creativity" style="font-size:11px;">Creativity</span>
-            <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>Running</span>
-          </div>
-          <div style="font-size:13px;color:rgba(10,10,10,0.6);">Creative Identity &amp; Storytelling · Bootcamp 3 months</div>
-        </div>
-      </div>
-
-      <div class="cohort-hero__meta">
-        <div style="display:flex;align-items:center;gap:var(--space-8);">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="12" height="10" rx="1"/><path d="M1 5h12"/><path d="M4 1v2M10 1v2"/></svg>
-          <span><strong>Start:</strong> Nov 11, 2026</span>
-        </div>
-        <span style="color:rgba(10,10,10,0.25);">→</span>
-        <div>
-          <span><strong>End:</strong> Dec 30, 2026</span>
-        </div>
-        <span style="width:1px;height:16px;background:var(--color-divider);margin:0 var(--space-4);"></span>
-        <div style="display:flex;align-items:center;gap:var(--space-12);">
-          <span><strong>Enrolled:</strong> 18 / 24</span>
-          <div class="capacity" data-state="med">
-            <div class="capacity__bar" style="width:100px;"><div class="capacity__fill" style="width:75%;"></div></div>
-            <span style="font-size:11px;color:rgba(10,10,10,0.5);">75% full</span>
+      <div class="cohort-hero__flood flood--creativity">
+        <div class="cohort-hero__top">
+          <div>
+            <div style="display:flex;align-items:center;gap:var(--space-12);margin-bottom:var(--space-8);flex-wrap:wrap;">
+              <h1 style="font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-0.01em;line-height:1.1;">Cohort 1 — Bootcamp Creative ID&amp;ST</h1>
+              <span class="pillar-tag pillar-tag--creativity" style="font-size:11px;background:rgba(255,255,255,0.18);color:var(--color-white);border-color:rgba(255,255,255,0.3);">Creativity</span>
+              <span class="status-chip status-chip--current"><span class="status-chip__dot"></span>Running</span>
+            </div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.75);">Creative Identity &amp; Storytelling · Bootcamp 3 months</div>
           </div>
         </div>
-        <span style="width:1px;height:16px;background:var(--color-divider);margin:0 var(--space-4);"></span>
-        <div><span><strong>Instructor:</strong> Achara Wongchai</span></div>
+        <svg class="cohort-hero__mk" aria-hidden="true"><use href="#m-blob"/></svg>
       </div>
 
-      <div class="cohort-hero__actions">
-        <button class="btn btn--primary btn--sm">Edit Cohort</button>
-        <button class="btn btn--secondary btn--sm">Send Announcement</button>
-        <button class="btn btn--ghost btn--sm">View Schedule</button>
-        <button class="btn btn--ghost btn--sm" style="margin-left:auto;color:rgba(10,10,10,0.5);">Archive</button>
+      <div class="cohort-hero__body">
+        <div class="cohort-hero__meta">
+          <div style="display:flex;align-items:center;gap:var(--space-8);">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="12" height="10" rx="1"/><path d="M1 5h12"/><path d="M4 1v2M10 1v2"/></svg>
+            <span><strong>Start:</strong> Nov 11, 2026</span>
+          </div>
+          <span style="color:rgba(10,10,10,0.25);">→</span>
+          <div>
+            <span><strong>End:</strong> Dec 30, 2026</span>
+          </div>
+          <span style="width:1px;height:16px;background:var(--color-divider);margin:0 var(--space-4);"></span>
+          <div style="display:flex;align-items:center;gap:var(--space-12);">
+            <span><strong>Enrolled:</strong> 18 / 24</span>
+            <div class="capacity" data-state="med">
+              <div class="capacity__bar" style="width:100px;"><div class="capacity__fill" style="width:75%;"></div></div>
+              <span style="font-size:11px;color:rgba(10,10,10,0.5);">75% full</span>
+            </div>
+          </div>
+          <span style="width:1px;height:16px;background:var(--color-divider);margin:0 var(--space-4);"></span>
+          <div><span><strong>Instructor:</strong> Achara Wongchai</span></div>
+        </div>
+
+        <div class="cohort-hero__actions">
+          <button class="btn btn--primary btn--sm">Edit Cohort</button>
+          <button class="btn btn--secondary btn--sm">Send Announcement</button>
+          <button class="btn btn--ghost btn--sm">View Schedule</button>
+          <button class="btn btn--ghost btn--sm" style="margin-left:auto;color:rgba(10,10,10,0.5);">Archive</button>
+        </div>
       </div>
     </div>
 
